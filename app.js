@@ -4,7 +4,7 @@
 
 const CATS = {
   tuvung:  {name:"Hình → từ", chip:"#ECFEFF;color:#0E7490;border:2px solid #06B6D4", color:"#06B6D4", emoji:"🖼️"},
-  hoithoai:{name:"Hội thoại An & Bảo", chip:"#FDF2F8;color:#9D174D;border:2px solid #EC4899", color:"#EC4899", emoji:"💬"},
+  hoithoai:{name:"Hội thoại An & Bảo", chip:"#F0FDFA;color:#0F766E;border:2px solid #14B8A6", color:"#14B8A6", emoji:"💬"},
   matchu:  {name:"Mặt chữ", chip:"#FEF9C3;color:#854D0E;border:2px solid #F59E0B", color:"#F59E0B", emoji:"🔤"},
   anhviet: {name:"Anh → Việt", chip:"#F0FDF4;color:#166534;border:2px solid #22C55E", color:"#22C55E", emoji:"🌏"},
   dauthanh:{name:"Dấu thanh", chip:"#F5F3FF;color:#5B21B6;border:2px solid #8B5CF6", color:"#8B5CF6", emoji:"🎵"},
@@ -383,6 +383,7 @@ const FEATURES = [
   {i:"⭐", h:"Tăng dần độ khó", p:"Bài kiểm tra tự điều chỉnh theo sức của bé, không dễ quá cũng không khó quá."},
   {i:"🗣️", h:"Đủ 4 kỹ năng", p:"Nghe – nói – đọc – viết, luyện đều đặn mỗi ngày một chút."},
   {i:"👨‍🏫", h:"Có Thầy Đạt", p:"Sau mỗi bài đều có lời khuyên cụ thể cho ba mẹ và gia sư."},
+  {i:"🤖", h:"Bắt nhịp AI", p:"Thầy sẵn sàng chỉ trò về AI, giúp các em nắm bắt kịp xu hướng công nghệ hiện nay."},
 ];
 
 function renderHome(){
