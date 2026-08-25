@@ -1,0 +1,9 @@
+# Công cụ - KHÔNG đưa vào repo (file rất nặng)
+claude.exe
+
+# Cấu hình editor cá nhân
+.vscode/
+
+# File hệ thống
+Thumbs.db
+.DS_Store
