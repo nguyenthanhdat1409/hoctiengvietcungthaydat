@@ -342,6 +342,9 @@ const rand = arr => arr[Math.floor(Math.random()*arr.length)];
 const SECTIONS = ["home","baihoc","baitap","kiemtra","lienhe"];
 let navLock = false;
 
+/* Không cho trình duyệt tự khôi phục vị trí cuộn khi F5 (tránh bị tụt xuống) */
+if('scrollRestoration' in history){ history.scrollRestoration = 'manual'; }
+
 function go(id){
   if(!SECTIONS.includes(id)) id = "home";
   const runner = document.getElementById("runner");
@@ -364,7 +367,7 @@ function go(id){
   document.querySelectorAll("#navLinks a").forEach(a => a.classList.toggle("active", a.dataset.nav === id));
   document.getElementById("nav").classList.remove("open");
   if(("#" + id) !== location.hash){ navLock = true; location.hash = id; }
-  window.scrollTo({top:0, behavior:"smooth"});
+  window.scrollTo(0, 0);
 }
 window.addEventListener("hashchange", () => {
   if(navLock){ navLock = false; return; }
@@ -2535,4 +2538,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderContact();
   renderFlashcard();
   go((location.hash || "#home").slice(1));
+  // Chắc chắn về đầu trang khi load/F5 (kể cả khi trình duyệt cố nhảy tới #hash)
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => window.scrollTo(0, 0));
 });
