@@ -278,6 +278,7 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .toneRow:hover{transform:translateY(-3px); box-shadow:0 8px 0 rgba(30,27,75,.12)}
 .toneRow .tg{font-family:'Baloo 2',cursive; font-weight:800; font-size:38px; color:#fff; width:56px; height:56px;
   border-radius:16px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  background:linear-gradient(135deg,var(--vio),#A78BFA);
   box-shadow:0 6px 0 rgba(30,27,75,.2); transition:transform .2s}
 .toneRow:hover .tg{transform:scale(1.1) rotate(-5deg)}
 .toneRow .td{flex:1; line-height:1.6}

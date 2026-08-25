@@ -450,8 +450,8 @@ const TONES = [
   {g:"a",  n:"Thanh ngang", ex:"ma", w:"con ma 👻"},
   {g:"à",  n:"Thanh huyền", ex:"mà", w:"nhưng mà"},
   {g:"á",  n:"Thanh sắc",  ex:"má", w:"đôi má 😊"},
-  {g:"ả",  n:"Thanh hỏi",  ex:"mả", w:"ngôi mả"},
-  {g:"ã",  n:"Thanh ngã",  ex:"mã", w:"con số mã"},
+  {g:"ả",  n:"Thanh hỏi",  ex:"hỏi", w:"câu hỏi ❓"},
+  {g:"ã",  n:"Thanh ngã",  ex:"ngã", w:"ngã tư 🚦"},
   {g:"ạ",  n:"Thanh nặng", ex:"mạ", w:"cây mạ 🌱"},
 ];
 const VOCAB_ANIMAL = [["🐱","Con mèo"],["🐶","Con chó"],["🐔","Con gà"],["🐟","Con cá"],["🐷","Con lợn"],["🐮","Con bò"]];
@@ -778,8 +778,8 @@ const LESSONS = [
       Thanh điệu = pitch change. Vietnamese uses pitch like music notes!<br>
       🎵 <b>ngang</b> = flat (no change) · 🎵 <b>huyền</b> = low falling · 🎵 <b>sắc</b> = high rising<br>
       🎵 <b>hỏi</b> = dipping (down-up) · 🎵 <b>ngã</b> = creaky (like a question) · 🎵 <b>nặng</b> = heavy (stop)</div>
-      <div class="toneList">${TONES.map(t =>
-        `<div class="toneRow"><div class="tg">${t.g}</div><div class="td"><b>${t.n}</b> — ví dụ: <b>${t.ex}</b> <small>(${t.w})</small></div></div>`).join("")}</div>
+      <div class="toneList">${TONES.map((t, i) =>
+        `<div class="toneRow ${["vio","pink","cyan","org","lime","yel"][i % 6]}"><div class="tg">${t.g}</div><div class="td"><b>${t.n}</b> — ví dụ: <b>${t.ex}</b> <small>(${t.w})</small></div></div>`).join("")}</div>
       <div class="tipBox">💡 <b>Mẹo:</b> Đọc chậm, nghe kỹ độ cao – thấp của giọng. Dùng tay vẽ đường line để nhớ: huyền (\) , sắc (/), hỏi (∨), ngã (~), nặng (.!).</div>`},
   {icon:"🖼️", color:"#06B6D4", title:"Bài 7: Từ vựng theo chủ đề", desc:"Con vật, màu sắc, đồ ăn — học từ mới gắn với hình ảnh.",
     body:`<p><b>🎯 Mục tiêu:</b> Học 30 từ vựng thông dụng, gắn với hình ảnh để nhớ nhanh.</p>
