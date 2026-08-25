@@ -13,12 +13,19 @@
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
 
+# app.js / styles.css KHÔNG có đánh version trong tên file, nên phải cho trình duyệt
+# luôn kiểm tra bản mới (tránh xài file cũ trong cache sau khi deploy).
 [[headers]]
   for = "/app.js"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/styles.css"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

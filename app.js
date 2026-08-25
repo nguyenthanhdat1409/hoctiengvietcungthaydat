@@ -1066,6 +1066,42 @@ const LESSONS = [
       <div class="passage">Mình tên là An. Năm nay mình chín tuổi. Mình học lớp 3, trường Tiểu học Kim Đồng. Mình thích môn Tiếng Việt và thích ăn phở. Ước mơ của mình là trở thành bác sĩ.</div>
       <div class="tipBox">💡 <b>Mẹo:</b> Viết xong đọc to lại một lần. Nếu nghe xuôi tai là câu đã đúng. Đọc cho ba mẹ nghe nhé!</div>
       <div class="challengeBox"><b>Thử thách:</b> Viết một đoạn 5 câu về gia đình em, mỗi người một câu.</div>`},
+
+  {icon:"🤖", color:"#6366F1", title:"Bài 26: Làm quen với AI", desc:"AI là gì? AI quanh em, AI học thế nào và cách dùng AI an toàn, thông minh.",
+    body:`<p><b>🎯 Mục tiêu:</b> Hiểu AI là gì, nhận ra AI quanh mình, và biết dùng AI một cách an toàn, thông minh.</p>
+      <div class="langBox"><b>AI</b> = <b>Trí tuệ nhân tạo</b> (Artificial Intelligence).<br>
+      Là khi con người dạy cho <b>máy tính</b> biết "học" và "suy nghĩ" để giúp việc cho mình. AI <b>không phải người thật</b>, mà là chương trình do con người tạo ra.</div>
+
+      <div class="secTitle" data-icon="🤔">AI là gì?</div>
+      <div class="dlg"><b>Ví dụ dễ hiểu:</b> Em xem một chú chó nhiều lần thì em nhận ra được con chó. Máy tính cũng vậy — cho nó xem <b>thật nhiều</b> hình con chó, dần dần nó cũng <b>đoán</b> được đâu là con chó. Đó chính là AI đang "học"!</div>
+
+      <div class="secTitle" data-icon="🔎">AI ở quanh em</div>
+      <p style="color:#64748B;font-size:14px;margin:-4px 0 10px">AI có ở rất nhiều nơi mà có khi em không để ý:</p>
+      <div class="vocabGrid">
+        <div class="vocabItem"><div class="ve">🗣️</div><div class="vw">Trợ lý ảo (nói là nó trả lời)</div></div>
+        <div class="vocabItem"><div class="ve">📺</div><div class="vw">Gợi ý video em thích xem</div></div>
+        <div class="vocabItem"><div class="ve">🗺️</div><div class="vw">Bản đồ chỉ đường</div></div>
+        <div class="vocabItem"><div class="ve">📷</div><div class="vw">Nhận diện khuôn mặt</div></div>
+        <div class="vocabItem"><div class="ve">💬</div><div class="vw">Chatbot trò chuyện</div></div>
+        <div class="vocabItem"><div class="ve">🌐</div><div class="vw">Dịch từ tiếng này sang tiếng khác</div></div>
+      </div>
+
+      <div class="secTitle" data-icon="⚙️">AI học như thế nào?</div>
+      <div class="dlg"><b>AI học từ ví dụ</b> — càng nhiều ví dụ, càng giỏi. Giống em luyện đọc: đọc <b>đi đọc lại</b> nhiều lần thì nhớ lâu.<br>
+      Nhớ trò "lặp lại 5 lần" ở Bài 1 không? Việc lặp đó gọi là <b>vòng lặp (loop)</b> — máy tính cũng lặp như thế để học đó! 🔁</div>
+
+      <div class="secTitle" data-icon="🛡️">Dùng AI an toàn & thông minh</div>
+      <div class="toneList">
+        <div class="toneRow lime"><div class="tg">✅</div><div class="td"><b>Nên:</b> Hỏi ba mẹ/thầy cô khi dùng AI. Coi AI như <b>người trợ giúp</b>, còn mình vẫn tự suy nghĩ.</div></div>
+        <div class="toneRow yel"><div class="tg">⚠️</div><div class="td"><b>Cẩn thận:</b> AI <b>có thể trả lời sai</b>. Luôn <b>kiểm tra lại</b>, đừng tin 100%.</div></div>
+        <div class="toneRow pink"><div class="tg">🚫</div><div class="td"><b>Không nên:</b> Chia sẻ <b>thông tin cá nhân</b> (tên đầy đủ, địa chỉ, số điện thoại, mật khẩu) cho AI hay người lạ.</div></div>
+      </div>
+
+      <div class="secTitle" data-icon="💜">AI không thay được em</div>
+      <div class="dlg">AI tính rất nhanh, nhớ rất nhiều, nhưng <b>sự sáng tạo, tình cảm và lòng tốt</b> là điều <b>chỉ con người mới có</b>. AI là công cụ giúp em giỏi hơn, còn người quyết định vẫn là <b>em</b>! 🌟</div>
+
+      <div class="tipBox">💡 <b>Mẹo:</b> Khi hỏi AI, hãy hỏi <b>rõ ràng</b> điều mình muốn — hỏi càng rõ, câu trả lời càng đúng ý.</div>
+      <div class="challengeBox"><b>Thử thách:</b> Kể tên 3 chỗ em thấy AI trong cuộc sống hằng ngày. Theo em, AI giúp ích gì cho mình?</div>`},
 ];
 
 /* =========================================================
@@ -1437,6 +1473,16 @@ const LESSON_GAMES = {
       {q:"Đầu câu, chữ cái đầu phải viết thế nào?", opts:["Viết thường","Viết HOA","Viết nghiêng","Tùy thích"], a:1},
       {q:"Đoạn văn giới thiệu bản thân nên có câu nào?", opts:["Tên của mình","Món ăn em ghét","Số nhà hàng xóm","Không câu nào"], a:0},
     ]},
+  ],
+  25: [ // Bài 26: Làm quen với AI
+    {type:"quiz", title:"Đố nhanh về AI", questions:[
+      {q:"AI là viết tắt của điều gì?", opts:["Trí tuệ nhân tạo","Ăn ít","Anh Isaac","Ánh sáng"], a:0},
+      {q:"AI học giỏi hơn nhờ điều gì?", opts:["Xem thật nhiều ví dụ","Ngủ nhiều","Ăn kẹo","Không cần học"], a:0},
+      {q:"Khi AI trả lời, em nên?", opts:["Kiểm tra lại, không tin 100%","Tin hết mọi thứ","Không bao giờ dùng","Giấu ba mẹ"], a:0},
+      {q:"Điều nào KHÔNG nên chia sẻ cho AI hay người lạ?", opts:["Mật khẩu, địa chỉ nhà","Màu em thích","Con vật em thích","Món ăn ngon"], a:0},
+      {q:"Điều gì chỉ con người mới có?", opts:["Tình cảm & sáng tạo","Tính toán nhanh","Nhớ nhiều số","Chạy điện"], a:0},
+    ]},
+    {type:"match", title:"Nối AI với công việc nó giúp", pairs:[["🗣️","trợ lý ảo"],["🗺️","chỉ đường"],["🌐","dịch ngôn ngữ"],["📷","nhận diện khuôn mặt"],["💬","chatbot trò chuyện"]]},
   ],
 };
 
