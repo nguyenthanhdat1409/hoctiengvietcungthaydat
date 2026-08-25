@@ -6,11 +6,13 @@
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
+html{scroll-padding-top:80px}
 body{
   margin:0; min-height:100vh; font-family:'Be Vietnam Pro',sans-serif; color:var(--ink);
   background:linear-gradient(140deg,#8B5CF6 0%,#EC4899 45%,#F59E0B 100%);
   background-attachment:fixed;
 }
+.page{scroll-margin-top:80px}
 h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .grad{background:linear-gradient(90deg,#FDE047,#FB7185,#F472B6);-webkit-background-clip:text;background-clip:text;color:transparent}
 .muted{color:#64748B; font-size:14px; margin:0 0 12px}
