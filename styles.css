@@ -440,6 +440,38 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .sortDrop .miniChip{background:#fff; border:2px solid #E2E8F0; border-radius:12px; padding:6px 10px; font-weight:700; font-size:14px; text-align:center}
 .sortDrop .miniChip.ok{border-color:var(--ok); color:#166534}
 
+/* ===== Trò chơi tương tác dùng chung trong bài học ===== */
+.lgGame{background:#fff; border:2px solid #EEF2FF; border-radius:18px; padding:14px; margin:0 0 14px; box-shadow:0 4px 0 rgba(30,27,75,.06)}
+.lgTitle{font-family:'Baloo 2',cursive; font-weight:800; font-size:16px; color:var(--ink); margin-bottom:10px}
+.lgProg{font-size:13px; font-weight:700; color:#6366F1; background:#EEF2FF; border-radius:999px; padding:5px 12px; display:inline-block; margin-bottom:10px}
+.lgGlyph{font-size:52px; text-align:center; margin:4px 0 10px; animation:emojiFloat 3s ease-in-out infinite}
+.lgQ{font-family:'Baloo 2',cursive; font-weight:800; font-size:17px; text-align:center; color:var(--ink); margin-bottom:12px}
+.lgOpts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.lgOpt{background:#F8FAFC; border:2px solid #E2E8F0; border-radius:14px; padding:12px 10px; font-weight:700; font-size:15px;
+  color:var(--ink); cursor:pointer; transition:transform .12s, background .12s, border-color .12s; font-family:inherit}
+.lgOpt:hover:not(.locked){transform:translateY(-2px); border-color:var(--vio)}
+.lgOpt.locked{cursor:default}
+.lgOpt.ok{background:#F0FDF4; border-color:var(--ok); color:#166534}
+.lgOpt.no{background:#FEE2E2; border-color:#EF4444; color:#B91C1C; animation:shake .4s}
+.lgResult{font-family:'Baloo 2',cursive; font-weight:800; font-size:20px; text-align:center; color:var(--ink); margin:10px 0 14px}
+.lgHear{padding:12px 22px; font-size:17px; margin:2px 0 12px}
+.lgMatch{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.lgCol{display:flex; flex-direction:column; gap:8px}
+.lgCell{background:#F8FAFC; border:2px solid #E2E8F0; border-radius:14px; padding:12px 8px; font-weight:700; font-size:16px;
+  color:var(--ink); cursor:pointer; transition:transform .12s, background .12s, border-color .12s; font-family:inherit; min-height:48px}
+.lgCell:hover:not(.done){transform:translateY(-2px); border-color:var(--cyan)}
+.lgCell.sel{border-color:var(--vio); outline:3px solid rgba(124,58,237,.35); background:#F5F3FF}
+.lgCell.done{background:#F0FDF4; border-color:var(--ok); color:#166534; cursor:default; opacity:.75}
+.lgCell.shake{animation:shake .4s}
+.lgSortWords{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:12px}
+.lgSortBins{display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:10px}
+.lgBin{background:#F8FAFC; border:3px dashed #CBD5E1; border-radius:16px; padding:8px; min-height:80px; cursor:pointer; transition:background .15s, border-color .15s}
+.lgBin:hover{border-color:var(--vio)}
+.lgBin.bad{background:#FEE2E2; border-color:#EF4444; animation:shake .4s}
+.lgBinLabel{font-family:'Baloo 2',cursive; font-weight:800; font-size:14px; text-align:center; color:var(--ink); margin-bottom:6px}
+.lgBinDrop{display:flex; flex-direction:column; gap:6px}
+@media (max-width:480px){ .lgGlyph{font-size:44px} .lgOpt{font-size:14px; padding:11px 8px} }
+
 /* Thám tử săn chữ */
 .detectiveSentence{font-size:clamp(20px,5vw,30px); font-weight:700; line-height:2; text-align:center; margin:8px 0}
 .detectiveSentence .ltr{display:inline-block; padding:2px 4px; border-radius:8px; cursor:pointer; transition:transform .12s, background .15s, color .15s; color:var(--ink)}
