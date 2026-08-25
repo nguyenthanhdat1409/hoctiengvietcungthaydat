@@ -1064,6 +1064,378 @@ const LESSONS = [
       <div class="challengeBox"><b>Thử thách:</b> Viết một đoạn 5 câu về gia đình em, mỗi người một câu.</div>`},
 ];
 
+/* =========================================================
+   TRÒ CHƠI TƯƠNG TÁC DÙNG CHUNG CHO BÀI HỌC (data-driven)
+   4 loại: quiz (đố nhanh) · listen (nghe & chọn) · match (nối) · sort (phân loại)
+   ========================================================= */
+function gameMeta(type){
+  return ({
+    quiz:   ["⚡", "Đố nhanh"],
+    listen: ["🎧", "Nghe & chọn"],
+    match:  ["🔗", "Nối hình với chữ"],
+    sort:   ["🗂️", "Phân loại"],
+  })[type] || ["🎮", "Trò chơi"];
+}
+function renderLessonGames(games){
+  if(!games || !games.length) return "";
+  let html = `<div class="secTitle" data-icon="🎮">Luyện tập tương tác</div>
+    <p style="color:#64748B;font-size:14px;margin:-6px 0 12px">Chơi thử các trò bên dưới để nhớ bài lâu hơn nhé! 👇</p>`;
+  games.forEach((g, i) => {
+    const [ic, dft] = gameMeta(g.type);
+    html += `<div class="lgGame"><div class="lgTitle">${ic} ${g.title || dft}</div>
+      <div class="lgBody" id="lg${i}_body"></div></div>`;
+  });
+  return html;
+}
+function initLessonGames(games){
+  if(!games) return;
+  games.forEach((g, i) => {
+    const body = document.getElementById("lg" + i + "_body");
+    if(!body) return;
+    if(g.type === "quiz") initQuizGame(body, g);
+    else if(g.type === "listen") initListenGameG(body, g);
+    else if(g.type === "match") initMatchGame(body, g);
+    else if(g.type === "sort") initSortGameG(body, g);
+  });
+}
+function lgResultHtml(score, total){
+  const win = score >= Math.ceil(total*0.7);
+  return `<div class="lgResult">${win ? "🏆" : "🎉"} Kết quả: <b>${score}/${total}</b> ${win ? "— giỏi quá!" : "— chơi lại thử nha!"}</div>
+    <div class="center"><button class="btn small lgReplay">Chơi lại 🔄</button></div>`;
+}
+/* ---- Đố nhanh ---- */
+function initQuizGame(body, g){
+  const qs = shuffle(g.questions);
+  let idx = 0, score = 0;
+  const render = () => {
+    if(idx >= qs.length){
+      body.innerHTML = lgResultHtml(score, qs.length);
+      body.querySelector(".lgReplay").addEventListener("click", () => { idx = 0; score = 0; render(); });
+      if(score >= Math.ceil(qs.length*0.7)) burst(6);
+      return;
+    }
+    const q = qs[idx];
+    const opts = shuffle(q.opts.map((o, k) => [o, k === q.a]));
+    let h = `<div class="lgProg">Câu ${idx+1}/${qs.length} · ⭐ ${score}</div>`;
+    if(q.glyph) h += `<div class="lgGlyph">${q.glyph}</div>`;
+    h += `<div class="lgQ">${q.q}</div><div class="lgOpts">`;
+    opts.forEach(o => h += `<button class="lgOpt" data-ok="${o[1] ? 1 : 0}">${o[0]}</button>`);
+    h += `</div>`;
+    body.innerHTML = h;
+    body.querySelectorAll(".lgOpt").forEach(btn => btn.addEventListener("click", () => {
+      if(body.dataset.locked) return; body.dataset.locked = "1";
+      const ok = btn.dataset.ok === "1";
+      body.querySelectorAll(".lgOpt").forEach(b => { b.classList.add("locked"); if(b.dataset.ok === "1") b.classList.add("ok"); });
+      if(ok){ score++; sfx.correct(); } else { btn.classList.add("no"); sfx.wrong(); }
+      setTimeout(() => { idx++; delete body.dataset.locked; render(); }, 850);
+    }));
+  };
+  render();
+}
+/* ---- Nghe & chọn ---- */
+function initListenGameG(body, g){
+  const items = g.items.slice();
+  const nOpt = Math.min(4, items.length);
+  const totalR = Math.min(10, Math.max(4, items.length));
+  let round = 0, score = 0, target = null;
+  const play = () => { if(target) speakVN(target); };
+  const nextRound = () => {
+    if(round >= totalR){
+      body.innerHTML = lgResultHtml(score, totalR);
+      body.querySelector(".lgReplay").addEventListener("click", () => { round = 0; score = 0; nextRound(); });
+      if(score >= Math.ceil(totalR*0.7)) burst(6);
+      return;
+    }
+    target = rand(items);
+    let opts = [target];
+    shuffle(items.filter(w => w !== target)).forEach(w => { if(opts.length < nOpt) opts.push(w); });
+    opts = shuffle(opts);
+    let h = `<div class="lgProg">Lượt ${round+1}/${totalR} · ⭐ ${score}</div>
+      <div class="center"><button class="btn hearBtn lgHear">🔊 Nghe</button></div><div class="lgOpts">`;
+    opts.forEach(o => h += `<button class="lgOpt" data-w="${o}">${o}</button>`);
+    h += `</div>`;
+    body.innerHTML = h;
+    body.querySelector(".lgHear").addEventListener("click", play);
+    body.querySelectorAll(".lgOpt").forEach(btn => btn.addEventListener("click", () => {
+      if(body.dataset.locked) return; body.dataset.locked = "1";
+      const ok = btn.dataset.w === target;
+      body.querySelectorAll(".lgOpt").forEach(b => { b.classList.add("locked"); if(b.dataset.w === target) b.classList.add("ok"); });
+      if(ok){ score++; sfx.correct(); } else { btn.classList.add("no"); sfx.wrong(); }
+      setTimeout(() => { round++; delete body.dataset.locked; nextRound(); }, 900);
+    }));
+    setTimeout(play, 350);
+  };
+  nextRound();
+}
+/* ---- Nối hình với chữ ---- */
+function initMatchGame(body, g){
+  const pairs = g.pairs.slice();
+  const build = () => {
+    const lefts = shuffle(pairs.map((p, k) => ({ v: p[0], k })));
+    const rights = shuffle(pairs.map((p, k) => ({ v: p[1], k })));
+    let h = `<div class="lgProg lgMatchInfo">Bấm 1 hình rồi bấm chữ đúng · Đã nối 0/${pairs.length}</div><div class="lgMatch"><div class="lgCol">`;
+    lefts.forEach(o => h += `<button class="lgCell" data-side="L" data-k="${o.k}">${o.v}</button>`);
+    h += `</div><div class="lgCol">`;
+    rights.forEach(o => h += `<button class="lgCell" data-side="R" data-k="${o.k}">${o.v}</button>`);
+    h += `</div></div><div class="center"><button class="btn small lgReplay">Làm lại ↻</button></div>`;
+    body.innerHTML = h;
+    let selL = null, matched = 0;
+    const info = body.querySelector(".lgMatchInfo");
+    body.querySelectorAll(".lgCell").forEach(c => c.addEventListener("click", () => {
+      if(c.classList.contains("done")) return;
+      if(c.dataset.side === "L"){
+        body.querySelectorAll('.lgCell[data-side="L"]').forEach(x => x.classList.remove("sel"));
+        c.classList.add("sel"); selL = c;
+      } else {
+        if(!selL) return;
+        const r = body.querySelector('.lgCell[data-side="R"].sel'); if(r) r.classList.remove("sel");
+        if(selL.dataset.k === c.dataset.k){
+          selL.classList.add("done"); c.classList.add("done"); selL.classList.remove("sel");
+          matched++; sfx.correct();
+          info.innerHTML = matched === pairs.length
+            ? "🎉 Giỏi quá! Nối đúng hết rồi!"
+            : `Bấm 1 hình rồi bấm chữ đúng · Đã nối ${matched}/${pairs.length}`;
+          if(matched === pairs.length) burst(8);
+          selL = null;
+        } else {
+          c.classList.add("shake"); sfx.wrong();
+          setTimeout(() => c.classList.remove("shake"), 400);
+        }
+      }
+    }));
+    body.querySelector(".lgReplay").addEventListener("click", build);
+  };
+  build();
+}
+/* ---- Phân loại ---- */
+function initSortGameG(body, g){
+  const build = () => {
+    const items = shuffle(g.items.slice());
+    let h = `<div class="lgProg">${g.hint || "Bấm một từ, rồi bấm đúng ô của nó!"}</div><div class="lgSortWords">`;
+    items.forEach(it => h += `<button class="wordChip" data-bin="${it[1]}">${it[0]}</button>`);
+    h += `</div><div class="lgSortBins">`;
+    g.bins.forEach(b => h += `<div class="lgBin" data-bin="${b}"><div class="lgBinLabel">${b}</div><div class="lgBinDrop"></div></div>`);
+    h += `</div><div class="center"><button class="btn small lgReplay">Làm lại ↻</button></div>`;
+    body.innerHTML = h;
+    let sel = null, done = 0; const total = items.length;
+    body.querySelectorAll(".wordChip").forEach(w => w.addEventListener("click", () => {
+      if(w.classList.contains("used")) return;
+      body.querySelectorAll(".wordChip").forEach(x => x.classList.remove("sel"));
+      w.classList.add("sel"); sel = w;
+    }));
+    body.querySelectorAll(".lgBin").forEach(bin => bin.addEventListener("click", () => {
+      if(!sel) return;
+      if(sel.dataset.bin === bin.dataset.bin){
+        const chip = document.createElement("span"); chip.className = "miniChip ok"; chip.textContent = sel.textContent;
+        bin.querySelector(".lgBinDrop").appendChild(chip);
+        sel.classList.add("used"); sel.classList.remove("sel"); sel = null; done++; sfx.correct();
+        if(done === total) burst(8);
+      } else {
+        bin.classList.add("bad"); sfx.wrong(); setTimeout(() => bin.classList.remove("bad"), 400);
+      }
+    }));
+    body.querySelector(".lgReplay").addEventListener("click", build);
+  };
+  build();
+}
+
+/* Dữ liệu trò chơi cho từng bài (index 0 = Bài 1). Bài 1 đã có trò riêng nên bỏ qua. */
+const LESSON_GAMES = {
+  1: [ // Bài 2: E – Ê
+    {type:"listen", title:"Nghe & chọn tiếng E / Ê", items:["mẹ","xe","nghe","dê","bê","mê"]},
+    {type:"sort", title:"Phân loại E và Ê", hint:"Bấm từ rồi bỏ vào đúng nhà E hoặc Ê!", bins:["Nhà E","Nhà Ê"],
+      items:[["mẹ","Nhà E"],["xe","Nhà E"],["nghe","Nhà E"],["dê","Nhà Ê"],["bê","Nhà Ê"],["mê","Nhà Ê"]]},
+    {type:"quiz", title:"Đố nhanh E – Ê", questions:[
+      {q:"Từ nào có âm Ê?", opts:["mẹ","dê","xe","nghe"], a:1},
+      {q:"«con dê» dùng chữ nào?", glyph:"🐐", opts:["E","Ê"], a:1},
+      {q:"Từ nào có âm E?", opts:["bê","mê","xe","dê"], a:2},
+    ]},
+  ],
+  2: [ // Bài 3: O – Ô – Ơ
+    {type:"listen", title:"Nghe & chọn tiếng O / Ô / Ơ", items:["cho","to","bố","cô","mơ","cơ"]},
+    {type:"sort", title:"Phân loại O – Ô – Ơ", hint:"Bấm từ rồi bỏ vào đúng nhà!", bins:["Nhà O","Nhà Ô","Nhà Ơ"],
+      items:[["cho","Nhà O"],["to","Nhà O"],["bố","Nhà Ô"],["cô","Nhà Ô"],["mơ","Nhà Ơ"],["cơ","Nhà Ơ"]]},
+    {type:"quiz", title:"Đố nhanh O – Ô – Ơ", questions:[
+      {q:"Từ nào có âm Ơ?", opts:["cho","bố","mơ","to"], a:2},
+      {q:"Từ nào có âm Ô?", opts:["cho","bố","mơ","to"], a:1},
+      {q:"«quả mơ» dùng chữ nào?", glyph:"🍑", opts:["O","Ô","Ơ"], a:2},
+    ]},
+  ],
+  3: [ // Bài 4: U – Ư
+    {type:"listen", title:"Nghe & chọn tiếng U / Ư", items:["tủ","đủ","bù","từ","tư","vừa"]},
+    {type:"sort", title:"Phân loại U và Ư", hint:"Bấm từ rồi bỏ vào đúng nhà!", bins:["Nhà U","Nhà Ư"],
+      items:[["tủ","Nhà U"],["đủ","Nhà U"],["bù","Nhà U"],["từ","Nhà Ư"],["tư","Nhà Ư"],["vừa","Nhà Ư"]]},
+    {type:"quiz", title:"Đố nhanh U – Ư", questions:[
+      {q:"Từ nào có âm Ư?", opts:["tủ","từ","đủ","bù"], a:1},
+      {q:"«cái tủ» dùng chữ nào?", glyph:"🚪", opts:["U","Ư"], a:0},
+    ]},
+  ],
+  4: [ // Bài 5: I – Y
+    {type:"quiz", title:"Đố nhanh I – Y", questions:[
+      {q:"Chữ Y trong tiếng Việt thường đứng sau chữ nào?", opts:["U","A","O","E"], a:0},
+      {q:"Từ nào viết ĐÚNG?", opts:["tuy","tui (thay cho tuy)","tiu","tuiy"], a:0},
+      {q:"Từ nào dùng I?", opts:["tuy","huy","tin","nguy"], a:2},
+    ]},
+    {type:"listen", title:"Nghe & chọn", items:["tin","tim","tuy","huy","sinh"]},
+  ],
+  5: [ // Bài 6: 6 dấu thanh
+    {type:"listen", title:"Nghe & chọn đúng dấu thanh", items:["ma","mà","má","mả","mã","mạ"]},
+    {type:"quiz", title:"Đố nhanh dấu thanh", questions:[
+      {q:"«đôi má» mang dấu gì?", glyph:"😊", opts:["Ngang","Huyền","Sắc","Nặng"], a:2},
+      {q:"«cây mạ» mang dấu gì?", glyph:"🌱", opts:["Sắc","Hỏi","Ngã","Nặng"], a:3},
+      {q:"Từ nào mang dấu huyền?", opts:["má","mà","mả","mã"], a:1},
+    ]},
+    {type:"sort", title:"Phân loại theo dấu", hint:"Bấm từ rồi bỏ vào đúng dấu!", bins:["Sắc","Huyền","Nặng"],
+      items:[["cá","Sắc"],["bố","Sắc"],["bà","Huyền"],["dừa","Huyền"],["cạ","Nặng"],["mạ","Nặng"]]},
+  ],
+  6: [ // Bài 7: Từ vựng theo chủ đề
+    {type:"match", title:"Nối con vật với tên", pairs:[["🐱","con mèo"],["🐶","con chó"],["🐔","con gà"],["🐟","con cá"],["🐮","con bò"]]},
+    {type:"match", title:"Nối màu với tên", pairs:[["🔴","màu đỏ"],["🟢","màu lá"],["🟡","màu vàng"],["🟣","màu tím"],["⚫","màu đen"]]},
+    {type:"listen", title:"Nghe & chọn từ", items:["con mèo","con cá","màu đỏ","cơm","phở","quả táo"]},
+  ],
+  7: [ // Bài 8: Hội thoại cơ bản
+    {type:"quiz", title:"Đố nhanh giao tiếp", questions:[
+      {q:"Gặp cô giáo, em nói gì?", opts:["Con chào cô ạ!","Ê!","Đi đâu đó?","Biến đi!"], a:0},
+      {q:"Bạn cho em mượn bút, em nói gì?", opts:["Cảm ơn bạn nhé!","Kệ bạn.","Không cần.","Của tôi mà."], a:0},
+      {q:"Em làm bạn buồn, em nói gì?", opts:["Mình xin lỗi.","Không phải mình.","Kệ đi.","Ai biết."], a:0},
+    ]},
+    {type:"match", title:"Nối tình huống với câu nói", pairs:[["👋 Gặp nhau","Chào bạn!"],["🙏 Được giúp","Cảm ơn bạn!"],["😅 Làm sai","Mình xin lỗi."],["🌙 Ra về","Tạm biệt nhé!"]]},
+  ],
+  8: [ // Bài 9: Ghép vần
+    {type:"quiz", title:"Đố nhanh ghép vần", questions:[
+      {q:"b + a = ?", opts:["ba","ab","bờ","aba"], a:0},
+      {q:"c + á = ?", glyph:"🐟", opts:["ca","cá","ác","cà"], a:1},
+      {q:"m + e = ?", opts:["em","me","mờ","meo"], a:1},
+      {q:"c + ơ + m = ?", glyph:"🍚", opts:["cơm","mcơ","cmơ","ơcm"], a:0},
+    ]},
+    {type:"listen", title:"Nghe & chọn tiếng ghép", items:["ba","cá","me","cơm","bà","nhà"]},
+  ],
+  9: [ // Bài 10: Đọc hiểu
+    {type:"quiz", title:"Đố nhanh đọc hiểu", questions:[
+      {q:"«Bé Na có một con mèo màu đen.» Mèo màu gì?", opts:["Trắng","Đen","Vàng","Xám"], a:1},
+      {q:"«Trời mưa nên An ở nhà.» Vì sao An ở nhà?", opts:["Trời nắng","Trời mưa","Đi học","Đi chơi"], a:1},
+    ]},
+  ],
+  10: [ // Bài 11: Từ vựng gia đình
+    {type:"match", title:"Nối người thân với tên gọi", pairs:[["👨","bố"],["👩","mẹ"],["👴","ông"],["👵","bà"],["👶","em bé"]]},
+    {type:"listen", title:"Nghe & chọn từ gia đình", items:["bố","mẹ","ông","bà","anh trai","chị gái"]},
+    {type:"quiz", title:"Đố nhanh gia đình", questions:[
+      {q:"Mẹ của mẹ em gọi là gì?", glyph:"👵", opts:["Bà","Cô","Chị","Dì"], a:0},
+      {q:"Con trai lớn hơn em gọi là gì?", glyph:"👦", opts:["Em","Anh trai","Chị gái","Ông"], a:1},
+    ]},
+  ],
+  11: [ // Bài 12: Số đếm 1–20
+    {type:"listen", title:"Nghe & chọn số", items:["một","hai","ba","bốn","năm","sáu","bảy","tám","chín","mười"]},
+    {type:"match", title:"Nối số với chữ", pairs:[["1️⃣","một"],["3️⃣","ba"],["5️⃣","năm"],["7️⃣","bảy"],["🔟","mười"]]},
+    {type:"quiz", title:"Đố nhanh số đếm", questions:[
+      {q:"Số 5 đọc là gì?", glyph:"5️⃣", opts:["Năm","Lăm","Bốn","Sáu"], a:0},
+      {q:"Số 8 đọc là gì?", glyph:"8️⃣", opts:["Bảy","Chín","Tám","Mười"], a:2},
+    ]},
+  ],
+  12: [ // Bài 13: Ngày tháng
+    {type:"quiz", title:"Đố nhanh ngày tháng", questions:[
+      {q:"Một tuần có mấy ngày?", opts:["5 ngày","7 ngày","10 ngày","12 ngày"], a:1},
+      {q:"Ngày nghỉ cuối tuần thường là?", opts:["Thứ 2","Thứ 4","Chủ nhật","Thứ 5"], a:2},
+      {q:"Một năm có mấy tháng?", opts:["10 tháng","11 tháng","12 tháng","7 tháng"], a:2},
+    ]},
+  ],
+  13: [ // Bài 14: Mô tả người
+    {type:"match", title:"Nối tính từ với hình", pairs:[["📏 cao/thấp","chiều cao"],["💇 dài/ngắn","mái tóc"],["😊","vui vẻ"],["👓","đeo kính"]]},
+    {type:"quiz", title:"Đố nhanh mô tả người", questions:[
+      {q:"Người rất vui thì gọi là?", glyph:"😊", opts:["Buồn","Vui vẻ","Giận","Sợ"], a:1},
+      {q:"Trái nghĩa với «cao» là?", opts:["To","Thấp","Dài","Béo"], a:1},
+    ]},
+  ],
+  14: [ // Bài 15: Phụ âm đầu
+    {type:"listen", title:"Nghe & chọn tiếng", items:["bát","cá","dê","gấu","hoa","kéo","mèo","tay"]},
+    {type:"match", title:"Nối hình với từ", pairs:[["🐟","cá"],["🧸","gấu"],["🌸","hoa"],["✂️","kéo"],["🐱","mèo"]]},
+    {type:"quiz", title:"Đố nhanh phụ âm đầu", questions:[
+      {q:"«cá» bắt đầu bằng phụ âm nào?", glyph:"🐟", opts:["c","k","g","t"], a:0},
+      {q:"«hoa» bắt đầu bằng phụ âm nào?", glyph:"🌸", opts:["h","k","n","l"], a:0},
+    ]},
+  ],
+  15: [ // Bài 16: Phụ âm ghép
+    {type:"listen", title:"Nghe & chọn tiếng", items:["chó","khỉ","ngủ","nhà","phở","thỏ","trâu","quả"]},
+    {type:"quiz", title:"Đố nhanh phụ âm ghép", questions:[
+      {q:"«thỏ» bắt đầu bằng phụ âm ghép nào?", glyph:"🐰", opts:["th","ch","nh","kh"], a:0},
+      {q:"«nhà» bắt đầu bằng phụ âm ghép nào?", glyph:"🏠", opts:["nh","ng","gh","tr"], a:0},
+      {q:"«trâu» bắt đầu bằng phụ âm ghép nào?", glyph:"🐃", opts:["tr","ch","th","ph"], a:0},
+    ]},
+    {type:"match", title:"Nối hình với từ", pairs:[["🐶","chó"],["🐒","khỉ"],["🏠","nhà"],["🍜","phở"],["🐃","trâu"]]},
+  ],
+  16: [ // Bài 17: Chính tả c/k, g/gh, ng/ngh
+    {type:"quiz", title:"Đố nhanh chính tả", questions:[
+      {q:"Trước e, ê, i viết âm «cờ» là?", opts:["c","k","q","kh"], a:1},
+      {q:"Từ nào viết ĐÚNG?", opts:["cái ghế","cái gế","cái ghê","cái kế"], a:0},
+      {q:"Từ nào viết ĐÚNG?", opts:["nghe nhạc","nge nhạc","nghe nhac","nge nhạc"], a:0},
+      {q:"«con gà» viết bằng?", glyph:"🐔", opts:["g","gh","k","ng"], a:0},
+    ]},
+    {type:"sort", title:"Phân loại c / k", hint:"Bỏ từ vào đúng nhóm dùng «c» hay «k»!", bins:["Dùng c","Dùng k"],
+      items:[["cá","Dùng c"],["cô","Dùng c"],["cua","Dùng c"],["kể","Dùng k"],["kim","Dùng k"],["kênh","Dùng k"]]},
+  ],
+  17: [ // Bài 18: Vần thường gặp
+    {type:"listen", title:"Nghe & chọn tiếng có vần", items:["bàn","ăn","cân","sáng","trăng","ong"]},
+    {type:"sort", title:"Phân loại vần: n hay ng", hint:"Vần kết thúc bằng «n» hay «ng»?", bins:["Kết thúc n","Kết thúc ng"],
+      items:[["bàn","Kết thúc n"],["ăn","Kết thúc n"],["tin","Kết thúc n"],["sáng","Kết thúc ng"],["trăng","Kết thúc ng"],["ong","Kết thúc ng"]]},
+  ],
+  18: [ // Bài 19: Cơ thể
+    {type:"match", title:"Nối bộ phận với tên", pairs:[["👁️","mắt"],["👂","tai"],["👃","mũi"],["👄","miệng"],["✋","tay"],["🦶","chân"]]},
+    {type:"listen", title:"Nghe & chọn bộ phận", items:["mắt","tai","mũi","miệng","tay","chân","răng","tóc"]},
+    {type:"quiz", title:"Đố nhanh cơ thể", questions:[
+      {q:"Bộ phận nào để NHÌN?", glyph:"👁️", opts:["Tai","Mắt","Mũi","Tay"], a:1},
+      {q:"Bộ phận nào để NGHE?", glyph:"👂", opts:["Mắt","Mũi","Tai","Chân"], a:2},
+    ]},
+  ],
+  19: [ // Bài 20: Trường học
+    {type:"match", title:"Nối đồ dùng với tên", pairs:[["📚","sách"],["✏️","bút chì"],["📏","thước"],["🎒","cặp sách"],["🖍️","bút màu"]]},
+    {type:"listen", title:"Nghe & chọn đồ dùng", items:["sách","vở","bút","thước","cặp sách","cục tẩy"]},
+    {type:"quiz", title:"Đố nhanh trường học", questions:[
+      {q:"Dùng gì để ĐO cho thẳng?", glyph:"📏", opts:["Bút","Thước","Sách","Tẩy"], a:1},
+      {q:"Đựng sách vở đi học bằng gì?", glyph:"🎒", opts:["Cặp sách","Cái mũ","Đôi giày","Cái ô"], a:0},
+    ]},
+  ],
+  20: [ // Bài 21: Nghề nghiệp
+    {type:"match", title:"Nối nghề với hình", pairs:[["👨‍⚕️","bác sĩ"],["👩‍🏫","giáo viên"],["👨‍🌾","nông dân"],["👨‍🍳","đầu bếp"],["👮","công an"]]},
+    {type:"listen", title:"Nghe & chọn nghề", items:["bác sĩ","giáo viên","nông dân","đầu bếp","phi công","họa sĩ"]},
+    {type:"quiz", title:"Đố nhanh nghề nghiệp", questions:[
+      {q:"Ai khám bệnh cho em?", glyph:"👨‍⚕️", opts:["Bác sĩ","Đầu bếp","Nông dân","Họa sĩ"], a:0},
+      {q:"Ai dạy em học?", glyph:"👩‍🏫", opts:["Công an","Giáo viên","Phi công","Thợ xây"], a:1},
+    ]},
+  ],
+  21: [ // Bài 22: Thời tiết & mùa
+    {type:"match", title:"Nối thời tiết với hình", pairs:[["☀️","trời nắng"],["🌧️","trời mưa"],["💨","trời gió"],["🌈","cầu vồng"],["❄️","mùa đông"]]},
+    {type:"listen", title:"Nghe & chọn từ", items:["trời nắng","trời mưa","trời gió","mùa xuân","mùa hạ","mùa đông"]},
+    {type:"quiz", title:"Đố nhanh thời tiết & mùa", questions:[
+      {q:"Mùa nào lạnh nhất?", glyph:"❄️", opts:["Mùa hạ","Mùa xuân","Mùa đông","Mùa thu"], a:2},
+      {q:"Trời có mưa thì em cần mang gì?", glyph:"🌧️", opts:["Cái ô (dù)","Cái quạt","Kính mát","Đôi dép"], a:0},
+    ]},
+  ],
+  22: [ // Bài 23: Danh từ – Động từ – Tính từ
+    {type:"sort", title:"Phân loại từ", hint:"Từ này là Danh từ, Động từ hay Tính từ?", bins:["Danh từ","Động từ","Tính từ"],
+      items:[["con mèo","Danh từ"],["trường học","Danh từ"],["ăn","Động từ"],["chạy","Động từ"],["cao","Tính từ"],["đẹp","Tính từ"]]},
+    {type:"quiz", title:"Đố nhanh từ loại", questions:[
+      {q:"«chạy» là loại từ gì?", glyph:"🏃", opts:["Danh từ","Động từ","Tính từ"], a:1},
+      {q:"«đẹp» là loại từ gì?", glyph:"🌸", opts:["Danh từ","Động từ","Tính từ"], a:2},
+      {q:"«con mèo» là loại từ gì?", glyph:"🐱", opts:["Danh từ","Động từ","Tính từ"], a:0},
+    ]},
+  ],
+  23: [ // Bài 24: Đặt câu hỏi
+    {type:"match", title:"Nối từ hỏi với ý nghĩa", pairs:[["👤 Ai?","hỏi về người"],["📍 Ở đâu?","hỏi nơi chốn"],["⏰ Khi nào?","hỏi thời gian"],["💡 Vì sao?","hỏi lý do"]]},
+    {type:"quiz", title:"Đố nhanh câu hỏi", questions:[
+      {q:"Hỏi về NGƯỜI dùng từ nào?", opts:["Ai?","Ở đâu?","Khi nào?","Cái gì?"], a:0},
+      {q:"Hỏi về NƠI CHỐN dùng từ nào?", opts:["Ai?","Ở đâu?","Vì sao?","Thế nào?"], a:1},
+      {q:"Câu hỏi kết thúc bằng dấu gì?", opts:["Dấu chấm .","Dấu phẩy ,","Dấu chấm hỏi ?","Dấu chấm than !"], a:2},
+    ]},
+  ],
+  24: [ // Bài 25: Viết đoạn văn
+    {type:"quiz", title:"Đố nhanh về câu & đoạn văn", questions:[
+      {q:"Cuối một câu kể, em đặt dấu gì?", opts:["Dấu chấm .","Dấu chấm hỏi ?","Dấu phẩy ,","Không cần"], a:0},
+      {q:"Đầu câu, chữ cái đầu phải viết thế nào?", opts:["Viết thường","Viết HOA","Viết nghiêng","Tùy thích"], a:1},
+      {q:"Đoạn văn giới thiệu bản thân nên có câu nào?", opts:["Tên của mình","Món ăn em ghét","Số nhà hàng xóm","Không câu nào"], a:0},
+    ]},
+  ],
+};
+
 function renderLessons(){
   document.getElementById("lessonGrid").innerHTML = LESSONS.map((l, i) =>
     `<div class="lessonCard" style="border-top-color:${l.color}" onclick="openLesson(${i})">
@@ -1077,7 +1449,7 @@ function openLesson(i){
   markLessonViewed(i);
   document.getElementById("lessonBody").innerHTML =
     `<div class="lessonHead"><div class="lh-ic">${l.icon}</div><div><h2>${l.title}</h2><p>${l.desc}</p></div></div>
-     <div class="lContent">${l.body}</div>`;
+     <div class="lContent">${l.body}${renderLessonGames(LESSON_GAMES[i])}</div>`;
   document.getElementById("lessonModal").classList.remove("hidden");
   document.body.style.overflow = "hidden";
   sfx.pop();
@@ -2141,6 +2513,7 @@ openLesson = function(i){
   origOpenLesson(i);
   setTimeout(() => {
     wireLessonSpeak();
+    initLessonGames(LESSON_GAMES[i]);
     initColorPickers();
     if(i === 0) initLesson1Games();
     document.fonts.ready.then(() => {
