@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=31">
+<link rel="stylesheet" href="styles.css?v=32">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -27,6 +27,7 @@
       <a data-nav="baitap"  href="#baitap"  onclick="go('baitap');return false;">✏️ Bài tập</a>
       <a data-nav="kiemtra" href="#kiemtra" onclick="go('kiemtra');return false;">🏆 Kiểm tra</a>
       <a data-nav="lienhe"  href="#lienhe"  onclick="go('lienhe');return false;">✉️ Liên hệ</a>
+      <a data-nav="dashboard" id="navDash" class="hidden" href="#dashboard" onclick="go('dashboard');return false;">📊 Lớp học</a>
     </nav>
     <div class="authNav" id="authNav">
       <button class="authNavBtn" id="loginBtn" onclick="openAuth()">👤 Đăng nhập</button>
@@ -171,6 +172,39 @@
     </div>
   </section>
 
+  <!-- ---------- DASHBOARD (chỉ giáo viên) ---------- -->
+  <section id="dashboard" class="page hidden">
+    <div class="pageHead">
+      <h2 class="sectionHead">📊 Lớp học của Thầy</h2>
+      <p class="sectionSub">Theo dõi học sinh vào học &amp; làm bài mỗi ngày.</p>
+    </div>
+    <div id="dashGuard"></div>
+    <div id="dashMain" class="hidden">
+      <div class="card">
+        <h3 class="blockTitle">➕ Tạo tài khoản học sinh</h3>
+        <form id="csForm" class="csForm" onsubmit="return createStudent(event)">
+          <input id="csUser" placeholder="Tên đăng nhập (vd: bena)" required autocomplete="off">
+          <input id="csName" placeholder="Biệt danh (vd: Bé Na)" required autocomplete="off">
+          <input id="csPin" placeholder="PIN 4–6 số" required inputmode="numeric" autocomplete="off">
+          <input id="csClass" placeholder="Mã lớp (vd: 3A)" autocomplete="off">
+          <button class="btn" type="submit">Tạo 🎒</button>
+        </form>
+        <p class="csMsg" id="csMsg"></p>
+      </div>
+
+      <div class="card">
+        <div class="dashTop">
+          <h3 class="blockTitle">📅 Hoạt động theo ngày</h3>
+          <div class="dashCtrl">
+            <input type="date" id="dashDate" onchange="loadDashboard()">
+            <button class="btn small ghost" onclick="loadDashboard()">↻ Tải lại</button>
+          </div>
+        </div>
+        <div id="dashTable"><p class="muted">Chọn ngày để xem.</p></div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer id="footer">
@@ -252,6 +286,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=31"></script>
+<script src="app.js?v=32"></script>
 </body>
 </html>
