@@ -2644,17 +2644,19 @@ function mergeProgress(a, b){
     xp: Math.max(a.xp||0, b.xp||0),
   };
 }
+function normalizeProgress(d){ return Object.assign(defaultProgress(), d || {}); }
 async function loadCloudProgress(){
   const c = getSB(); const u = getAuthUser();
   if(!c || !u || u.role !== "student") return;
+  let hadRow = false;
   try{
     const { data } = await c.from("student_progress").select("data").eq("student_id", u.id).maybeSingle();
-    if(data && data.data) progress = mergeProgress(progress, data.data);
+    if(data){ hadRow = true; progress = normalizeProgress(data.data); }   // cloud là chuẩn
   }catch(e){}
   checkBadges();
-  saveProgress(progress);           // lưu local (kèm lịch đẩy cloud)
-  pushCloudProgress();              // đẩy bản đã gộp lên cloud ngay
-  try{ renderHome(); }catch(e){}    // cập nhật số ở trang chủ
+  saveProgress(progress);              // đồng bộ về local
+  if(!hadRow) pushCloudProgress();     // lần đầu (chưa có bản ghi): đưa tiến trình máy lên cloud
+  try{ renderHome(); }catch(e){}       // cập nhật số ở trang chủ
 }
 let _spTimer = null;
 function scheduleCloudProgress(){
@@ -3067,7 +3069,8 @@ async function openStudentDetail(id){
     }
     el.innerHTML = head +
       `<div class="stSum">${sum.map(s => `<div><span class="si">${s.ic}</span><b>${s.n}</b><span class="sl">${s.l}</span></div>`).join("")}</div>` +
-      `<div class="stTlTitle">🕒 Lịch sử hoạt động</div><div class="stTl">${tl}</div>`;
+      `<div class="stTlTitle">🕒 Lịch sử hoạt động</div><div class="stTl">${tl}</div>` +
+      `<div class="stReset"><button class="btn small stResetBtn" onclick="resetStudent('${id}')">🗑️ Đặt lại về 0</button></div>`;
   }catch(err){
     el.innerHTML = head + `<p class="muted" style="padding:12px 20px">Lỗi tải: ${err && err.message}</p>`;
   }
@@ -3076,6 +3079,26 @@ function closeStudentDetail(e){
   if(e && e.type === "click" && e.currentTarget && e.target !== e.currentTarget) return;
   document.getElementById("studentModal").classList.add("hidden");
   document.body.style.overflow = "";
+}
+async function resetStudent(id){
+  const info = (window._dashAgg && window._dashAgg[id]) || { name: "học sinh này" };
+  if(!confirm("Đặt lại TOÀN BỘ tiến trình của " + info.name + " về 0?\n(XP, bài học, kiểm tra, lịch sử… — không thể hoàn tác)")) return;
+  const c = getSB();
+  if(!c){ alert("Chưa kết nối máy chủ."); return; }
+  const { data:{ session } } = await c.auth.getSession();
+  if(!session){ alert("Cần đăng nhập giáo viên."); return; }
+  try{
+    const res = await fetch("/.netlify/functions/reset-student", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+      body: JSON.stringify({ student_id: id })
+    });
+    const out = await res.json();
+    if(!res.ok){ alert("❌ Lỗi: " + (out.error || "Không đặt lại được")); return; }
+    closeStudentDetail();
+    loadDashboard();
+    alert("✅ Đã đặt lại " + info.name + " về 0. (Có hiệu lực trên máy của bé ở lần đăng nhập kế tiếp.)");
+  }catch(err){ alert("❌ Lỗi mạng: " + err.message); }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
