@@ -2674,15 +2674,7 @@ function closeAuth(e){
 function authTab(t){
   document.querySelectorAll(".authTab").forEach(b => b.classList.toggle("active", b.dataset.tab === t));
   document.getElementById("paneStudent").classList.toggle("hidden", t !== "student");
-  document.getElementById("paneParent").classList.toggle("hidden", t !== "parent");
-  authMsg("", "");
-}
-let parentMode = "login";
-function authParentMode(m){
-  parentMode = m;
-  document.querySelectorAll(".authSwitchBtn").forEach(b => b.classList.toggle("active", b.dataset.m === m));
-  document.querySelectorAll("#paneParent .pReg").forEach(el => el.classList.toggle("hidden", m !== "register"));
-  document.getElementById("parSubmitBtn").textContent = m === "register" ? "Tạo tài khoản 💜" : "Đăng nhập ✨";
+  document.getElementById("paneTeacher").classList.toggle("hidden", t !== "teacher");
   authMsg("", "");
 }
 function authMsg(text, kind){
@@ -2724,29 +2716,18 @@ async function authStudentLogin(e){
   await afterLogin();
   return false;
 }
-/* ---- Phụ huynh: email + mật khẩu (đăng nhập / đăng ký) ---- */
-async function authParentSubmit(e){
+/* ---- Giáo viên: email + mật khẩu (chỉ đăng nhập) ---- */
+async function authTeacherLogin(e){
   e.preventDefault();
-  const email = document.getElementById("parEmail").value.trim();
-  const pass = document.getElementById("parPass").value;
-  const name = document.getElementById("parName").value.trim();
-  if(!email || pass.length < 6){ authMsg("Cần email và mật khẩu tối thiểu 6 ký tự.", "err"); return false; }
+  const email = document.getElementById("tchEmail").value.trim();
+  const pass = document.getElementById("tchPass").value;
+  if(!email || !pass){ authMsg("Nhập đủ email và mật khẩu nha!", "err"); return false; }
   const client = getSB();
   if(!client){ authMsg("Chưa kết nối được máy chủ, thử lại sau nhé.", "err"); return false; }
-  authMsg("Đang xử lý…", "");
-  if(parentMode === "register"){
-    const { data, error } = await client.auth.signUp({
-      email, password: pass,
-      options: { data: { display_name: name || email.split("@")[0], role: "parent" } }
-    });
-    if(error){ authMsg(friendlyAuthError(error), "err"); return false; }
-    if(!data.session){ authMsg("Đã gửi email xác nhận — kiểm tra hộp thư rồi đăng nhập nhé!", "ok"); return false; }
-    await afterLogin();
-  } else {
-    const { error } = await client.auth.signInWithPassword({ email, password: pass });
-    if(error){ authMsg("Sai email hoặc mật khẩu.", "err"); return false; }
-    await afterLogin();
-  }
+  authMsg("Đang đăng nhập…", "");
+  const { error } = await client.auth.signInWithPassword({ email, password: pass });
+  if(error){ authMsg("Sai email hoặc mật khẩu.", "err"); return false; }
+  await afterLogin();
   return false;
 }
 async function authLogout(){

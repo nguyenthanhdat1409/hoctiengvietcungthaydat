@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=33">
+<link rel="stylesheet" href="styles.css?v=34">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -245,7 +245,7 @@
 
     <div class="authTabs">
       <button class="authTab active" data-tab="student" onclick="authTab('student')">🎒 Học sinh</button>
-      <button class="authTab" data-tab="parent" onclick="authTab('parent')">👪 Phụ huynh</button>
+      <button class="authTab" data-tab="teacher" onclick="authTab('teacher')">👩‍🏫 Giáo viên</button>
     </div>
 
     <!-- Học sinh: username + PIN -->
@@ -260,25 +260,17 @@
       <p class="authHint">Chưa có tài khoản? Nhờ <b>Thầy Đạt</b> tạo giúp em nha!</p>
     </form>
 
-    <!-- Phụ huynh: email + mật khẩu (đăng nhập / đăng ký) -->
-    <div class="authPane hidden" id="paneParent">
-      <div class="authSwitch">
-        <button type="button" class="authSwitchBtn active" data-m="login" onclick="authParentMode('login')">Đăng nhập</button>
-        <button type="button" class="authSwitchBtn" data-m="register" onclick="authParentMode('register')">Đăng ký</button>
-      </div>
-      <form id="parentForm" onsubmit="return authParentSubmit(event)">
-        <label class="pReg hidden">Tên phụ huynh
-          <input type="text" id="parName" placeholder="ví dụ: Chị Lan">
-        </label>
-        <label>Email
-          <input type="email" id="parEmail" required placeholder="email@example.com">
-        </label>
-        <label>Mật khẩu
-          <input type="password" id="parPass" required minlength="6" placeholder="tối thiểu 6 ký tự">
-        </label>
-        <button class="btn full" type="submit" id="parSubmitBtn">Đăng nhập ✨</button>
-      </form>
-    </div>
+    <!-- Giáo viên: email + mật khẩu (chỉ đăng nhập) -->
+    <form class="authPane hidden" id="paneTeacher" onsubmit="return authTeacherLogin(event)">
+      <label>Email
+        <input type="email" id="tchEmail" required placeholder="email@example.com" autocomplete="username">
+      </label>
+      <label>Mật khẩu
+        <input type="password" id="tchPass" required placeholder="mật khẩu" autocomplete="current-password">
+      </label>
+      <button class="btn full" type="submit">Đăng nhập ✨</button>
+      <p class="authHint">Tài khoản giáo viên do quản trị tạo sẵn.</p>
+    </form>
 
     <div class="authMsg" id="authMsg"></div>
     <p class="authDemo">🔒 Thông tin đăng nhập được bảo mật. Tài khoản học sinh do Thầy Đạt tạo.</p>
@@ -286,6 +278,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=33"></script>
+<script src="app.js?v=34"></script>
 </body>
 </html>
