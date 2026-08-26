@@ -2700,6 +2700,15 @@ function authDone(msg){
   setTimeout(() => closeAuth(), 900);
 }
 
+/* Làm sạch tên đăng nhập: bỏ dấu tiếng Việt, viết thường, bỏ cách & ký tự lạ */
+function slugUsername(s){
+  return (s || "")
+    .replace(/Đ/g, "D").replace(/đ/g, "d")
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")   // bỏ dấu
+    .toLowerCase()
+    .replace(/[^a-z0-9_]/g, "");                          // bỏ cách & ký tự khác
+}
+
 /* ---- Học sinh: username + PIN (đăng nhập / tự đăng ký) ---- */
 let studentMode = "login";
 function authStudentMode(m){
@@ -2712,9 +2721,14 @@ function authStudentMode(m){
 }
 async function authStudentSubmit(e){
   e.preventDefault();
-  const u = document.getElementById("stuUser").value.trim().toLowerCase();
+  const stuUserEl = document.getElementById("stuUser");
+  const u = slugUsername(stuUserEl.value);
+  stuUserEl.value = u;   // hiện lại tên đã làm sạch để HS biết mà đăng nhập
   const pin = document.getElementById("stuPin").value.trim();
-  if(!/^[a-z0-9_]{3,20}$/.test(u)){ authMsg("Tên đăng nhập 3–20 ký tự (chữ thường, số, _).", "err"); return false; }
+  if(u.length < 3 || u.length > 20){
+    authMsg("Tên đăng nhập cần 3–20 chữ/số (không dấu, không cách). Ví dụ: benguyen12", "err");
+    return false;
+  }
   if(!/^\d{4,6}$/.test(pin)){ authMsg("Mã PIN phải là 4–6 chữ số.", "err"); return false; }
   const client = getSB();
   if(!client){ authMsg("Chưa kết nối được máy chủ, thử lại sau nhé.", "err"); return false; }
@@ -2869,8 +2883,10 @@ async function createStudent(e){
   if(!c){ csMsg("Chưa kết nối máy chủ.", true); return false; }
   const { data:{ session } } = await c.auth.getSession();
   if(!session){ csMsg("Cần đăng nhập giáo viên.", true); return false; }
+  const csUserEl = document.getElementById("csUser");
+  csUserEl.value = slugUsername(csUserEl.value);   // làm sạch tên đăng nhập
   const payload = {
-    username: document.getElementById("csUser").value,
+    username: csUserEl.value,
     display_name: document.getElementById("csName").value,
     pin: document.getElementById("csPin").value,
     class_code: document.getElementById("csClass").value,
