@@ -577,24 +577,42 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 
 /* ===================== DASHBOARD GIÁO VIÊN ===================== */
 .csForm{display:grid; grid-template-columns:repeat(4,1fr) auto; gap:10px; align-items:center}
-.csForm input{font-family:inherit; font-size:14.5px; padding:11px 13px; border:2px solid #E2E8F0; border-radius:12px; outline:none; transition:border .15s; min-width:0}
-.csForm input:focus{border-color:var(--vio)}
+.csForm input{font-family:inherit; font-size:14.5px; padding:12px 14px; border:2px solid #E2E8F0; border-radius:14px; outline:none; transition:border .15s, box-shadow .15s; min-width:0; background:#F8FAFC}
+.csForm input:focus{border-color:var(--vio); background:#fff; box-shadow:0 0 0 3px rgba(124,58,237,.12)}
 .csMsg{margin:12px 0 0; font-weight:700; font-size:14px; min-height:20px}
 .csMsg.ok{color:var(--ok)} .csMsg.err{color:#DC2626}
 .dashTop{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
 .dashCtrl{display:flex; align-items:center; gap:8px}
-.dashCtrl input[type=date]{font-family:inherit; font-size:14px; padding:8px 12px; border:2px solid #E2E8F0; border-radius:12px; outline:none}
-.dashKpi{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0}
-.dashKpi>div{background:#F8FAFC; border:2px solid #EEF2FF; border-radius:16px; padding:14px 10px; text-align:center}
-.dashKpi b{display:block; font-family:'Baloo 2',cursive; font-size:26px; color:var(--vio)}
-.dashKpi span{font-size:12.5px; color:#64748B}
-.dashScroll{overflow-x:auto; border-radius:14px; border:1px solid #EEF2FF}
-.dashT{width:100%; border-collapse:collapse; font-size:14px; min-width:560px}
-.dashT th,.dashT td{padding:11px 12px; text-align:center; border-bottom:1px solid #F1F5F9; white-space:nowrap}
-.dashT th{background:#F5F3FF; color:var(--vio); font-family:'Baloo 2',cursive; font-weight:800; font-size:13px; position:sticky; top:0}
-.dashT td.dName,.dashT th:first-child{text-align:left; font-weight:700; color:var(--ink)}
-.dashT tbody tr:hover{background:#FAFAFF}
-@media (max-width:640px){ .csForm{grid-template-columns:1fr 1fr} .csForm button{grid-column:1/-1} .dashKpi b{font-size:22px} }
+.dashCtrl input[type=date]{font-family:inherit; font-size:14px; padding:9px 12px; border:2px solid #E2E8F0; border-radius:12px; outline:none; background:#F8FAFC}
+.dashCtrl input[type=date]:focus{border-color:var(--vio)}
+
+.dashKpi{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:16px 0}
+.kpiCard{position:relative; background:#fff; border:2px solid #EEF2FF; border-radius:18px; padding:16px 12px 14px; text-align:center;
+  box-shadow:0 6px 0 rgba(30,27,75,.06); overflow:hidden; transition:transform .15s}
+.kpiCard::before{content:""; position:absolute; inset:0 0 auto 0; height:5px; background:var(--kc)}
+.kpiCard:hover{transform:translateY(-3px)}
+.kpiCard .kpiIc{font-size:24px; line-height:1}
+.kpiCard b{display:block; font-family:'Baloo 2',cursive; font-size:30px; color:var(--kc); margin-top:2px; line-height:1.1}
+.kpiCard span{font-size:12.5px; color:#64748B; font-weight:600}
+
+.dashScroll{overflow-x:auto; border-radius:16px; border:1px solid #EEF2FF; box-shadow:0 6px 0 rgba(30,27,75,.05)}
+.dashT{width:100%; border-collapse:collapse; font-size:14px; min-width:600px; background:#fff}
+.dashT th,.dashT td{padding:12px 14px; text-align:center; border-bottom:1px solid #F1F5F9; white-space:nowrap}
+.dashT thead th{background:linear-gradient(135deg,var(--vio),var(--pink)); color:#fff; font-family:'Baloo 2',cursive; font-weight:800; font-size:12.5px; letter-spacing:.02em; position:sticky; top:0; border:none}
+.dashT th:first-child{text-align:left; border-radius:0}
+.dashT td.dName,.dashT th:first-child{text-align:left; font-weight:800; color:var(--ink)}
+.dashT .dAva{display:inline-flex; width:28px; height:28px; border-radius:50%; background:linear-gradient(145deg,var(--yel),var(--org)); align-items:center; justify-content:center; font-size:15px; margin-right:8px; vertical-align:middle}
+.dashT tbody tr:nth-child(even){background:#FAFAFF}
+.dashT tbody tr:hover{background:#F5F3FF}
+.dashT tbody td b{font-family:'Baloo 2',cursive; color:var(--ink)}
+.dMuted{color:#CBD5E1; font-weight:700}
+.clsChip{display:inline-block; background:#EEF2FF; color:#4338CA; font-weight:700; font-size:12.5px; padding:3px 10px; border-radius:999px}
+.scoreBadge{display:inline-block; font-weight:800; font-size:13px; padding:4px 11px; border-radius:999px; font-family:'Baloo 2',cursive}
+.scoreBadge.sg{background:#DCFCE7; color:#166534}
+.scoreBadge.sy{background:#FEF9C3; color:#854D0E}
+.scoreBadge.sr{background:#FEE2E2; color:#B91C1C}
+.dStars{font-size:13px; letter-spacing:1px}
+@media (max-width:640px){ .csForm{grid-template-columns:1fr 1fr} .csForm button{grid-column:1/-1} .kpiCard b{font-size:24px} }
 
 /* ===================== PROGRESS & BADGES ===================== */
 #homeProgress{margin-top:28px}

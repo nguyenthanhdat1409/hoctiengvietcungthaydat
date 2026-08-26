@@ -2930,14 +2930,27 @@ async function loadDashboard(){
     const rows = Object.values(agg).sort((x,y) => (y.logins - x.logins) || (y.quizzes - x.quizzes));
     const active = rows.filter(r => r.logins > 0 || r.quizzes > 0 || r.lessons > 0).length;
     const totLogin = rows.reduce((s,r) => s + r.logins, 0);
-    let html = `<div class="dashKpi"><div><b>${students.length}</b><span>học sinh</span></div>`+
-      `<div><b>${active}</b><span>hoạt động</span></div><div><b>${totLogin}</b><span>lượt vào</span></div></div>`;
+    const kpi = [
+      { ic:"🧑‍🎓", n:students.length, l:"học sinh", c:"#6366F1" },
+      { ic:"✅", n:active, l:"đang hoạt động", c:"#22C55E" },
+      { ic:"🚪", n:totLogin, l:"lượt vào", c:"#F59E0B" },
+    ];
+    let html = `<div class="dashKpi">` + kpi.map(k =>
+      `<div class="kpiCard" style="--kc:${k.c}"><div class="kpiIc">${k.ic}</div><b>${k.n}</b><span>${k.l}</span></div>`).join("") + `</div>`;
+    const num = v => v ? `<b>${v}</b>` : `<span class="dMuted">0</span>`;
     html += '<div class="dashScroll"><table class="dashT"><thead><tr>'+
       '<th>Học sinh</th><th>Lớp</th><th>Lần vào</th><th>Phút</th><th>Bài mở</th><th>Kiểm tra</th><th>Điểm cao</th><th>Sao</th></tr></thead><tbody>';
     rows.forEach(r => {
-      html += `<tr><td class="dName">${r.name}</td><td>${r.cls}</td><td>${r.logins}</td><td>${r.min}</td>`+
-        `<td>${r.lessons}</td><td>${r.quizzes}</td><td>${r.best ? r.best + "%" : "—"}</td>`+
-        `<td>${r.stars ? "⭐".repeat(r.stars) : "—"}</td></tr>`;
+      const cls = (r.cls && r.cls !== "—") ? `<span class="clsChip">${r.cls}</span>` : `<span class="dMuted">—</span>`;
+      const score = r.quizzes
+        ? `<span class="scoreBadge ${r.best>=80?"sg":r.best>=50?"sy":"sr"}">${r.best}%</span>`
+        : `<span class="dMuted">—</span>`;
+      const stars = r.stars ? `<span class="dStars">${"⭐".repeat(r.stars)}</span>` : `<span class="dMuted">—</span>`;
+      html += `<tr>`+
+        `<td class="dName"><span class="dAva">🎒</span>${r.name}</td>`+
+        `<td>${cls}</td><td>${num(r.logins)}</td><td>${num(r.min)}</td>`+
+        `<td>${num(r.lessons)}</td><td>${num(r.quizzes)}</td>`+
+        `<td>${score}</td><td>${stars}</td></tr>`;
     });
     html += "</tbody></table></div>";
     el.innerHTML = html;
