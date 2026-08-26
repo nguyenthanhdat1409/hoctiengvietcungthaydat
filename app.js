@@ -132,8 +132,8 @@ const BANK = {
    {cat:"noi", type:"speak", q:"Hãy kể tên các con vật mà bạn yêu thích?"},
    {cat:"viet", type:"order", q:"Bấm vào các từ theo đúng thứ tự để thành câu có nghĩa!", words:["Em","bé","đang","cười"]},
    {cat:"viet", type:"order", q:"Bấm vào các từ theo đúng thứ tự để thành câu có nghĩa!", words:["Chim","hót","trên","cây"]},
-   {cat:"doc", type:"read", passage:"Nhà bạn Minh có một cây ổi. Mỗi mùa hè, cây ra rất nhiều quả ngọt.",
-     q:"Nhà bạn Minh trồng cây gì?", opts:["Cây xoài","Cây ổi","Cây cam","Cây chuối"], a:1},
+   {cat:"doc", type:"read", passage:"Chữ bạn Minh có một cây ổi. Mỗi mùa hè, cây ra rất nhiều quả ngọt.",
+     q:"Chữ bạn Minh trồng cây gì?", opts:["Cây xoài","Cây ổi","Cây cam","Cây chuối"], a:1},
    {cat:"nghe", type:"hear", say:"con mèo", q:"Nghe rồi chọn đúng từ nha!", opts:["con mèo","con chó","con gà","con cá"], a:0},
    {cat:"nghe", type:"hear", say:"quả táo", q:"Nghe rồi chọn đúng từ nha!", opts:["quả cam","quả táo","quả nho","quả chuối"], a:1},
    {cat:"nghe", type:"hear", say:"màu đỏ", q:"Nghe rồi chọn đúng màu nha!", opts:["màu xanh","màu vàng","màu đỏ","màu tím"], a:2},
@@ -159,10 +159,10 @@ const BANK = {
      opts:["Mình khỏe, cảm ơn bạn!","Mình tên là Bảo.","Tạm biệt nhé!","Mình 10 tuổi."], a:0},
    {cat:"hoithoai", type:"chat", q:"An sẽ trả lời thế nào?",
      chat:[["bao","An ơi, bạn mấy tuổi?"],["an","…?…"]],
-     opts:["Mình thích ăn phở.","Nhà mình ở gần đây.","Mình 11 tuổi.","Hôm nay trời đẹp."], a:2},
+     opts:["Mình thích ăn phở.","Chữ mình ở gần đây.","Mình 11 tuổi.","Hôm nay trời đẹp."], a:2},
    {cat:"hoithoai", type:"chat", q:"An sẽ trả lời thế nào?",
      chat:[["bao","Bạn học lớp mấy?"],["an","…?…"]],
-     opts:["Mình học lớp 6.","Mình thích màu đỏ.","Nhà mình có ba người.","Mình đói bụng quá."], a:0},
+     opts:["Mình học lớp 6.","Mình thích màu đỏ.","Chữ mình có ba người.","Mình đói bụng quá."], a:0},
    {cat:"hoithoai", type:"chat", q:"Bảo sẽ trả lời thế nào?",
      chat:[["an","Bạn thích ăn gì?"],["bao","…?…"]],
      opts:["Mình thích ăn phở!","Mình 9 tuổi.","Mình ở Hà Nội.","Mình không thích học."], a:0},
@@ -204,7 +204,7 @@ const BANK = {
    {cat:"dauthanh", type:"emojiQ", q:"Từ này đọc là gì?", glyph:"ngã", opts:["nga","ngà","ngá","ngã"], a:3, letterOpts:true},
    {cat:"hoithoai", type:"chat", q:"An sẽ trả lời thế nào?",
      chat:[["bao","Bạn có khỏe không?"],["an","…?…"]],
-     opts:["Mình khỏe, cảm ơn bạn!","Mình tên là An.","Nhà mình ở xa.","Mình thích màu xanh."], a:0},
+     opts:["Mình khỏe, cảm ơn bạn!","Mình tên là An.","Chữ mình ở xa.","Mình thích màu xanh."], a:0},
    {cat:"hoithoai", type:"chat", q:"Bảo sẽ trả lời thế nào?",
      chat:[["an","Mình mượn bút một chút được không?"],["bao","…?…"]],
      opts:["Được chứ, bạn cầm đi!","Mình 10 tuổi.","Trời hôm nay đẹp.","Mình đi học rồi."], a:0},
@@ -1045,7 +1045,7 @@ const LESSONS = [
       <div class="toneList">
         <div class="toneRow vio"><div class="tg">👤</div><div class="td"><b>Ai?</b> — hỏi về người. VD: "<b>Ai</b> đang nấu cơm?"</div></div>
         <div class="toneRow pink"><div class="tg">📦</div><div class="td"><b>Cái gì?</b> — hỏi về vật, việc. VD: "Bạn đang làm <b>cái gì</b>?"</div></div>
-        <div class="toneRow cyan"><div class="tg">📍</div><div class="td"><b>Ở đâu?</b> — hỏi về nơi chốn. VD: "Nhà bạn <b>ở đâu</b>?"</div></div>
+        <div class="toneRow cyan"><div class="tg">📍</div><div class="td"><b>Ở đâu?</b> — hỏi về nơi chốn. VD: "Chữ bạn <b>ở đâu</b>?"</div></div>
         <div class="toneRow org"><div class="tg">⏰</div><div class="td"><b>Khi nào?</b> — hỏi về thời gian. VD: "<b>Khi nào</b> mình đi chơi?"</div></div>
         <div class="toneRow lime"><div class="tg">💡</div><div class="td"><b>Vì sao?</b> — hỏi về lý do. VD: "<b>Vì sao</b> bạn buồn?"</div></div>
         <div class="toneRow yel"><div class="tg">🔄</div><div class="td"><b>Thế nào?</b> — hỏi về cách, trạng thái. VD: "Hôm nay bạn <b>thế nào</b>?"</div></div>
@@ -1283,31 +1283,31 @@ function initSortGameG(body, g){
 const LESSON_GAMES = {
   1: [ // Bài 2: E – Ê
     {type:"listen", title:"Nghe & chọn tiếng E / Ê", items:["mẹ","xe","nghe","dê","bê","mê"]},
-    {type:"sort", title:"Phân loại E và Ê", hint:"Bấm từ rồi bỏ vào đúng nhà E hoặc Ê!", bins:["Nhà E","Nhà Ê"],
-      items:[["mẹ","Nhà E"],["xe","Nhà E"],["nghe","Nhà E"],["dê","Nhà Ê"],["bê","Nhà Ê"],["mê","Nhà Ê"]]},
+    {type:"sort", title:"Phân loại E và Ê", hint:"Bấm từ rồi bỏ vào đúng chữ E hoặc Ê!", bins:["Chữ E","Chữ Ê"],
+      items:[["mẹ","Chữ E"],["xe","Chữ E"],["nghe","Chữ E"],["dê","Chữ Ê"],["bê","Chữ Ê"],["mê","Chữ Ê"]]},
     {type:"quiz", title:"Đố nhanh E – Ê", questions:[
       {q:"Từ nào có âm Ê?", opts:["mẹ","dê","xe","nghe"], a:1},
-      {q:"«con dê» dùng chữ nào?", glyph:"🐐", opts:["E","Ê"], a:1},
+      {q:"\"con dê\" dùng chữ nào?", glyph:"🐐", opts:["E","Ê"], a:1},
       {q:"Từ nào có âm E?", opts:["bê","mê","xe","dê"], a:2},
     ]},
   ],
   2: [ // Bài 3: O – Ô – Ơ
     {type:"listen", title:"Nghe & chọn tiếng O / Ô / Ơ", items:["cho","to","bố","cô","mơ","cơ"]},
-    {type:"sort", title:"Phân loại O – Ô – Ơ", hint:"Bấm từ rồi bỏ vào đúng nhà!", bins:["Nhà O","Nhà Ô","Nhà Ơ"],
-      items:[["cho","Nhà O"],["to","Nhà O"],["bố","Nhà Ô"],["cô","Nhà Ô"],["mơ","Nhà Ơ"],["cơ","Nhà Ơ"]]},
+    {type:"sort", title:"Phân loại O – Ô – Ơ", hint:"Bấm từ rồi bỏ vào đúng chữ!", bins:["Chữ O","Chữ Ô","Chữ Ơ"],
+      items:[["cho","Chữ O"],["to","Chữ O"],["bố","Chữ Ô"],["cô","Chữ Ô"],["mơ","Chữ Ơ"],["cơ","Chữ Ơ"]]},
     {type:"quiz", title:"Đố nhanh O – Ô – Ơ", questions:[
       {q:"Từ nào có âm Ơ?", opts:["cho","bố","mơ","to"], a:2},
       {q:"Từ nào có âm Ô?", opts:["cho","bố","mơ","to"], a:1},
-      {q:"«quả mơ» dùng chữ nào?", glyph:"🍑", opts:["O","Ô","Ơ"], a:2},
+      {q:"\"quả mơ\" dùng chữ nào?", glyph:"🍑", opts:["O","Ô","Ơ"], a:2},
     ]},
   ],
   3: [ // Bài 4: U – Ư
     {type:"listen", title:"Nghe & chọn tiếng U / Ư", items:["tủ","đủ","bù","từ","tư","vừa"]},
-    {type:"sort", title:"Phân loại U và Ư", hint:"Bấm từ rồi bỏ vào đúng nhà!", bins:["Nhà U","Nhà Ư"],
-      items:[["tủ","Nhà U"],["đủ","Nhà U"],["bù","Nhà U"],["từ","Nhà Ư"],["tư","Nhà Ư"],["vừa","Nhà Ư"]]},
+    {type:"sort", title:"Phân loại U và Ư", hint:"Bấm từ rồi bỏ vào đúng chữ!", bins:["Chữ U","Chữ Ư"],
+      items:[["tủ","Chữ U"],["đủ","Chữ U"],["bù","Chữ U"],["từ","Chữ Ư"],["tư","Chữ Ư"],["vừa","Chữ Ư"]]},
     {type:"quiz", title:"Đố nhanh U – Ư", questions:[
       {q:"Từ nào có âm Ư?", opts:["tủ","từ","đủ","bù"], a:1},
-      {q:"«cái tủ» dùng chữ nào?", glyph:"🚪", opts:["U","Ư"], a:0},
+      {q:"\"cái tủ\" dùng chữ nào?", glyph:"🚪", opts:["U","Ư"], a:0},
     ]},
   ],
   4: [ // Bài 5: I – Y
@@ -1321,8 +1321,8 @@ const LESSON_GAMES = {
   5: [ // Bài 6: 6 dấu thanh
     {type:"listen", title:"Nghe & chọn đúng dấu thanh", items:["ma","mà","má","mả","mã","mạ"]},
     {type:"quiz", title:"Đố nhanh dấu thanh", questions:[
-      {q:"«đôi má» mang dấu gì?", glyph:"😊", opts:["Ngang","Huyền","Sắc","Nặng"], a:2},
-      {q:"«cây mạ» mang dấu gì?", glyph:"🌱", opts:["Sắc","Hỏi","Ngã","Nặng"], a:3},
+      {q:"\"đôi má\" mang dấu gì?", glyph:"😊", opts:["Ngang","Huyền","Sắc","Nặng"], a:2},
+      {q:"\"cây mạ\" mang dấu gì?", glyph:"🌱", opts:["Sắc","Hỏi","Ngã","Nặng"], a:3},
       {q:"Từ nào mang dấu huyền?", opts:["má","mà","mả","mã"], a:1},
     ]},
     {type:"sort", title:"Phân loại theo dấu", hint:"Bấm từ rồi bỏ vào đúng dấu!", bins:["Sắc","Huyền","Nặng"],
@@ -1352,8 +1352,8 @@ const LESSON_GAMES = {
   ],
   9: [ // Bài 10: Đọc hiểu
     {type:"quiz", title:"Đố nhanh đọc hiểu", questions:[
-      {q:"«Bé Na có một con mèo màu đen.» Mèo màu gì?", opts:["Trắng","Đen","Vàng","Xám"], a:1},
-      {q:"«Trời mưa nên An ở nhà.» Vì sao An ở nhà?", opts:["Trời nắng","Trời mưa","Đi học","Đi chơi"], a:1},
+      {q:"\"Bé Na có một con mèo màu đen.\" Mèo màu gì?", opts:["Trắng","Đen","Vàng","Xám"], a:1},
+      {q:"\"Trời mưa nên An ở nhà.\" Vì sao An ở nhà?", opts:["Trời nắng","Trời mưa","Đi học","Đi chơi"], a:1},
     ]},
   ],
   10: [ // Bài 11: Từ vựng gia đình
@@ -1383,39 +1383,39 @@ const LESSON_GAMES = {
     {type:"match", title:"Nối tính từ với hình", pairs:[["📏 cao/thấp","chiều cao"],["💇 dài/ngắn","mái tóc"],["😊","vui vẻ"],["👓","đeo kính"]]},
     {type:"quiz", title:"Đố nhanh mô tả người", questions:[
       {q:"Người rất vui thì gọi là?", glyph:"😊", opts:["Buồn","Vui vẻ","Giận","Sợ"], a:1},
-      {q:"Trái nghĩa với «cao» là?", opts:["To","Thấp","Dài","Béo"], a:1},
+      {q:"Trái nghĩa với \"cao\" là?", opts:["To","Thấp","Dài","Béo"], a:1},
     ]},
   ],
   14: [ // Bài 15: Phụ âm đầu
     {type:"listen", title:"Nghe & chọn tiếng", items:["bát","cá","dê","gấu","hoa","kéo","mèo","tay"]},
     {type:"match", title:"Nối hình với từ", pairs:[["🐟","cá"],["🧸","gấu"],["🌸","hoa"],["✂️","kéo"],["🐱","mèo"]]},
     {type:"quiz", title:"Đố nhanh phụ âm đầu", questions:[
-      {q:"«cá» bắt đầu bằng phụ âm nào?", glyph:"🐟", opts:["c","k","g","t"], a:0},
-      {q:"«hoa» bắt đầu bằng phụ âm nào?", glyph:"🌸", opts:["h","k","n","l"], a:0},
+      {q:"\"cá\" bắt đầu bằng phụ âm nào?", glyph:"🐟", opts:["c","k","g","t"], a:0},
+      {q:"\"hoa\" bắt đầu bằng phụ âm nào?", glyph:"🌸", opts:["h","k","n","l"], a:0},
     ]},
   ],
   15: [ // Bài 16: Phụ âm ghép
     {type:"listen", title:"Nghe & chọn tiếng", items:["chó","khỉ","ngủ","nhà","phở","thỏ","trâu","quả"]},
     {type:"quiz", title:"Đố nhanh phụ âm ghép", questions:[
-      {q:"«thỏ» bắt đầu bằng phụ âm ghép nào?", glyph:"🐰", opts:["th","ch","nh","kh"], a:0},
-      {q:"«nhà» bắt đầu bằng phụ âm ghép nào?", glyph:"🏠", opts:["nh","ng","gh","tr"], a:0},
-      {q:"«trâu» bắt đầu bằng phụ âm ghép nào?", glyph:"🐃", opts:["tr","ch","th","ph"], a:0},
+      {q:"\"thỏ\" bắt đầu bằng phụ âm ghép nào?", glyph:"🐰", opts:["th","ch","nh","kh"], a:0},
+      {q:"\"nhà\" bắt đầu bằng phụ âm ghép nào?", glyph:"🏠", opts:["nh","ng","gh","tr"], a:0},
+      {q:"\"trâu\" bắt đầu bằng phụ âm ghép nào?", glyph:"🐃", opts:["tr","ch","th","ph"], a:0},
     ]},
     {type:"match", title:"Nối hình với từ", pairs:[["🐶","chó"],["🐒","khỉ"],["🏠","nhà"],["🍜","phở"],["🐃","trâu"]]},
   ],
   16: [ // Bài 17: Chính tả c/k, g/gh, ng/ngh
     {type:"quiz", title:"Đố nhanh chính tả", questions:[
-      {q:"Trước e, ê, i viết âm «cờ» là?", opts:["c","k","q","kh"], a:1},
+      {q:"Trước e, ê, i viết âm \"cờ\" là?", opts:["c","k","q","kh"], a:1},
       {q:"Từ nào viết ĐÚNG?", opts:["cái ghế","cái gế","cái ghê","cái kế"], a:0},
       {q:"Từ nào viết ĐÚNG?", opts:["nghe nhạc","nge nhạc","nghe nhac","nge nhạc"], a:0},
-      {q:"«con gà» viết bằng?", glyph:"🐔", opts:["g","gh","k","ng"], a:0},
+      {q:"\"con gà\" viết bằng?", glyph:"🐔", opts:["g","gh","k","ng"], a:0},
     ]},
-    {type:"sort", title:"Phân loại c / k", hint:"Bỏ từ vào đúng nhóm dùng «c» hay «k»!", bins:["Dùng c","Dùng k"],
+    {type:"sort", title:"Phân loại c / k", hint:"Bỏ từ vào đúng nhóm dùng \"c\" hay \"k\"!", bins:["Dùng c","Dùng k"],
       items:[["cá","Dùng c"],["cô","Dùng c"],["cua","Dùng c"],["kể","Dùng k"],["kim","Dùng k"],["kênh","Dùng k"]]},
   ],
   17: [ // Bài 18: Vần thường gặp
     {type:"listen", title:"Nghe & chọn tiếng có vần", items:["bàn","ăn","cân","sáng","trăng","ong"]},
-    {type:"sort", title:"Phân loại vần: n hay ng", hint:"Vần kết thúc bằng «n» hay «ng»?", bins:["Kết thúc n","Kết thúc ng"],
+    {type:"sort", title:"Phân loại vần: n hay ng", hint:"Vần kết thúc bằng \"n\" hay \"ng\"?", bins:["Kết thúc n","Kết thúc ng"],
       items:[["bàn","Kết thúc n"],["ăn","Kết thúc n"],["tin","Kết thúc n"],["sáng","Kết thúc ng"],["trăng","Kết thúc ng"],["ong","Kết thúc ng"]]},
   ],
   18: [ // Bài 19: Cơ thể
@@ -1454,9 +1454,9 @@ const LESSON_GAMES = {
     {type:"sort", title:"Phân loại từ", hint:"Từ này là Danh từ, Động từ hay Tính từ?", bins:["Danh từ","Động từ","Tính từ"],
       items:[["con mèo","Danh từ"],["trường học","Danh từ"],["ăn","Động từ"],["chạy","Động từ"],["cao","Tính từ"],["đẹp","Tính từ"]]},
     {type:"quiz", title:"Đố nhanh từ loại", questions:[
-      {q:"«chạy» là loại từ gì?", glyph:"🏃", opts:["Danh từ","Động từ","Tính từ"], a:1},
-      {q:"«đẹp» là loại từ gì?", glyph:"🌸", opts:["Danh từ","Động từ","Tính từ"], a:2},
-      {q:"«con mèo» là loại từ gì?", glyph:"🐱", opts:["Danh từ","Động từ","Tính từ"], a:0},
+      {q:"\"chạy\" là loại từ gì?", glyph:"🏃", opts:["Danh từ","Động từ","Tính từ"], a:1},
+      {q:"\"đẹp\" là loại từ gì?", glyph:"🌸", opts:["Danh từ","Động từ","Tính từ"], a:2},
+      {q:"\"con mèo\" là loại từ gì?", glyph:"🐱", opts:["Danh từ","Động từ","Tính từ"], a:0},
     ]},
   ],
   23: [ // Bài 24: Đặt câu hỏi
@@ -1553,7 +1553,7 @@ const CONTACT = [
   {ic:"📞", bg:"#DBEAFE", label:"Điện thoại / Zalo", val:"0797288017", link:"tel:0797288017", copy:true},
   {ic:"✉️", bg:"#EDE9FE", label:"Email", val:"nguyenthanhdat1491@gmail.com", link:"mailto:nguyenthanhdat1491@gmail.com"},
   {ic:"📘", bg:"#DBEAFE", label:"Facebook", val:"https://www.facebook.com/share/1BtMg8B7ys/?mibextid=wwXIfr", link:"https://www.facebook.com/share/1BtMg8B7ys/?mibextid=wwXIfr"},
-  {ic:"⏰", bg:"#FEF3C7", label:"Giờ dạy", val:"Thứ 2 – Chủ nhật · 18h – 21h"},
+  {ic:"⏰", bg:"#FEF3C7", label:"Giờ dạy", val:"Thứ 2 – Thứ 6: 17:30 – 23:00<br>Thứ 7 – Chủ nhật: 07:00 – 22:30"},
 ];
 function renderContact(){
   document.getElementById("contactInfo").innerHTML =

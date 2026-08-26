@@ -192,12 +192,12 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 /* feature cards */
 .featGrid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
 .featCard{background:#fff; border-radius:20px; padding:20px 16px; text-align:center;
-  box-shadow:0 8px 0 rgba(30,27,75,.2); transition:transform .12s; animation:slideIn .5s ease both}
+  box-shadow:0 8px 0 rgba(30,27,75,.2); transition:transform .2s ease, box-shadow .2s ease; animation:slideIn .5s ease backwards}
 .featCard:nth-child(1){animation-delay:.05s}
 .featCard:nth-child(2){animation-delay:.12s}
 .featCard:nth-child(3){animation-delay:.19s}
 .featCard:nth-child(4){animation-delay:.26s}
-.featCard:hover{transform:translateY(-4px) scale(1.02)}
+.featCard:hover{transform:translateY(-6px) scale(1.05); box-shadow:0 12px 0 rgba(30,27,75,.18)}
 .featCard .fi{font-size:40px; transition:transform .2s; display:inline-block}
 .featCard:hover .fi{transform:scale(1.2) rotate(-5deg)}
 .featCard h4{font-family:'Baloo 2',cursive; font-size:17px; margin:8px 0 4px}
@@ -206,8 +206,8 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 /* skill cards */
 .skillGrid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
 .skillCard{border-radius:18px; padding:16px 12px; text-align:center; color:#fff; font-weight:700;
-  box-shadow:0 7px 0 rgba(30,27,75,.18); transition:transform .15s, box-shadow .15s; cursor:default;
-  animation:scaleIn .4s ease both}
+  box-shadow:0 7px 0 rgba(30,27,75,.18); transition:transform .2s ease, box-shadow .2s ease; cursor:pointer;
+  animation:scaleIn .4s ease backwards}
 .skillCard:nth-child(1){animation-delay:.03s}
 .skillCard:nth-child(2){animation-delay:.06s}
 .skillCard:nth-child(3){animation-delay:.09s}
@@ -447,7 +447,7 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .lgProg{font-size:13px; font-weight:700; color:#6366F1; background:#EEF2FF; border-radius:999px; padding:5px 12px; display:inline-block; margin-bottom:10px}
 .lgGlyph{font-size:52px; text-align:center; margin:4px 0 10px; animation:emojiFloat 3s ease-in-out infinite}
 .lgQ{font-family:'Baloo 2',cursive; font-weight:800; font-size:17px; text-align:center; color:var(--ink); margin-bottom:12px}
-.lgOpts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.lgOpts{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px}
 .lgOpt{background:#F8FAFC; border:2px solid #E2E8F0; border-radius:14px; padding:12px 10px; font-weight:700; font-size:15px;
   color:var(--ink); cursor:pointer; transition:transform .12s, background .12s, border-color .12s; font-family:inherit}
 .lgOpt:hover:not(.locked){transform:translateY(-2px); border-color:var(--vio)}
@@ -457,20 +457,22 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .lgResult{font-family:'Baloo 2',cursive; font-weight:800; font-size:20px; text-align:center; color:var(--ink); margin:10px 0 14px}
 .lgHear{padding:12px 22px; font-size:17px; margin:2px 0 12px}
 .lgMatch{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-.lgCol{display:flex; flex-direction:column; gap:8px}
+.lgCol{display:flex; flex-direction:column; gap:10px}
 .lgCell{background:#F8FAFC; border:2px solid #E2E8F0; border-radius:14px; padding:12px 8px; font-weight:700; font-size:16px;
   color:var(--ink); cursor:pointer; transition:transform .12s, background .12s, border-color .12s; font-family:inherit; min-height:48px}
 .lgCell:hover:not(.done){transform:translateY(-2px); border-color:var(--cyan)}
 .lgCell.sel{border-color:var(--vio); outline:3px solid rgba(124,58,237,.35); background:#F5F3FF}
 .lgCell.done{background:#F0FDF4; border-color:var(--ok); color:#166534; cursor:default; opacity:.75}
 .lgCell.shake{animation:shake .4s}
-.lgSortWords{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:12px}
-.lgSortBins{display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:10px}
+.lgSortWords{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:14px}
+.lgSortBins{display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:12px}
 .lgBin{background:#F8FAFC; border:3px dashed #CBD5E1; border-radius:16px; padding:8px; min-height:80px; cursor:pointer; transition:background .15s, border-color .15s}
 .lgBin:hover{border-color:var(--vio)}
 .lgBin.bad{background:#FEE2E2; border-color:#EF4444; animation:shake .4s}
 .lgBinLabel{font-family:'Baloo 2',cursive; font-weight:800; font-size:14px; text-align:center; color:var(--ink); margin-bottom:6px}
 .lgBinDrop{display:flex; flex-direction:column; gap:6px}
+.lgBody .center{margin-top:16px}
+.lgBody .center .btn{margin:4px}
 @media (max-width:480px){ .lgGlyph{font-size:44px} .lgOpt{font-size:14px; padding:11px 8px} }
 
 /* Thám tử săn chữ */
@@ -561,24 +563,25 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .counter{font-family:'Baloo 2',cursive; font-weight:800; color:#fff; font-size:16px; text-shadow:0 2px 0 rgba(0,0,0,.2); white-space:nowrap}
 
 /* ---- màn giới thiệu kiểm tra (dùng chung .hero cũ) ---- */
-.quizIntro{max-width:640px; margin:0 auto; text-align:center; display:block}
-.quizIntro .avatar{width:100px; height:100px; margin:0 auto 6px; border-radius:50%;
+.quizIntro{max-width:640px; margin:0 auto; text-align:center; display:block; padding:6px 2px 4px}
+.quizIntro .avatar{width:100px; height:100px; margin:0 auto 14px; border-radius:50%;
   background:linear-gradient(145deg,var(--yel),var(--org)); display:flex; align-items:center; justify-content:center;
   font-size:54px; border:5px solid #fff; box-shadow:0 8px 0 rgba(30,27,75,.25)}
-.quizIntro h1{font-size:clamp(25px,6.5vw,36px); font-weight:800; color:var(--ink); text-shadow:none}
-.quizIntro .intro{font-size:15.5px; margin:10px auto 0; max-width:440px; color:#475569}
+.quizIntro h1{font-size:clamp(25px,6.5vw,36px); font-weight:800; color:var(--ink); text-shadow:none; line-height:1.2}
+.quizIntro .intro{font-size:15.5px; margin:14px auto 0; max-width:440px; color:#475569; line-height:1.65}
 .quizIntro .intro b{color:var(--ink)}
-.rules{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:18px 0 4px}
-.rule{background:#F8FAFC; border:2px solid #E2E8F0; border-radius:16px; padding:12px 8px}
-.rule .ic{font-size:26px}
-.rule .tt{font-family:'Baloo 2',cursive; font-weight:800; font-size:14.5px; margin-top:2px}
-.rule .dd{font-size:12px; color:#64748B; line-height:1.35; margin-top:2px}
+.rules{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:26px 0 6px}
+.rule{background:#F8FAFC; border:2px solid #E2E8F0; border-radius:16px; padding:16px 10px; min-width:0}
+.rule .ic{font-size:28px}
+.rule .tt{font-family:'Baloo 2',cursive; font-weight:800; font-size:14.5px; margin-top:6px}
+.rule .dd{font-size:12px; color:#64748B; line-height:1.4; margin-top:4px}
 .rule.up{border-color:var(--ok); background:#F0FDF4}
 .rule.down{border-color:var(--org); background:#FFF7ED}
 .rule.rand{border-color:var(--cyan); background:#ECFEFF}
-.tags{display:flex; flex-wrap:wrap; gap:7px; justify-content:center; margin:14px 0 2px}
-.tags span{background:#FDF2F8; border:2px solid var(--pink); color:#9D174D; font-weight:600; font-size:12.5px; padding:4px 11px; border-radius:999px}
-.tutorNote{font-size:13px; color:#6D28D9; background:#EDE9FE; border-radius:12px; padding:10px 14px; margin-top:14px; text-align:left}
+.tags{display:flex; flex-wrap:wrap; gap:9px; justify-content:center; margin:26px 0 6px}
+.tags span{background:#FDF2F8; border:2px solid var(--pink); color:#9D174D; font-weight:600; font-size:12.5px; padding:6px 13px; border-radius:999px}
+.tutorNote{font-size:13px; color:#6D28D9; background:#EDE9FE; border-radius:14px; padding:14px 16px; margin-top:24px; text-align:left; line-height:1.6}
+.quizIntro .pulseBtn{margin-top:26px}
 
 /* ===== Hoạt ảnh màn giới thiệu Kiểm tra ===== */
 .quizIntro > *{animation:qiEnter .55s cubic-bezier(.2,.75,.3,1) both}
