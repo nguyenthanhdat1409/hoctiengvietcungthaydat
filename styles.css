@@ -575,6 +575,27 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
   .authBox{padding:22px 18px 18px; border-radius:22px}
 }
 
+/* ===================== DASHBOARD GIÁO VIÊN ===================== */
+.csForm{display:grid; grid-template-columns:repeat(4,1fr) auto; gap:10px; align-items:center}
+.csForm input{font-family:inherit; font-size:14.5px; padding:11px 13px; border:2px solid #E2E8F0; border-radius:12px; outline:none; transition:border .15s; min-width:0}
+.csForm input:focus{border-color:var(--vio)}
+.csMsg{margin:12px 0 0; font-weight:700; font-size:14px; min-height:20px}
+.csMsg.ok{color:var(--ok)} .csMsg.err{color:#DC2626}
+.dashTop{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.dashCtrl{display:flex; align-items:center; gap:8px}
+.dashCtrl input[type=date]{font-family:inherit; font-size:14px; padding:8px 12px; border:2px solid #E2E8F0; border-radius:12px; outline:none}
+.dashKpi{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0}
+.dashKpi>div{background:#F8FAFC; border:2px solid #EEF2FF; border-radius:16px; padding:14px 10px; text-align:center}
+.dashKpi b{display:block; font-family:'Baloo 2',cursive; font-size:26px; color:var(--vio)}
+.dashKpi span{font-size:12.5px; color:#64748B}
+.dashScroll{overflow-x:auto; border-radius:14px; border:1px solid #EEF2FF}
+.dashT{width:100%; border-collapse:collapse; font-size:14px; min-width:560px}
+.dashT th,.dashT td{padding:11px 12px; text-align:center; border-bottom:1px solid #F1F5F9; white-space:nowrap}
+.dashT th{background:#F5F3FF; color:var(--vio); font-family:'Baloo 2',cursive; font-weight:800; font-size:13px; position:sticky; top:0}
+.dashT td.dName,.dashT th:first-child{text-align:left; font-weight:700; color:var(--ink)}
+.dashT tbody tr:hover{background:#FAFAFF}
+@media (max-width:640px){ .csForm{grid-template-columns:1fr 1fr} .csForm button{grid-column:1/-1} .dashKpi b{font-size:22px} }
+
 /* ===================== PROGRESS & BADGES ===================== */
 #homeProgress{margin-top:28px}
 .progGrid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:14px}

@@ -339,7 +339,7 @@ const rand = arr => arr[Math.floor(Math.random()*arr.length)];
 /* =========================================================
    ĐIỀU HƯỚNG
    ========================================================= */
-const SECTIONS = ["home","baihoc","baitap","kiemtra","lienhe"];
+const SECTIONS = ["home","baihoc","baitap","kiemtra","lienhe","dashboard"];
 let navLock = false;
 
 /* Không cho trình duyệt tự khôi phục vị trí cuộn khi F5 (tránh bị tụt xuống) */
@@ -367,6 +367,7 @@ function go(id){
   document.querySelectorAll("#navLinks a").forEach(a => a.classList.toggle("active", a.dataset.nav === id));
   document.getElementById("nav").classList.remove("open");
   if(("#" + id) !== location.hash){ navLock = true; location.hash = id; }
+  if(id === "dashboard" && typeof renderDashboard === "function") renderDashboard();
   window.scrollTo(0, 0);
 }
 window.addEventListener("hashchange", () => {
@@ -1497,6 +1498,7 @@ function renderLessons(){
 function openLesson(i){
   const l = LESSONS[i];
   markLessonViewed(i);
+  logLesson(i);
   document.getElementById("lessonBody").innerHTML =
     `<div class="lessonHead"><div class="lh-ic">${l.icon}</div><div><h2>${l.title}</h2><p>${l.desc}</p></div></div>
      <div class="lContent">${l.body}${renderLessonGames(LESSON_GAMES[i])}</div>`;
@@ -1968,6 +1970,7 @@ function showResult(){
   const el = document.getElementById("resultCard");
   const finalScore = Math.round(score);
   recordQuiz(finalScore, total);
+  logQuiz("test", finalScore, total, p, star);
   if(p >= 60) sfx.win();
   el.innerHTML = `
     <div class="hostMini" style="margin:0 auto; width:66px; height:66px; font-size:36px">😎</div>
@@ -2004,6 +2007,7 @@ function showPracticeResult(){
   const tier = tierOf(p);
   const catName = practiceCat === "all" ? "Tất cả chủ đề" : (CATS[practiceCat].emoji + " " + CATS[practiceCat].name);
   recordQuiz(Math.round(correct), total);
+  logQuiz("practice", Math.round(correct), total, p, null);
   if(p >= 60) sfx.win();
 
   const el = document.getElementById("resultCard");
@@ -2616,23 +2620,29 @@ async function afterLogin(){
   const name = (profile && (profile.display_name || profile.username))
     || (user.user_metadata && user.user_metadata.display_name)
     || (user.email || "").split("@")[0];
-  setAuthUser({ role, name, avatar: avatarFor(role) });
+  setAuthUser({ role, name, avatar: avatarFor(role), id: user.id });
+  if(role === "student") logSessionStart();
   authDone("Chào " + name + "! 🎉");
 }
 
 /* Khi tải trang: đồng bộ trạng thái với phiên Supabase */
+let _accessToken = null;
 async function initAuth(){
   const client = getSB();
   if(!client){ renderAuthState(); return; }   // CDN chưa tải kịp → dùng cache localStorage
   try{
     const { data:{ session } } = await client.auth.getSession();
+    _accessToken = session ? session.access_token : null;
     if(session){
       const u = getAuthUser();
       if(!u){ await refreshNavFromSession(session); } else { renderAuthState(); }
     } else {
       clearAuthUser();
     }
-    client.auth.onAuthStateChange((_evt, s) => { if(!s){ clearAuthUser(); } });
+    client.auth.onAuthStateChange((_evt, s) => {
+      _accessToken = s ? s.access_token : null;
+      if(!s){ clearAuthUser(); }
+    });
   }catch(e){ renderAuthState(); }
 }
 async function refreshNavFromSession(session){
@@ -2646,7 +2656,7 @@ async function refreshNavFromSession(session){
   }catch(e){}
   const role = (profile && profile.role) || "student";
   const name = (profile && (profile.display_name || profile.username)) || (user.email||"").split("@")[0];
-  setAuthUser({ role, name, avatar: avatarFor(role) });
+  setAuthUser({ role, name, avatar: avatarFor(role), id: user.id });
 }
 
 function openAuth(){
@@ -2738,6 +2748,8 @@ function renderAuthState(){
   const u = getAuthUser();
   const loginBtn = document.getElementById("loginBtn");
   const userBox = document.getElementById("authUser");
+  const navDash = document.getElementById("navDash");
+  if(navDash) navDash.classList.toggle("hidden", !(u && u.role === "teacher"));
   if(!loginBtn || !userBox) return;
   if(u){
     loginBtn.classList.add("hidden");
@@ -2747,7 +2759,142 @@ function renderAuthState(){
   } else {
     loginBtn.classList.remove("hidden");
     userBox.classList.add("hidden");
+    // đang ở dashboard mà đăng xuất → về trang chủ
+    if(!document.getElementById("dashboard").classList.contains("hidden")) go("home");
   }
+}
+
+/* =========================================================
+   GHI NHẬN HOẠT ĐỘNG (chỉ khi HS đăng nhập) → lưu lên Supabase
+   ========================================================= */
+function _isStudent(){ const u = getAuthUser(); return u && u.id && u.role === "student"; }
+
+let _sessId = null, _sessStart = 0;
+async function logSessionStart(){
+  const c = getSB(); const u = getAuthUser();
+  if(!c || !_isStudent()) return;
+  try{
+    const { data } = await c.from("study_sessions").insert({ student_id: u.id }).select("id").single();
+    if(data){ _sessId = data.id; _sessStart = Date.now(); }
+  }catch(e){}
+}
+function _endSession(){
+  if(!_sessId || !_accessToken) return;
+  const dur = Math.round((Date.now() - _sessStart) / 1000);
+  try{
+    fetch(SB_URL + "/rest/v1/study_sessions?id=eq." + _sessId, {
+      method: "PATCH", keepalive: true,
+      headers: { apikey: SB_PUBLISHABLE_KEY, Authorization: "Bearer " + _accessToken,
+                 "Content-Type": "application/json", Prefer: "return=minimal" },
+      body: JSON.stringify({ ended_at: new Date().toISOString(), duration_sec: dur })
+    });
+  }catch(e){}
+}
+window.addEventListener("beforeunload", _endSession);
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "hidden") _endSession(); });
+
+async function logQuiz(mode, score, total, percent, stars){
+  const c = getSB(); const u = getAuthUser();
+  if(!c || !_isStudent()) return;
+  try{ await c.from("quiz_results").insert({ student_id: u.id, mode, score, total, percent, stars: (stars == null ? null : stars) }); }catch(e){}
+}
+function logLesson(i){
+  const c = getSB(); const u = getAuthUser();
+  if(!c || !_isStudent()) return;
+  try{ c.from("activity_events").insert({ student_id: u.id, type: "lesson_open", ref: "lesson:" + i }); }catch(e){}
+}
+
+/* =========================================================
+   DASHBOARD GIÁO VIÊN
+   ========================================================= */
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+function csMsg(t, err){
+  const el = document.getElementById("csMsg"); if(!el) return;
+  el.textContent = t || "";
+  el.className = "csMsg" + (err ? " err" : (t ? " ok" : ""));
+}
+function renderDashboard(){
+  const u = getAuthUser();
+  const guard = document.getElementById("dashGuard");
+  const main = document.getElementById("dashMain");
+  if(!guard || !main) return;
+  if(!u || u.role !== "teacher"){
+    main.classList.add("hidden");
+    guard.innerHTML = '<div class="card"><p class="muted">🔒 Trang này chỉ dành cho <b>giáo viên</b>. Hãy đăng nhập tài khoản Thầy nhé.</p></div>';
+    return;
+  }
+  guard.innerHTML = "";
+  main.classList.remove("hidden");
+  const dd = document.getElementById("dashDate");
+  if(dd && !dd.value) dd.value = todayStr();
+  loadDashboard();
+}
+async function createStudent(e){
+  e.preventDefault();
+  const c = getSB();
+  if(!c){ csMsg("Chưa kết nối máy chủ.", true); return false; }
+  const { data:{ session } } = await c.auth.getSession();
+  if(!session){ csMsg("Cần đăng nhập giáo viên.", true); return false; }
+  const payload = {
+    username: document.getElementById("csUser").value,
+    display_name: document.getElementById("csName").value,
+    pin: document.getElementById("csPin").value,
+    class_code: document.getElementById("csClass").value,
+  };
+  csMsg("Đang tạo…", false);
+  try{
+    const res = await fetch("/.netlify/functions/create-student", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+      body: JSON.stringify(payload)
+    });
+    const out = await res.json();
+    if(!res.ok){ csMsg("❌ " + (out.error || "Lỗi tạo tài khoản"), true); return false; }
+    csMsg("✅ Đã tạo: " + out.display_name + " — đăng nhập bằng «" + out.username + "»", false);
+    e.target.reset();
+    loadDashboard();
+  }catch(err){ csMsg("❌ Lỗi: " + err.message, true); }
+  return false;
+}
+async function loadDashboard(){
+  const el = document.getElementById("dashTable");
+  const u = getAuthUser(); const c = getSB();
+  if(!el) return;
+  if(!u || u.role !== "teacher" || !c){ el.innerHTML = '<p class="muted">Không có quyền.</p>'; return; }
+  const day = (document.getElementById("dashDate").value) || todayStr();
+  el.innerHTML = '<p class="muted">Đang tải…</p>';
+  try{
+    const [st, ss, qz, ev] = await Promise.all([
+      c.from("profiles").select("id,display_name,username,class_code").eq("role","student"),
+      c.from("study_sessions").select("student_id,duration_sec").eq("day", day),
+      c.from("quiz_results").select("student_id,percent,stars").eq("day", day),
+      c.from("activity_events").select("student_id,type").eq("day", day),
+    ]);
+    const students = st.data || [];
+    if(!students.length){ el.innerHTML = '<p class="muted">Chưa có học sinh nào. Tạo tài khoản ở khung trên nha!</p>'; return; }
+    const agg = {};
+    students.forEach(s => agg[s.id] = { name: s.display_name || s.username, cls: s.class_code || "—", logins:0, min:0, quizzes:0, best:0, stars:0, lessons:0 });
+    (ss.data||[]).forEach(r => { const a = agg[r.student_id]; if(a){ a.logins++; a.min += Math.round((r.duration_sec||0)/60); } });
+    (qz.data||[]).forEach(r => { const a = agg[r.student_id]; if(a){ a.quizzes++; a.best = Math.max(a.best, r.percent||0); a.stars = Math.max(a.stars, r.stars||0); } });
+    (ev.data||[]).forEach(r => { const a = agg[r.student_id]; if(a && r.type === "lesson_open") a.lessons++; });
+    const rows = Object.values(agg).sort((x,y) => (y.logins - x.logins) || (y.quizzes - x.quizzes));
+    const active = rows.filter(r => r.logins > 0 || r.quizzes > 0 || r.lessons > 0).length;
+    const totLogin = rows.reduce((s,r) => s + r.logins, 0);
+    let html = `<div class="dashKpi"><div><b>${students.length}</b><span>học sinh</span></div>`+
+      `<div><b>${active}</b><span>hoạt động</span></div><div><b>${totLogin}</b><span>lượt vào</span></div></div>`;
+    html += '<div class="dashScroll"><table class="dashT"><thead><tr>'+
+      '<th>Học sinh</th><th>Lớp</th><th>Lần vào</th><th>Phút</th><th>Bài mở</th><th>Kiểm tra</th><th>Điểm cao</th><th>Sao</th></tr></thead><tbody>';
+    rows.forEach(r => {
+      html += `<tr><td class="dName">${r.name}</td><td>${r.cls}</td><td>${r.logins}</td><td>${r.min}</td>`+
+        `<td>${r.lessons}</td><td>${r.quizzes}</td><td>${r.best ? r.best + "%" : "—"}</td>`+
+        `<td>${r.stars ? "⭐".repeat(r.stars) : "—"}</td></tr>`;
+    });
+    html += "</tbody></table></div>";
+    el.innerHTML = html;
+  }catch(err){ el.innerHTML = '<p class="muted">Lỗi tải dữ liệu: ' + (err && err.message) + '</p>'; }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
