@@ -576,6 +576,7 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 }
 
 /* ===================== DASHBOARD GIÁO VIÊN ===================== */
+#dashMain{display:flex; flex-direction:column; gap:18px}
 .csForm{display:grid; grid-template-columns:repeat(4,1fr) auto; gap:10px; align-items:center}
 .csForm input{font-family:inherit; font-size:14.5px; padding:12px 14px; border:2px solid #E2E8F0; border-radius:14px; outline:none; transition:border .15s, box-shadow .15s; min-width:0; background:#F8FAFC}
 .csForm input:focus{border-color:var(--vio); background:#fff; box-shadow:0 0 0 3px rgba(124,58,237,.12)}
