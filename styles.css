@@ -570,7 +570,7 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .quizIntro h1{font-size:clamp(25px,6.5vw,36px); font-weight:800; color:var(--ink); text-shadow:none; line-height:1.2}
 .quizIntro .intro{font-size:15.5px; margin:14px auto 0; max-width:440px; color:#475569; line-height:1.65}
 .quizIntro .intro b{color:var(--ink)}
-.rules{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:26px 0 6px}
+.rules{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:26px 10px 6px}
 .rule{background:#F8FAFC; border:2px solid #E2E8F0; border-radius:16px; padding:16px 10px; min-width:0}
 .rule .ic{font-size:28px}
 .rule .tt{font-family:'Baloo 2',cursive; font-weight:800; font-size:14.5px; margin-top:6px}
