@@ -8,6 +8,7 @@
 //   TEACHER_EMAIL       = (tùy chọn; mặc định email dưới đây)
 
 const DEFAULT_TEACHER_EMAIL = "nguyenthanhdat1491@gmail.com";
+const DEFAULT_TEACHER_PIN = "181002";   // PIN cứng (dùng khi chưa đặt env TEACHER_PIN)
 
 function json(code, obj){
   return { statusCode: code, headers: { "Content-Type": "application/json" }, body: JSON.stringify(obj) };
@@ -19,9 +20,8 @@ exports.handler = async (event) => {
   const URL = process.env.SUPABASE_URL;
   const SECRET = process.env.SUPABASE_SECRET_KEY;
   const TEACHER_EMAIL = (process.env.TEACHER_EMAIL || DEFAULT_TEACHER_EMAIL).trim().toLowerCase();
-  const TEACHER_PIN = process.env.TEACHER_PIN;
+  const TEACHER_PIN = process.env.TEACHER_PIN || DEFAULT_TEACHER_PIN;   // ưu tiên env, không có thì dùng PIN cứng
   if (!URL || !SECRET) return json(500, { error: "Server chưa cấu hình SUPABASE_URL / SUPABASE_SECRET_KEY" });
-  if (!TEACHER_PIN) return json(500, { error: "Server chưa cấu hình TEACHER_PIN" });
 
   const svc = { apikey: SECRET, Authorization: `Bearer ${SECRET}`, "Content-Type": "application/json" };
 
