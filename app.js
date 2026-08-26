@@ -2691,6 +2691,17 @@ function authMsg(text, kind){
   el.textContent = text || "";
   el.className = "authMsg" + (kind ? " " + kind : "");
 }
+/* Dịch lỗi Supabase sang tiếng Việt thân thiện */
+function friendlyAuthError(err){
+  const m = ((err && err.message) || "").toLowerCase();
+  if(/email/.test(m) && /invalid/.test(m)) return "Email không hợp lệ — hãy dùng email thật (Gmail, Outlook…).";
+  if(/already|registered|exists/.test(m)) return "Email này đã đăng ký rồi — hãy chuyển sang Đăng nhập.";
+  if(/password/.test(m) && /(weak|short|least|6)/.test(m)) return "Mật khẩu quá yếu — thử dài hơn nhé.";
+  if(/confirm/.test(m)) return "Cần xác nhận email trước. Kiểm tra hộp thư giúp mình nha!";
+  if(/rate|too many/.test(m)) return "Thao tác hơi nhanh — thử lại sau ít phút nhé.";
+  if(/network|fetch|failed/.test(m)) return "Lỗi mạng — kiểm tra kết nối rồi thử lại.";
+  return (err && err.message) ? err.message : "Có lỗi xảy ra, thử lại nhé.";
+}
 function authDone(msg){
   authMsg(msg, "ok");
   try{ burst(6, ["🎉","⭐","💜"]); }catch(e){}
@@ -2728,7 +2739,7 @@ async function authParentSubmit(e){
       email, password: pass,
       options: { data: { display_name: name || email.split("@")[0], role: "parent" } }
     });
-    if(error){ authMsg(error.message || "Không đăng ký được.", "err"); return false; }
+    if(error){ authMsg(friendlyAuthError(error), "err"); return false; }
     if(!data.session){ authMsg("Đã gửi email xác nhận — kiểm tra hộp thư rồi đăng nhập nhé!", "ok"); return false; }
     await afterLogin();
   } else {
