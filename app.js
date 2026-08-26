@@ -2700,33 +2700,72 @@ function authDone(msg){
   setTimeout(() => closeAuth(), 900);
 }
 
-/* ---- Học sinh: username + PIN (đăng nhập bằng email tổng hợp) ---- */
-async function authStudentLogin(e){
+/* ---- Học sinh: username + PIN (đăng nhập / tự đăng ký) ---- */
+let studentMode = "login";
+function authStudentMode(m){
+  studentMode = m;
+  document.querySelectorAll("#paneStudent .authSwitchBtn").forEach(b => b.classList.toggle("active", b.dataset.sm === m));
+  document.querySelectorAll("#paneStudent .sReg").forEach(el => el.classList.toggle("hidden", m !== "register"));
+  const btn = document.getElementById("stuSubmitBtn");
+  if(btn) btn.textContent = m === "register" ? "Tạo & vào học 🎉" : "Vào học 🚀";
+  authMsg("", "");
+}
+async function authStudentSubmit(e){
   e.preventDefault();
   const u = document.getElementById("stuUser").value.trim().toLowerCase();
   const pin = document.getElementById("stuPin").value.trim();
-  if(!u || !pin){ authMsg("Nhập đủ tên đăng nhập và mã PIN nha!", "err"); return false; }
+  if(!/^[a-z0-9_]{3,20}$/.test(u)){ authMsg("Tên đăng nhập 3–20 ký tự (chữ thường, số, _).", "err"); return false; }
   if(!/^\d{4,6}$/.test(pin)){ authMsg("Mã PIN phải là 4–6 chữ số.", "err"); return false; }
   const client = getSB();
   if(!client){ authMsg("Chưa kết nối được máy chủ, thử lại sau nhé.", "err"); return false; }
-  authMsg("Đang đăng nhập…", "");
   const email = u + "@" + STUDENT_EMAIL_DOMAIN;
+
+  if(studentMode === "register"){
+    authMsg("Đang tạo tài khoản…", "");
+    try{
+      const res = await fetch("/.netlify/functions/register-student", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: u, pin,
+          display_name: document.getElementById("stuName").value.trim(),
+          class_code: document.getElementById("stuClass").value.trim()
+        })
+      });
+      const out = await res.json();
+      if(!res.ok){ authMsg("❌ " + (out.error || "Không tạo được tài khoản"), "err"); return false; }
+    }catch(err){ authMsg("Lỗi mạng, thử lại nhé.", "err"); return false; }
+  }
+
+  authMsg("Đang đăng nhập…", "");
   const { error } = await client.auth.signInWithPassword({ email, password: pin });
-  if(error){ authMsg("Sai tên đăng nhập hoặc mã PIN.", "err"); return false; }
+  if(error){
+    authMsg(studentMode === "register" ? "Tạo xong nhưng đăng nhập lỗi — thử tab Đăng nhập nhé." : "Sai tên đăng nhập hoặc mã PIN.", "err");
+    return false;
+  }
   await afterLogin();
   return false;
 }
-/* ---- Giáo viên: email + mật khẩu (chỉ đăng nhập) ---- */
+/* ---- Giáo viên: email + PIN (tự cấp tài khoản qua function rồi đăng nhập) ---- */
 async function authTeacherLogin(e){
   e.preventDefault();
   const email = document.getElementById("tchEmail").value.trim();
-  const pass = document.getElementById("tchPass").value;
-  if(!email || !pass){ authMsg("Nhập đủ email và mật khẩu nha!", "err"); return false; }
+  const pin = document.getElementById("tchPass").value.trim();
+  if(!email || !pin){ authMsg("Nhập đủ email và mã PIN nha!", "err"); return false; }
   const client = getSB();
   if(!client){ authMsg("Chưa kết nối được máy chủ, thử lại sau nhé.", "err"); return false; }
   authMsg("Đang đăng nhập…", "");
-  const { error } = await client.auth.signInWithPassword({ email, password: pass });
-  if(error){ authMsg("Sai email hoặc mật khẩu.", "err"); return false; }
+  // 1) Bảo đảm tài khoản Thầy tồn tại (đúng email + PIN) qua function
+  try{
+    const res = await fetch("/.netlify/functions/teacher-login", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, pin })
+    });
+    const out = await res.json();
+    if(!res.ok){ authMsg("❌ " + (out.error || "Sai thông tin giáo viên"), "err"); return false; }
+  }catch(err){ authMsg("Lỗi mạng, thử lại nhé.", "err"); return false; }
+  // 2) Đăng nhập thật để có phiên (RLS + Dashboard hoạt động)
+  const { error } = await client.auth.signInWithPassword({ email, password: pin });
+  if(error){ authMsg("Đăng nhập lỗi, thử lại nhé.", "err"); return false; }
   await afterLogin();
   return false;
 }
