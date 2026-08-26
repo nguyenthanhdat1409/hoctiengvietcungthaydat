@@ -640,6 +640,19 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .tlTxt .tMin{color:#94A3B8; font-weight:600; font-size:12.5px}
 @media (max-width:480px){ .stSum{grid-template-columns:repeat(2,1fr)} }
 
+/* Hiệu ứng +XP bay lên ⚡ */
+.xpFly{position:fixed; top:60%; transform:translateX(-50%); z-index:120; pointer-events:none; white-space:nowrap;
+  font-family:'Baloo 2',cursive; font-weight:800; font-size:24px; color:#fff;
+  background:linear-gradient(135deg,var(--org),var(--pink)); padding:8px 18px; border-radius:999px;
+  box-shadow:0 10px 26px rgba(245,158,11,.5); animation:xpFly 1.4s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes xpFly{
+  0%{opacity:0; transform:translateX(-50%) translateY(22px) scale(.5)}
+  18%{opacity:1; transform:translateX(-50%) translateY(0) scale(1.18)}
+  38%{transform:translateX(-50%) translateY(-6px) scale(1)}
+  100%{opacity:0; transform:translateX(-50%) translateY(-95px) scale(1)}
+}
+@media (prefers-reduced-motion: reduce){ .xpFly{animation-duration:.5s} }
+
 /* ===================== PROGRESS & BADGES ===================== */
 #homeProgress{margin-top:28px}
 .progGrid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:14px}

@@ -131,3 +131,18 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+-- ============================================================
+--  TIẾN TRÌNH THEO TÀI KHOẢN (XP, streak, bài học, thành tích...)
+--  Đồng bộ giữa trang chủ của HS và Dashboard của Thầy.
+--  CHẠY THÊM đoạn này.
+-- ============================================================
+create table if not exists public.student_progress (
+  student_id  uuid primary key references public.profiles(id) on delete cascade,
+  data        jsonb not null default '{}',   -- toàn bộ object progress
+  updated_at  timestamptz not null default now()
+);
+alter table public.student_progress enable row level security;
+create policy "sp_own" on public.student_progress for all
+  using (student_id = auth.uid() or public.is_teacher())
+  with check (student_id = auth.uid());

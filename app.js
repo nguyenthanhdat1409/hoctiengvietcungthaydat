@@ -34,11 +34,15 @@ function defaultProgress(){
     xp: 0,              // tổng XP
   };
 }
-function saveProgress(p){ localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); }
+function saveProgress(p){
+  localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+  if(typeof scheduleCloudProgress === "function") scheduleCloudProgress();
+}
 let progress = loadProgress();
 
 function addXP(amount){
   progress.xp += amount;
+  if(amount > 0 && typeof xpFly === "function") xpFly(amount);
   checkBadges();
   saveProgress(progress);
 }
@@ -2621,8 +2625,63 @@ async function afterLogin(){
     || (user.user_metadata && user.user_metadata.display_name)
     || (user.email || "").split("@")[0];
   setAuthUser({ role, name, avatar: avatarFor(role), id: user.id });
-  if(role === "student") logSessionStart();
+  if(role === "student"){ logSessionStart(); loadCloudProgress(); }
   authDone("Chào " + name + "! 🎉");
+}
+
+/* ===== Đồng bộ tiến trình theo tài khoản (XP, streak, bài học, thành tích) ===== */
+function _uniq(a, b){ return Array.from(new Set([...(a||[]), ...(b||[])])); }
+function mergeProgress(a, b){
+  a = a || {}; b = b || {};
+  return {
+    lessonsViewed: _uniq(a.lessonsViewed, b.lessonsViewed),
+    quizHighScore: Math.max(a.quizHighScore||0, b.quizHighScore||0),
+    totalQuizzes: Math.max(a.totalQuizzes||0, b.totalQuizzes||0),
+    totalStars: Math.max(a.totalStars||0, b.totalStars||0),
+    streak: Math.max(a.streak||0, b.streak||0),
+    lastStudyDate: (a.lastStudyDate||"") >= (b.lastStudyDate||"") ? (a.lastStudyDate||b.lastStudyDate||null) : b.lastStudyDate,
+    badges: _uniq(a.badges, b.badges),
+    xp: Math.max(a.xp||0, b.xp||0),
+  };
+}
+async function loadCloudProgress(){
+  const c = getSB(); const u = getAuthUser();
+  if(!c || !u || u.role !== "student") return;
+  try{
+    const { data } = await c.from("student_progress").select("data").eq("student_id", u.id).maybeSingle();
+    if(data && data.data) progress = mergeProgress(progress, data.data);
+  }catch(e){}
+  checkBadges();
+  saveProgress(progress);           // lưu local (kèm lịch đẩy cloud)
+  pushCloudProgress();              // đẩy bản đã gộp lên cloud ngay
+  try{ renderHome(); }catch(e){}    // cập nhật số ở trang chủ
+}
+let _spTimer = null;
+function scheduleCloudProgress(){
+  const u = getAuthUser();
+  if(!u || u.role !== "student") return;
+  clearTimeout(_spTimer);
+  _spTimer = setTimeout(pushCloudProgress, 1500);
+}
+function pushCloudProgress(){
+  const c = getSB(); const u = getAuthUser();
+  if(!c || !u || u.role !== "student") return;
+  try{
+    c.from("student_progress").upsert({ student_id: u.id, data: progress, updated_at: new Date().toISOString() });
+  }catch(e){}
+}
+
+/* Hiệu ứng "+XP" bay lên như tia chớp ⚡ */
+function xpFly(amount){
+  try{
+    const el = document.createElement("div");
+    el.className = "xpFly";
+    el.textContent = "⚡ +" + amount + " XP";
+    el.style.left = (46 + Math.random()*8) + "%";
+    document.body.appendChild(el);
+    setTimeout(() => { if(el.parentNode) el.remove(); }, 1500);
+    try{ sfx.pop && sfx.pop(); }catch(e){}
+  }catch(e){}
 }
 
 /* Khi tải trang: đồng bộ trạng thái với phiên Supabase */
@@ -2914,46 +2973,47 @@ async function loadDashboard(){
   const day = (document.getElementById("dashDate").value) || todayStr();
   el.innerHTML = '<p class="muted">Đang tải…</p>';
   try{
-    const [st, ss, qz, ev] = await Promise.all([
+    const [st, ss, sp] = await Promise.all([
       c.from("profiles").select("id,display_name,username,class_code").eq("role","student"),
       c.from("study_sessions").select("student_id,duration_sec").eq("day", day),
-      c.from("quiz_results").select("student_id,percent,stars").eq("day", day),
-      c.from("activity_events").select("student_id,type").eq("day", day),
+      c.from("student_progress").select("student_id,data"),
     ]);
     const students = st.data || [];
     if(!students.length){ el.innerHTML = '<p class="muted">Chưa có học sinh nào. Tạo tài khoản ở khung trên nha!</p>'; return; }
+    const totBadges = (typeof BADGES !== "undefined") ? BADGES.length : 6;
     const agg = {};
-    students.forEach(s => agg[s.id] = { id: s.id, name: s.display_name || s.username, username: s.username, cls: s.class_code || "—", logins:0, min:0, quizzes:0, best:0, stars:0, lessons:0 });
+    students.forEach(s => agg[s.id] = { id: s.id, name: s.display_name || s.username, username: s.username, cls: s.class_code || "—", logins:0, min:0, xp:0, lessons:0, quizzes:0, best:0, badges:0 });
     (ss.data||[]).forEach(r => { const a = agg[r.student_id]; if(a){ a.logins++; a.min += Math.round((r.duration_sec||0)/60); } });
-    (qz.data||[]).forEach(r => { const a = agg[r.student_id]; if(a){ a.quizzes++; a.best = Math.max(a.best, r.percent||0); a.stars = Math.max(a.stars, r.stars||0); } });
-    (ev.data||[]).forEach(r => { const a = agg[r.student_id]; if(a && r.type === "lesson_open") a.lessons++; });
-    const rows = Object.values(agg).sort((x,y) => (y.logins - x.logins) || (y.quizzes - x.quizzes));
-    const active = rows.filter(r => r.logins > 0 || r.quizzes > 0 || r.lessons > 0).length;
+    (sp.data||[]).forEach(r => { const a = agg[r.student_id]; if(a){ const d = r.data || {}; a.xp = d.xp||0; a.lessons = (d.lessonsViewed||[]).length; a.quizzes = d.totalQuizzes||0; a.best = d.quizHighScore||0; a.badges = (d.badges||[]).length; } });
+    const rows = Object.values(agg).sort((x,y) => (y.xp - x.xp) || (y.logins - x.logins));
+    const active = rows.filter(r => r.logins > 0).length;
     const totLogin = rows.reduce((s,r) => s + r.logins, 0);
     const kpi = [
       { ic:"🧑‍🎓", n:students.length, l:"học sinh", c:"#6366F1" },
-      { ic:"✅", n:active, l:"đang hoạt động", c:"#22C55E" },
+      { ic:"✅", n:active, l:"vào hôm đó", c:"#22C55E" },
       { ic:"🚪", n:totLogin, l:"lượt vào", c:"#F59E0B" },
     ];
     let html = `<div class="dashKpi">` + kpi.map(k =>
       `<div class="kpiCard" style="--kc:${k.c}"><div class="kpiIc">${k.ic}</div><b>${k.n}</b><span>${k.l}</span></div>`).join("") + `</div>`;
     const num = v => v ? `<b>${v}</b>` : `<span class="dMuted">0</span>`;
     html += '<div class="dashScroll"><table class="dashT"><thead><tr>'+
-      '<th>Học sinh</th><th>Lớp</th><th>Lần vào</th><th>Phút</th><th>Bài mở</th><th>Kiểm tra</th><th>Điểm cao</th><th>Sao</th></tr></thead><tbody>';
+      '<th>Học sinh</th><th>Lớp</th><th>Lần vào</th><th>Phút</th><th>Bài học</th><th>Kiểm tra</th><th>Điểm cao</th><th>XP</th><th>🏅</th></tr></thead><tbody>';
     window._dashAgg = agg;   // để mở chi tiết theo id
     rows.forEach(r => {
       const cls = (r.cls && r.cls !== "—") ? `<span class="clsChip">${r.cls}</span>` : `<span class="dMuted">—</span>`;
-      const score = r.quizzes
+      const score = r.best
         ? `<span class="scoreBadge ${r.best>=80?"sg":r.best>=50?"sy":"sr"}">${r.best}%</span>`
         : `<span class="dMuted">—</span>`;
-      const stars = r.stars ? `<span class="dStars">${"⭐".repeat(r.stars)}</span>` : `<span class="dMuted">—</span>`;
+      const xp = r.xp ? `<b style="color:var(--org)">${r.xp}</b>` : `<span class="dMuted">0</span>`;
+      const badges = r.badges ? `<b>${r.badges}/${totBadges}</b>` : `<span class="dMuted">0/${totBadges}</span>`;
       html += `<tr class="dRow" onclick="openStudentDetail('${r.id}')" title="Xem chi tiết">`+
         `<td class="dName"><span class="dAva">🎒</span>${r.name}<span class="dGo">›</span></td>`+
         `<td>${cls}</td><td>${num(r.logins)}</td><td>${num(r.min)}</td>`+
         `<td>${num(r.lessons)}</td><td>${num(r.quizzes)}</td>`+
-        `<td>${score}</td><td>${stars}</td></tr>`;
+        `<td>${score}</td><td>${xp}</td><td>${badges}</td></tr>`;
     });
-    html += "</tbody></table></div><p class=\"muted\" style=\"margin:10px 2px 0;font-size:12.5px\">👆 Bấm vào một học sinh để xem chi tiết lịch sử.</p>";
+    html += "</tbody></table></div>"+
+      "<p class=\"muted\" style=\"margin:10px 2px 0;font-size:12.5px\">👆 Bấm vào một học sinh để xem chi tiết. · <b>Lần vào / Phút</b> = theo ngày đã chọn; <b>Bài học / Kiểm tra / Điểm / XP / 🏅</b> = tổng tích luỹ (khớp trang chủ của bé).</p>";
     el.innerHTML = html;
   }catch(err){ el.innerHTML = '<p class="muted">Lỗi tải dữ liệu: ' + (err && err.message) + '</p>'; }
 }
