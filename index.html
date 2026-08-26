@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=29">
+<link rel="stylesheet" href="styles.css?v=31">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -28,6 +28,13 @@
       <a data-nav="kiemtra" href="#kiemtra" onclick="go('kiemtra');return false;">🏆 Kiểm tra</a>
       <a data-nav="lienhe"  href="#lienhe"  onclick="go('lienhe');return false;">✉️ Liên hệ</a>
     </nav>
+    <div class="authNav" id="authNav">
+      <button class="authNavBtn" id="loginBtn" onclick="openAuth()">👤 Đăng nhập</button>
+      <div class="authUser hidden" id="authUser">
+        <span class="authUserChip"><span class="aUAvatar" id="aUAvatar">🎒</span><span id="authUserName">Bạn</span></span>
+        <button class="authLogout" onclick="authLogout()" title="Đăng xuất">⏻</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -192,6 +199,59 @@
   </div>
 </div>
 
-<script src="app.js?v=29"></script>
+<!-- ===================== MODAL ĐĂNG NHẬP / ĐĂNG KÝ ===================== -->
+<div id="authModal" class="modal hidden" onclick="closeAuth(event)">
+  <div class="authBox" onclick="event.stopPropagation()">
+    <button class="modalClose" onclick="closeAuth()" aria-label="Đóng">✕</button>
+    <div class="authHead">
+      <div class="authAvatar">😎</div>
+      <h2>Chào mừng đến lớp Thầy Đạt!</h2>
+      <p>Đăng nhập để lưu lại tiến trình học của em nha</p>
+    </div>
+
+    <div class="authTabs">
+      <button class="authTab active" data-tab="student" onclick="authTab('student')">🎒 Học sinh</button>
+      <button class="authTab" data-tab="parent" onclick="authTab('parent')">👪 Phụ huynh</button>
+    </div>
+
+    <!-- Học sinh: username + PIN -->
+    <form class="authPane" id="paneStudent" onsubmit="return authStudentLogin(event)">
+      <label>Tên đăng nhập
+        <input type="text" id="stuUser" required placeholder="ví dụ: bena2015" autocomplete="username">
+      </label>
+      <label>Mã PIN
+        <input type="password" id="stuPin" required inputmode="numeric" placeholder="4–6 số" autocomplete="current-password">
+      </label>
+      <button class="btn full" type="submit">Vào học 🚀</button>
+      <p class="authHint">Chưa có tài khoản? Nhờ <b>Thầy Đạt</b> tạo giúp em nha!</p>
+    </form>
+
+    <!-- Phụ huynh: email + mật khẩu (đăng nhập / đăng ký) -->
+    <div class="authPane hidden" id="paneParent">
+      <div class="authSwitch">
+        <button type="button" class="authSwitchBtn active" data-m="login" onclick="authParentMode('login')">Đăng nhập</button>
+        <button type="button" class="authSwitchBtn" data-m="register" onclick="authParentMode('register')">Đăng ký</button>
+      </div>
+      <form id="parentForm" onsubmit="return authParentSubmit(event)">
+        <label class="pReg hidden">Tên phụ huynh
+          <input type="text" id="parName" placeholder="ví dụ: Chị Lan">
+        </label>
+        <label>Email
+          <input type="email" id="parEmail" required placeholder="email@example.com">
+        </label>
+        <label>Mật khẩu
+          <input type="password" id="parPass" required minlength="6" placeholder="tối thiểu 6 ký tự">
+        </label>
+        <button class="btn full" type="submit" id="parSubmitBtn">Đăng nhập ✨</button>
+      </form>
+    </div>
+
+    <div class="authMsg" id="authMsg"></div>
+    <p class="authDemo">🔒 Thông tin đăng nhập được bảo mật. Tài khoản học sinh do Thầy Đạt tạo.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js?v=31"></script>
 </body>
 </html>
