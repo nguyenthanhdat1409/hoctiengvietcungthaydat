@@ -2578,12 +2578,186 @@ openLesson = function(i){
     });
   }, 200);
 };
+/* =========================================================
+   ĐĂNG NHẬP / ĐĂNG KÝ  (UI demo — sẽ nối Supabase sau)
+   Các hàm có ghi chú TODO(Supabase) là nơi sẽ thay bằng gọi API thật.
+   ========================================================= */
+const AUTH_KEY = "thaydat_auth_v1";
+function getAuthUser(){ try{ return JSON.parse(localStorage.getItem(AUTH_KEY)); }catch{ return null; } }
+function setAuthUser(u){ localStorage.setItem(AUTH_KEY, JSON.stringify(u)); renderAuthState(); }
+function clearAuthUser(){ localStorage.removeItem(AUTH_KEY); renderAuthState(); }
+
+/* ---- Kết nối Supabase (chỉ URL + PUBLISHABLE key — an toàn để công khai) ---- */
+const SB_URL = "https://vtbdluuvpdbykfsriahl.supabase.co";
+const SB_PUBLISHABLE_KEY = "sb_publishable_1OwjQjg0erAXLqYqqDtJ-w_FtDuKGe7";
+const STUDENT_EMAIL_DOMAIN = "hs.thaydat.app";   // email tổng hợp cho HS (username@...)
+let _sb = null;
+function getSB(){
+  if(_sb) return _sb;
+  if(window.supabase && window.supabase.createClient){
+    _sb = window.supabase.createClient(SB_URL, SB_PUBLISHABLE_KEY);
+  }
+  return _sb;
+}
+function avatarFor(role){ return role === "parent" ? "👪" : role === "teacher" ? "👩‍🏫" : "🎒"; }
+
+/* Sau khi đăng nhập thành công: lấy hồ sơ rồi cập nhật giao diện */
+async function afterLogin(){
+  const client = getSB();
+  const { data:{ user } } = await client.auth.getUser();
+  if(!user){ authMsg("Không lấy được thông tin người dùng.", "err"); return; }
+  let profile = null;
+  try{
+    const { data } = await client.from("profiles")
+      .select("role,display_name,username").eq("id", user.id).maybeSingle();
+    profile = data;
+  }catch(e){}
+  const role = (profile && profile.role) || (user.user_metadata && user.user_metadata.role) || "student";
+  const name = (profile && (profile.display_name || profile.username))
+    || (user.user_metadata && user.user_metadata.display_name)
+    || (user.email || "").split("@")[0];
+  setAuthUser({ role, name, avatar: avatarFor(role) });
+  authDone("Chào " + name + "! 🎉");
+}
+
+/* Khi tải trang: đồng bộ trạng thái với phiên Supabase */
+async function initAuth(){
+  const client = getSB();
+  if(!client){ renderAuthState(); return; }   // CDN chưa tải kịp → dùng cache localStorage
+  try{
+    const { data:{ session } } = await client.auth.getSession();
+    if(session){
+      const u = getAuthUser();
+      if(!u){ await refreshNavFromSession(session); } else { renderAuthState(); }
+    } else {
+      clearAuthUser();
+    }
+    client.auth.onAuthStateChange((_evt, s) => { if(!s){ clearAuthUser(); } });
+  }catch(e){ renderAuthState(); }
+}
+async function refreshNavFromSession(session){
+  const client = getSB();
+  const user = session.user;
+  let profile = null;
+  try{
+    const { data } = await client.from("profiles")
+      .select("role,display_name,username").eq("id", user.id).maybeSingle();
+    profile = data;
+  }catch(e){}
+  const role = (profile && profile.role) || "student";
+  const name = (profile && (profile.display_name || profile.username)) || (user.email||"").split("@")[0];
+  setAuthUser({ role, name, avatar: avatarFor(role) });
+}
+
+function openAuth(){
+  const m = document.getElementById("authModal");
+  m.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  authMsg("", "");
+  setTimeout(() => { const el = document.getElementById("stuUser"); if(el) el.focus(); }, 80);
+}
+function closeAuth(e){
+  if(e && e.type === "click" && e.currentTarget && e.target !== e.currentTarget) return;
+  document.getElementById("authModal").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+function authTab(t){
+  document.querySelectorAll(".authTab").forEach(b => b.classList.toggle("active", b.dataset.tab === t));
+  document.getElementById("paneStudent").classList.toggle("hidden", t !== "student");
+  document.getElementById("paneParent").classList.toggle("hidden", t !== "parent");
+  authMsg("", "");
+}
+let parentMode = "login";
+function authParentMode(m){
+  parentMode = m;
+  document.querySelectorAll(".authSwitchBtn").forEach(b => b.classList.toggle("active", b.dataset.m === m));
+  document.querySelectorAll("#paneParent .pReg").forEach(el => el.classList.toggle("hidden", m !== "register"));
+  document.getElementById("parSubmitBtn").textContent = m === "register" ? "Tạo tài khoản 💜" : "Đăng nhập ✨";
+  authMsg("", "");
+}
+function authMsg(text, kind){
+  const el = document.getElementById("authMsg");
+  if(!el) return;
+  el.textContent = text || "";
+  el.className = "authMsg" + (kind ? " " + kind : "");
+}
+function authDone(msg){
+  authMsg(msg, "ok");
+  try{ burst(6, ["🎉","⭐","💜"]); }catch(e){}
+  setTimeout(() => closeAuth(), 900);
+}
+
+/* ---- Học sinh: username + PIN (đăng nhập bằng email tổng hợp) ---- */
+async function authStudentLogin(e){
+  e.preventDefault();
+  const u = document.getElementById("stuUser").value.trim().toLowerCase();
+  const pin = document.getElementById("stuPin").value.trim();
+  if(!u || !pin){ authMsg("Nhập đủ tên đăng nhập và mã PIN nha!", "err"); return false; }
+  if(!/^\d{4,6}$/.test(pin)){ authMsg("Mã PIN phải là 4–6 chữ số.", "err"); return false; }
+  const client = getSB();
+  if(!client){ authMsg("Chưa kết nối được máy chủ, thử lại sau nhé.", "err"); return false; }
+  authMsg("Đang đăng nhập…", "");
+  const email = u + "@" + STUDENT_EMAIL_DOMAIN;
+  const { error } = await client.auth.signInWithPassword({ email, password: pin });
+  if(error){ authMsg("Sai tên đăng nhập hoặc mã PIN.", "err"); return false; }
+  await afterLogin();
+  return false;
+}
+/* ---- Phụ huynh: email + mật khẩu (đăng nhập / đăng ký) ---- */
+async function authParentSubmit(e){
+  e.preventDefault();
+  const email = document.getElementById("parEmail").value.trim();
+  const pass = document.getElementById("parPass").value;
+  const name = document.getElementById("parName").value.trim();
+  if(!email || pass.length < 6){ authMsg("Cần email và mật khẩu tối thiểu 6 ký tự.", "err"); return false; }
+  const client = getSB();
+  if(!client){ authMsg("Chưa kết nối được máy chủ, thử lại sau nhé.", "err"); return false; }
+  authMsg("Đang xử lý…", "");
+  if(parentMode === "register"){
+    const { data, error } = await client.auth.signUp({
+      email, password: pass,
+      options: { data: { display_name: name || email.split("@")[0], role: "parent" } }
+    });
+    if(error){ authMsg(error.message || "Không đăng ký được.", "err"); return false; }
+    if(!data.session){ authMsg("Đã gửi email xác nhận — kiểm tra hộp thư rồi đăng nhập nhé!", "ok"); return false; }
+    await afterLogin();
+  } else {
+    const { error } = await client.auth.signInWithPassword({ email, password: pass });
+    if(error){ authMsg("Sai email hoặc mật khẩu.", "err"); return false; }
+    await afterLogin();
+  }
+  return false;
+}
+async function authLogout(){
+  const client = getSB();
+  if(client){ try{ await client.auth.signOut(); }catch(e){} }
+  clearAuthUser();
+  authMsg("", "");
+}
+function renderAuthState(){
+  const u = getAuthUser();
+  const loginBtn = document.getElementById("loginBtn");
+  const userBox = document.getElementById("authUser");
+  if(!loginBtn || !userBox) return;
+  if(u){
+    loginBtn.classList.add("hidden");
+    userBox.classList.remove("hidden");
+    document.getElementById("authUserName").textContent = u.name;
+    document.getElementById("aUAvatar").textContent = u.avatar || "🙂";
+  } else {
+    loginBtn.classList.remove("hidden");
+    userBox.classList.add("hidden");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderHome();
   renderLessons();
   renderTopicChips();
   renderContact();
   renderFlashcard();
+  renderAuthState();
+  initAuth();
   go((location.hash || "#home").slice(1));
   // Chắc chắn về đầu trang khi load/F5 (kể cả khi trình duyệt cố nhảy tới #hash)
   window.scrollTo(0, 0);
