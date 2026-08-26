@@ -239,8 +239,8 @@ const BANK = {
      chat:[["an","Bạn ơi, quyển sách này của ai vậy?"],["bao","…?…"]],
      opts:["Của mình đó, cảm ơn bạn nha!","Mình đi ngủ đây.","Trời hôm nay nóng quá.","Mình không thích ăn cá."], a:0},
    {cat:"hoithoai", type:"chat", q:"An sẽ trả lời thế nào?",
-     chat:[["bao","Mày có muốn đi xem phim không?"],["an","…?…"]],
-     opts:["Được nha! Chiều nay mày rảnh không?","Mình đang làm bài tập.","Mình không thích xem phim.","Hôm nay trời đẹp quá."], a:0},
+     chat:[["bao","Bạn có muốn đi xem phim không?"],["an","…?…"]],
+     opts:["Được nha! Chiều nay bạn rảnh không?","Mình đang làm bài tập.","Mình không thích xem phim.","Hôm nay trời đẹp quá."], a:0},
    {cat:"matchu", type:"text", q:"Bấm vào chữ Ơ!", opts:["o","ô","ơ","u"], a:2, letterOpts:true},
    {cat:"matchu", type:"glyph", q:"Từ này đọc là gì?", glyph:"mẹ", opts:["me","mè","mê","mẹ"], a:3, letterOpts:true},
    {cat:"matchu", type:"glyph", q:"Từ này đọc là gì?", glyph:"cơm", opts:["com","cơm","cốm","cợm"], a:1, letterOpts:true},
@@ -2923,7 +2923,7 @@ async function loadDashboard(){
     const students = st.data || [];
     if(!students.length){ el.innerHTML = '<p class="muted">Chưa có học sinh nào. Tạo tài khoản ở khung trên nha!</p>'; return; }
     const agg = {};
-    students.forEach(s => agg[s.id] = { name: s.display_name || s.username, cls: s.class_code || "—", logins:0, min:0, quizzes:0, best:0, stars:0, lessons:0 });
+    students.forEach(s => agg[s.id] = { id: s.id, name: s.display_name || s.username, username: s.username, cls: s.class_code || "—", logins:0, min:0, quizzes:0, best:0, stars:0, lessons:0 });
     (ss.data||[]).forEach(r => { const a = agg[r.student_id]; if(a){ a.logins++; a.min += Math.round((r.duration_sec||0)/60); } });
     (qz.data||[]).forEach(r => { const a = agg[r.student_id]; if(a){ a.quizzes++; a.best = Math.max(a.best, r.percent||0); a.stars = Math.max(a.stars, r.stars||0); } });
     (ev.data||[]).forEach(r => { const a = agg[r.student_id]; if(a && r.type === "lesson_open") a.lessons++; });
@@ -2940,21 +2940,82 @@ async function loadDashboard(){
     const num = v => v ? `<b>${v}</b>` : `<span class="dMuted">0</span>`;
     html += '<div class="dashScroll"><table class="dashT"><thead><tr>'+
       '<th>Học sinh</th><th>Lớp</th><th>Lần vào</th><th>Phút</th><th>Bài mở</th><th>Kiểm tra</th><th>Điểm cao</th><th>Sao</th></tr></thead><tbody>';
+    window._dashAgg = agg;   // để mở chi tiết theo id
     rows.forEach(r => {
       const cls = (r.cls && r.cls !== "—") ? `<span class="clsChip">${r.cls}</span>` : `<span class="dMuted">—</span>`;
       const score = r.quizzes
         ? `<span class="scoreBadge ${r.best>=80?"sg":r.best>=50?"sy":"sr"}">${r.best}%</span>`
         : `<span class="dMuted">—</span>`;
       const stars = r.stars ? `<span class="dStars">${"⭐".repeat(r.stars)}</span>` : `<span class="dMuted">—</span>`;
-      html += `<tr>`+
-        `<td class="dName"><span class="dAva">🎒</span>${r.name}</td>`+
+      html += `<tr class="dRow" onclick="openStudentDetail('${r.id}')" title="Xem chi tiết">`+
+        `<td class="dName"><span class="dAva">🎒</span>${r.name}<span class="dGo">›</span></td>`+
         `<td>${cls}</td><td>${num(r.logins)}</td><td>${num(r.min)}</td>`+
         `<td>${num(r.lessons)}</td><td>${num(r.quizzes)}</td>`+
         `<td>${score}</td><td>${stars}</td></tr>`;
     });
-    html += "</tbody></table></div>";
+    html += "</tbody></table></div><p class=\"muted\" style=\"margin:10px 2px 0;font-size:12.5px\">👆 Bấm vào một học sinh để xem chi tiết lịch sử.</p>";
     el.innerHTML = html;
   }catch(err){ el.innerHTML = '<p class="muted">Lỗi tải dữ liệu: ' + (err && err.message) + '</p>'; }
+}
+
+/* ---- Chi tiết lịch sử 1 học sinh ---- */
+async function openStudentDetail(id){
+  const info = (window._dashAgg && window._dashAgg[id]) || { name:"Học sinh", cls:"—", username:"" };
+  const modal = document.getElementById("studentModal");
+  const el = document.getElementById("studentDetail");
+  const head = `<div class="stDetailHead"><span class="stAva">🎒</span><div><h2>${info.name}</h2>
+    <p>${info.username ? "@" + info.username + " · " : ""}Lớp ${info.cls}</p></div></div>`;
+  modal.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  el.innerHTML = head + `<p class="muted" style="padding:8px 20px">Đang tải lịch sử…</p>`;
+  const c = getSB();
+  if(!c){ el.innerHTML = head + `<p class="muted" style="padding:8px 20px">Chưa kết nối máy chủ.</p>`; return; }
+  try{
+    const [ss, qz, ev] = await Promise.all([
+      c.from("study_sessions").select("started_at,duration_sec").eq("student_id", id).order("started_at", { ascending:false }).limit(80),
+      c.from("quiz_results").select("mode,percent,stars,created_at").eq("student_id", id).order("created_at", { ascending:false }).limit(80),
+      c.from("activity_events").select("ref,created_at").eq("student_id", id).eq("type", "lesson_open").order("created_at", { ascending:false }).limit(80),
+    ]);
+    const sessions = ss.data || [], quizzes = qz.data || [], lessons = ev.data || [];
+    const totalMin = Math.round(sessions.reduce((s,r) => s + (r.duration_sec||0), 0) / 60);
+    const sum = [
+      { ic:"🚪", n:sessions.length, l:"lượt vào" },
+      { ic:"⏱️", n:totalMin, l:"phút học" },
+      { ic:"📖", n:lessons.length, l:"lần mở bài" },
+      { ic:"📝", n:quizzes.length, l:"bài kiểm tra" },
+    ];
+    const items = [];
+    quizzes.forEach(r => items.push({ t:r.created_at, txt:`${r.mode === "test" ? "🏆 Kiểm tra" : "🎮 Luyện tập"} — <b>${r.percent}%</b> ${r.stars ? "⭐".repeat(r.stars) : ""}` }));
+    lessons.forEach(r => {
+      const idx = parseInt((r.ref || "").split(":")[1]);
+      const title = (typeof LESSONS !== "undefined" && LESSONS[idx] && LESSONS[idx].title) || ("Bài " + ((idx||0)+1));
+      items.push({ t:r.created_at, txt:`📖 Mở <b>${title}</b>` });
+    });
+    sessions.forEach(r => items.push({ t:r.started_at, txt:`🚪 Vào học${r.duration_sec ? ` <span class="tMin">(${Math.round(r.duration_sec/60)} phút)</span>` : ""}` }));
+    items.sort((a,b) => new Date(b.t) - new Date(a.t));
+    let tl = "";
+    if(!items.length){ tl = `<p class="muted" style="padding:12px 20px">Chưa có hoạt động nào.</p>`; }
+    else{
+      let curDay = "";
+      items.slice(0, 150).forEach(it => {
+        const d = new Date(it.t);
+        const dayStr = d.toLocaleDateString("vi-VN", { weekday:"long", day:"2-digit", month:"2-digit", year:"numeric" });
+        if(dayStr !== curDay){ curDay = dayStr; tl += `<div class="tlDay">${dayStr}</div>`; }
+        const time = d.toLocaleTimeString("vi-VN", { hour:"2-digit", minute:"2-digit" });
+        tl += `<div class="tlItem"><span class="tlTime">${time}</span><span class="tlTxt">${it.txt}</span></div>`;
+      });
+    }
+    el.innerHTML = head +
+      `<div class="stSum">${sum.map(s => `<div><span class="si">${s.ic}</span><b>${s.n}</b><span class="sl">${s.l}</span></div>`).join("")}</div>` +
+      `<div class="stTlTitle">🕒 Lịch sử hoạt động</div><div class="stTl">${tl}</div>`;
+  }catch(err){
+    el.innerHTML = head + `<p class="muted" style="padding:12px 20px">Lỗi tải: ${err && err.message}</p>`;
+  }
+}
+function closeStudentDetail(e){
+  if(e && e.type === "click" && e.currentTarget && e.target !== e.currentTarget) return;
+  document.getElementById("studentModal").classList.add("hidden");
+  document.body.style.overflow = "";
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -613,7 +613,32 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .scoreBadge.sy{background:#FEF9C3; color:#854D0E}
 .scoreBadge.sr{background:#FEE2E2; color:#B91C1C}
 .dStars{font-size:13px; letter-spacing:1px}
+.dRow{cursor:pointer}
+.dGo{float:right; color:#CBD5E1; font-weight:800; font-size:18px; margin-left:8px; transition:transform .15s, color .15s}
+.dRow:hover .dGo{color:var(--vio); transform:translateX(3px)}
 @media (max-width:640px){ .csForm{grid-template-columns:1fr 1fr} .csForm button{grid-column:1/-1} .kpiCard b{font-size:24px} }
+
+/* Popup chi tiết học sinh */
+.detailBox{background:#fff; border-radius:26px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto;
+  position:relative; box-shadow:0 24px 80px rgba(0,0,0,.45); animation:scaleIn .35s ease}
+.stDetailHead{display:flex; align-items:center; gap:14px; padding:24px 22px; background:linear-gradient(135deg,var(--vio),var(--pink)); color:#fff; border-radius:26px 26px 0 0}
+.stDetailHead .stAva{width:52px; height:52px; border-radius:50%; background:linear-gradient(145deg,var(--yel),var(--org)); display:flex; align-items:center; justify-content:center; font-size:28px; border:3px solid #fff; flex-shrink:0}
+.stDetailHead h2{font-size:22px; line-height:1.1}
+.stDetailHead p{font-size:13.5px; opacity:.92; margin:4px 0 0}
+.stSum{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:16px 18px 6px}
+.stSum>div{background:#F8FAFC; border:2px solid #EEF2FF; border-radius:14px; padding:10px 4px; text-align:center}
+.stSum .si{font-size:18px}
+.stSum b{display:block; font-family:'Baloo 2',cursive; font-size:20px; color:var(--vio); line-height:1.1}
+.stSum .sl{font-size:11px; color:#64748B}
+.stTlTitle{font-family:'Baloo 2',cursive; font-weight:800; font-size:16px; color:var(--ink); padding:12px 20px 6px}
+.stTl{padding:0 18px 20px}
+.tlDay{font-weight:800; font-size:12.5px; color:var(--vio); background:#F5F3FF; border-radius:8px; padding:5px 10px; margin:12px 0 8px; display:inline-block; text-transform:capitalize}
+.tlItem{display:flex; gap:10px; align-items:baseline; padding:7px 6px; border-bottom:1px dashed #EEF2FF}
+.tlTime{font-weight:700; font-size:12px; color:#94A3B8; min-width:44px; flex-shrink:0}
+.tlTxt{font-size:14px; color:var(--ink); line-height:1.4}
+.tlTxt b{color:var(--vio); font-weight:800}
+.tlTxt .tMin{color:#94A3B8; font-weight:600; font-size:12.5px}
+@media (max-width:480px){ .stSum{grid-template-columns:repeat(2,1fr)} }
 
 /* ===================== PROGRESS & BADGES ===================== */
 #homeProgress{margin-top:28px}
