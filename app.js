@@ -1146,7 +1146,7 @@ const LESSONS = [
 
       <div class="secTitle" data-icon="⚙️">AI học như thế nào?</div>
       <div class="dlg"><b>AI học từ ví dụ</b> — càng nhiều ví dụ, càng giỏi. Giống em luyện đọc: đọc <b>đi đọc lại</b> nhiều lần thì nhớ lâu.<br>
-      Nhớ trò "lặp lại 5 lần" ở Bài 1 không? Việc lặp đó gọi là <b>vòng lặp (loop)</b> — máy tính cũng lặp như thế để học đó! 🔁</div>
+      Nhớ trò "lặp lại 5 lần" ở bài đầu tiên (A, Ă, Â) không? Việc lặp đó gọi là <b>vòng lặp (loop)</b> — máy tính cũng lặp như thế để học đó! 🔁</div>
 
       <div class="secTitle" data-icon="🛡️">Dùng AI an toàn & thông minh</div>
       <div class="toneList">
@@ -1175,7 +1175,7 @@ const LESSONS = [
 
   {icon:"🔡", color:"#EC4899", title:"Bài 28: Phụ âm G · H · K · L", desc:"4 phụ âm tiếp theo — kèm ví dụ nghe được.",
     body:`<p><b>🎯 Mục tiêu:</b> Đọc đúng <b>G, H, K, L</b>. Bấm ví dụ để nghe! 🔊</p>
-      <div class="langBox"><b>K</b> đọc giống <b>C</b> (âm "cờ") nhưng chỉ đứng trước <b>e, ê, i</b> (kể, kính). Xem lại luật chính tả ở Bài 17 nha!</div>
+      <div class="langBox"><b>K</b> đọc giống <b>C</b> (âm "cờ") nhưng chỉ đứng trước <b>e, ê, i</b> (kể, kính). Xem lại bài <b>Quy tắc chính tả</b> nha!</div>
       <div class="toneList">
         <div class="toneRow lime"><div class="tg">G</div><div class="td"><b>G</b> — âm "gờ", gốc lưỡi rung nhẹ.<div class="exampleWords"><span class="exampleWord">gà <span class="ew">chicken</span></span><span class="exampleWord">gỗ <span class="ew">wood</span></span><span class="exampleWord">gạo <span class="ew">rice grain</span></span></div></div></div>
         <div class="toneRow yel"><div class="tg">H</div><div class="td"><b>H</b> — âm "hờ", hơi thở ra nhẹ.<div class="exampleWords"><span class="exampleWord">hoa <span class="ew">flower</span></span><span class="exampleWord">học <span class="ew">study</span></span><span class="exampleWord">hồ <span class="ew">lake</span></span></div></div></div>
@@ -1631,20 +1631,45 @@ const LESSON_GAMES = {
   ],
 };
 
+/* Thứ tự học hợp lý (giá trị = index thật trong mảng LESSONS).
+   Nguyên âm → Phụ âm → Phụ âm ghép → Dấu thanh → Chính tả → Ghép vần →
+   Đọc hiểu → Từ vựng → Ngữ pháp → Hội thoại/Viết → AI. Games vẫn theo index thật. */
+const LESSON_SEQUENCE = [
+  0, 1, 2, 3, 4,              // Nguyên âm (A/Ă/Â, E/Ê, O/Ô/Ơ, U/Ư, I/Y)
+  14, 26, 27, 28, 29,        // Phụ âm: tổng quan + B·C·D·Đ, G·H·K·L, M·N·P·Q, R·S·T·V·X
+  15,                        // Phụ âm ghép
+  5,                         // Dấu thanh
+  16,                        // Quy tắc chính tả
+  8, 17,                     // Ghép vần, Vần thường gặp
+  9,                         // Đọc hiểu
+  6, 10, 18, 19, 20, 21, 11, 12, 13,  // Từ vựng: chủ đề, gia đình, cơ thể, trường học, nghề, thời tiết, số đếm, ngày tháng, mô tả người
+  22, 23,                    // Ngữ pháp: từ loại, đặt câu hỏi
+  7, 24,                     // Hội thoại, Viết đoạn văn
+  25,                        // Làm quen AI
+];
+const _lessonPos = {};
+LESSON_SEQUENCE.forEach((ri, pos) => { _lessonPos[ri] = pos; });
+function lessonTitle(ri){
+  const base = (LESSONS[ri].title || "").replace(/^Bài\s*\d+\s*:\s*/, "");
+  const pos = _lessonPos[ri];
+  return (pos != null ? "Bài " + (pos + 1) + ": " : "") + base;
+}
 function renderLessons(){
-  document.getElementById("lessonGrid").innerHTML = LESSONS.map((l, i) =>
-    `<div class="lessonCard" style="border-top-color:${l.color}" onclick="openLesson(${i})">
+  document.getElementById("lessonGrid").innerHTML = LESSON_SEQUENCE.map((ri, pos) => {
+    const l = LESSONS[ri];
+    return `<div class="lessonCard" style="border-top-color:${l.color}" onclick="openLesson(${ri})">
        <div class="lIcon">${l.icon}</div>
-       <h3>${l.title}</h3><p>${l.desc}</p>
+       <h3>${lessonTitle(ri)}</h3><p>${l.desc}</p>
        <span class="lGo">Xem bài học ➜</span>
-     </div>`).join("");
+     </div>`;
+  }).join("");
 }
 function openLesson(i){
   const l = LESSONS[i];
   logLesson(i);
   startLessonTimer(i);          // bắt đầu tính giờ (≥10 phút = đã học)
   document.getElementById("lessonBody").innerHTML =
-    `<div class="lessonHead"><div class="lh-ic">${l.icon}</div><div><h2>${l.title}</h2><p>${l.desc}</p></div></div>
+    `<div class="lessonHead"><div class="lh-ic">${l.icon}</div><div><h2>${lessonTitle(i)}</h2><p>${l.desc}</p></div></div>
      <div class="lContent">${l.body}${renderLessonGames(LESSON_GAMES[i])}</div>`;
   document.getElementById("lessonModal").classList.remove("hidden");
   document.body.style.overflow = "hidden";
@@ -2347,11 +2372,30 @@ const SPEECH_AUDIO = {
 function hasVNVoice(){
   return _viVoices && _viVoices.length > 0;
 }
+/* ---- Lựa chọn giọng đọc của người dùng ---- */
+const VOICE_KEY = "thaydat_voice_v1";
+function getVoicePref(){ try{ return JSON.parse(localStorage.getItem(VOICE_KEY)) || { mode:"auto" }; }catch(e){ return { mode:"auto" }; } }
+function setVoicePref(p){
+  try{ localStorage.setItem(VOICE_KEY, JSON.stringify(p)); }catch(e){}
+  // Nhớ theo tài khoản: học sinh đăng nhập → lưu vào tiến trình (đồng bộ cloud)
+  try{ if(isStudentLogged()){ progress.voice = p; saveProgress(progress); } }catch(e){}
+}
+function pickChosenVoice(){
+  const pref = getVoicePref();
+  if(pref.mode === "device" && pref.voiceName){
+    try{
+      const all = window.speechSynthesis.getVoices() || [];
+      const v = all.find(x => x.name === pref.voiceName);
+      if(v) return v;
+    }catch(e){}
+  }
+  return pickVNVoice();
+}
 function synthFallback(txt){
   try{
     if(!('speechSynthesis' in window)) return;
     const u = new SpeechSynthesisUtterance(txt);
-    const v = pickVNVoice();
+    const v = pickChosenVoice();
     if(v){ u.voice = v; u.lang = v.lang; }
     else { u.lang = 'vi-VN'; }
     u.rate = 0.85; u.pitch = 1;
@@ -2397,9 +2441,64 @@ function googleTTS(txt, onFail){
 /* Quyết định cách đọc: ưu tiên giọng Việt cài sẵn (offline, tốt) →
    không có thì dùng TTS Việt online → online lỗi mới rơi về giọng máy. */
 function speakVNAuto(txt){
+  const mode = getVoicePref().mode || "auto";
+  if(mode === "online"){ googleTTS(txt, () => synthFallback(txt)); return; }
+  if(mode === "device"){ synthFallback(txt); return; }   // dùng giọng máy đã chọn
+  // auto: ưu tiên giọng Việt cài sẵn → không có thì online
   if(hasVNVoice()){ synthFallback(txt); return; }
   googleTTS(txt, () => synthFallback(txt));
 }
+
+/* ===================== CÀI ĐẶT GIỌNG ĐỌC (UI) ===================== */
+function allVoices(){ try{ return window.speechSynthesis.getVoices() || []; }catch(e){ return []; } }
+function populateVoiceSelect(){
+  const sel = document.getElementById("vsVoiceSel");
+  if(!sel) return;
+  const voices = allVoices().slice().sort((a,b) => {
+    const av = /^vi/i.test(a.lang) || /viet/i.test(a.name) ? 0 : 1;
+    const bv = /^vi/i.test(b.lang) || /viet/i.test(b.name) ? 0 : 1;
+    return av - bv || a.name.localeCompare(b.name);
+  });
+  const pref = getVoicePref();
+  sel.innerHTML = voices.map(v => {
+    const vi = /^vi/i.test(v.lang) || /viet/i.test(v.name);
+    const sel2 = (pref.voiceName === v.name) ? " selected" : "";
+    return `<option value="${v.name.replace(/"/g,'')}"${sel2}>${vi ? "🇻🇳 " : ""}${v.name} (${v.lang})</option>`;
+  }).join("") || `<option value="">(Máy chưa có giọng nào)</option>`;
+}
+function openVoiceSettings(){
+  const pref = getVoicePref();
+  document.querySelectorAll('input[name="vmode"]').forEach(r => { r.checked = (r.value === (pref.mode || "auto")); });
+  populateVoiceSelect();
+  updateVoiceUI();
+  document.getElementById("voiceModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  // giọng có thể tải chậm → thử nạp lại
+  try{ window.speechSynthesis.onvoiceschanged = () => { refreshVoices(); populateVoiceSelect(); }; }catch(e){}
+}
+function closeVoiceSettings(e){
+  if(e && e.type === "click" && e.currentTarget && e.target !== e.currentTarget) return;
+  document.getElementById("voiceModal").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+function updateVoiceUI(){
+  const pref = getVoicePref();
+  const wrap = document.getElementById("vsSelWrap");
+  if(wrap) wrap.classList.toggle("hidden", pref.mode !== "device");
+  const note = document.getElementById("vsNote");
+  if(note){
+    if(pref.mode === "device" && !hasVNVoice()){
+      note.textContent = "⚠️ Máy này chưa cài giọng tiếng Việt. Nên chọn \"Giọng online\" để nghe đúng giọng người Việt.";
+    } else if(pref.mode === "online"){
+      note.textContent = "🌐 Đang dùng giọng online (cần mạng). Nếu mất mạng sẽ tạm dùng giọng máy.";
+    } else {
+      note.textContent = "";
+    }
+  }
+}
+function onVoiceModeChange(m){ const p = getVoicePref(); p.mode = m; setVoicePref(p); updateVoiceUI(); }
+function onVoiceSelChange(){ const p = getVoicePref(); p.voiceName = document.getElementById("vsVoiceSel").value; p.mode = "device"; setVoicePref(p); document.querySelectorAll('input[name="vmode"]').forEach(r => r.checked = (r.value === "device")); updateVoiceUI(); }
+function testVoice(){ speakVN("Xin chào, mình là Thầy Đạt. Chúc em học tốt nha!"); }
 
 function speakVN(txt){
   const key = (txt || '').trim();
@@ -2823,6 +2922,8 @@ async function loadCloudProgress(){
   checkBadges();
   saveProgress(progress);              // đồng bộ về local
   if(!hadRow) pushCloudProgress();     // lần đầu (chưa có bản ghi): đưa tiến trình máy lên cloud
+  // Áp lựa chọn giọng đọc của tài khoản (nếu có) cho thiết bị này
+  try{ if(progress.voice) localStorage.setItem(VOICE_KEY, JSON.stringify(progress.voice)); }catch(e){}
   try{ renderHome(); }catch(e){}       // cập nhật số ở trang chủ
 }
 let _spTimer = null;

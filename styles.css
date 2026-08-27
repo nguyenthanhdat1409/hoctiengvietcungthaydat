@@ -679,6 +679,24 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .xhbChk{color:#16A34A; font-weight:800; font-size:16px}
 .xhbLock{font-size:13px; opacity:.6}
 @media (max-width:480px){ .xhBadges{grid-template-columns:1fr} }
+
+/* Nút icon trên nav + Modal cài đặt giọng đọc */
+.navIconBtn{background:rgba(255,255,255,.2); color:#fff; border:none; width:40px; height:40px; border-radius:50%; font-size:18px; cursor:pointer; margin-right:8px; transition:background .15s, transform .12s}
+.navIconBtn:hover{background:rgba(255,255,255,.35); transform:translateY(-1px)}
+.vsHead{display:flex; align-items:center; gap:14px; padding:22px; background:linear-gradient(135deg,var(--vio),var(--cyan)); color:#fff; border-radius:26px 26px 0 0}
+.vsHead .vsAva{width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.25); display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0}
+.vsHead h2{font-size:21px; line-height:1.1}
+.vsHead p{font-size:13px; opacity:.92; margin:4px 0 0}
+.vsBody{padding:16px 20px 22px; display:flex; flex-direction:column; gap:10px}
+.vsOpt{display:flex; gap:12px; align-items:flex-start; background:#F8FAFC; border:2px solid #EEF2FF; border-radius:14px; padding:12px 14px; cursor:pointer; transition:border-color .15s}
+.vsOpt:hover{border-color:var(--vio)}
+.vsOpt input{margin-top:3px; width:18px; height:18px; accent-color:var(--vio); flex-shrink:0}
+.vsOpt b{display:block; font-size:14.5px; color:var(--ink)}
+.vsOpt span{font-size:12.5px; color:#64748B; line-height:1.35}
+.vsSelect{width:100%; padding:11px 12px; border:2px solid #E2E8F0; border-radius:12px; font-family:inherit; font-size:14px; background:#fff; outline:none}
+.vsSelect:focus{border-color:var(--vio)}
+.vsActions{text-align:center; margin-top:2px}
+.vsNote{font-size:12.5px; color:#B45309; text-align:center; min-height:16px; line-height:1.4; margin:4px 0 0}
 @media (max-width:480px){ .stSum{grid-template-columns:repeat(2,1fr)} }
 
 /* Hiệu ứng +XP bay lên ⚡ */

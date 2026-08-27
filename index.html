@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=49">
+<link rel="stylesheet" href="styles.css?v=51">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -30,6 +30,7 @@
       <a data-nav="dashboard" id="navDash" class="hidden" href="#dashboard" onclick="go('dashboard');return false;">📊 Lớp học</a>
     </nav>
     <div class="authNav" id="authNav">
+      <button class="navIconBtn" onclick="openVoiceSettings()" title="Cài đặt giọng đọc" aria-label="Giọng đọc">🔊</button>
       <button class="authNavBtn" id="loginBtn" onclick="openAuth()">👤 Đăng nhập</button>
       <div class="authUser hidden" id="authUser">
         <span class="authUserChip"><span class="aUAvatar" id="aUAvatar">🎒</span><span id="authUserName">Bạn</span></span>
@@ -304,7 +305,28 @@
   </div>
 </div>
 
+<!-- ===================== MODAL CÀI ĐẶT GIỌNG ĐỌC ===================== -->
+<div id="voiceModal" class="modal hidden" onclick="closeVoiceSettings(event)">
+  <div class="detailBox" onclick="event.stopPropagation()">
+    <button class="modalClose" onclick="closeVoiceSettings()" aria-label="Đóng">✕</button>
+    <div class="vsHead"><span class="vsAva">🔊</span><div><h2>Cài đặt giọng đọc</h2><p>Chọn giọng đọc tiếng Việt — áp dụng cho cả web &amp; nhớ theo tài khoản.</p></div></div>
+    <div class="vsBody">
+      <label class="vsOpt"><input type="radio" name="vmode" value="auto" onchange="onVoiceModeChange('auto')">
+        <div><b>✨ Tự động (khuyên dùng)</b><span>Ưu tiên giọng Việt cài trên máy; không có thì dùng giọng online.</span></div></label>
+      <label class="vsOpt"><input type="radio" name="vmode" value="online" onchange="onVoiceModeChange('online')">
+        <div><b>🌐 Giọng online (Google)</b><span>Đọc chuẩn giọng người Việt trên mọi máy — cần có mạng.</span></div></label>
+      <label class="vsOpt"><input type="radio" name="vmode" value="device" onchange="onVoiceModeChange('device')">
+        <div><b>📱 Giọng cài trên máy</b><span>Tự chọn giọng bên dưới (giọng có 🇻🇳 nghe đúng nhất).</span></div></label>
+      <div id="vsSelWrap" class="hidden">
+        <select id="vsVoiceSel" class="vsSelect" onchange="onVoiceSelChange()"></select>
+      </div>
+      <div class="vsActions"><button class="btn small" onclick="testVoice()">🔊 Nghe thử</button></div>
+      <p class="vsNote" id="vsNote"></p>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=49"></script>
+<script src="app.js?v=51"></script>
 </body>
 </html>
