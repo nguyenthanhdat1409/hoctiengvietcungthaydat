@@ -527,6 +527,11 @@ const LESSONS = [
           <div class="letterExample"><span class="vi">cha</span><span class="en">father</span></div>
           <div class="letterExample"><span class="vi">nhà</span><span class="en">house</span></div>
           <div class="letterExample"><span class="vi">ca</span><span class="en">sing</span></div>
+          <div class="letterExample"><span class="vi">An</span><span class="en">name An</span></div>
+          <div class="letterExample"><span class="vi">bạn An</span><span class="en">friend An</span></div>
+          <div class="letterExample"><span class="vi">cả nhà</span><span class="en">whole family</span></div>
+          <div class="letterExample"><span class="vi">an tâm</span><span class="en">at ease</span></div>
+          <div class="letterExample"><span class="vi">bình an</span><span class="en">peaceful</span></div>
         </div>
       </div>
       <img src="images/baihoc/bai1-a.png" class="lessonImg" alt="Mẫu chữ A">
@@ -541,6 +546,10 @@ const LESSONS = [
           <div class="letterExample"><span class="vi">cắt</span><span class="en">cut</span></div>
           <div class="letterExample"><span class="vi">mất</span><span class="en">lose</span></div>
           <div class="letterExample"><span class="vi">bát</span><span class="en">bowl</span></div>
+          <div class="letterExample"><span class="vi">ăn cơm</span><span class="en">eat rice</span></div>
+          <div class="letterExample"><span class="vi">chăm ngoan</span><span class="en">good child</span></div>
+          <div class="letterExample"><span class="vi">mắt to</span><span class="en">big eyes</span></div>
+          <div class="letterExample"><span class="vi">trăng rằm</span><span class="en">full moon</span></div>
         </div>
       </div>
       <img src="images/baihoc/bai1-a2.png" class="lessonImg" alt="Mẫu chữ Ă">
@@ -555,6 +564,10 @@ const LESSONS = [
           <div class="letterExample"><span class="vi">cấp</span><span class="en">supply</span></div>
           <div class="letterExample"><span class="vi">mận</span><span class="en">plum</span></div>
           <div class="letterExample"><span class="vi">tân</span><span class="en">new</span></div>
+          <div class="letterExample"><span class="vi">ấm áp</span><span class="en">warm</span></div>
+          <div class="letterExample"><span class="vi">sân trường</span><span class="en">schoolyard</span></div>
+          <div class="letterExample"><span class="vi">cẩn thận</span><span class="en">careful</span></div>
+          <div class="letterExample"><span class="vi">chân thật</span><span class="en">honest</span></div>
         </div>
       </div>
       <img src="images/baihoc/bai1-a3.png" class="lessonImg" alt="Mẫu chữ Â">
@@ -742,13 +755,13 @@ const LESSONS = [
       <div class="secTitle" data-icon="📖">E — Âm đơn giản</div>
       <div class="toneList">
         <div class="toneRow pink"><div class="tg">E</div><div class="td"><b>Cách phát âm:</b> Miệng mở vừa, lưỡi phẳng, âm ngắn.<br>
-          <div class="exampleWords"><span class="exampleWord">e <span class="ew">eh</span></span><span class="exampleWord">mẹ <span class="ew">mother</span></span><span class="exampleWord">dê <span class="ew">goat</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">e <span class="ew">eh</span></span><span class="exampleWord">mẹ <span class="ew">mother</span></span><span class="exampleWord">dê <span class="ew">goat</span></span><span class="exampleWord">xe đạp <span class="ew">bicycle</span></span><span class="exampleWord">mẹ hiền <span class="ew">kind mom</span></span></div></div></div>
       </div>
 
       <div class="secTitle" data-icon="📖">Ê — Âm đóng miệng</div>
       <div class="toneList">
         <div class="toneRow lime"><div class="tg">Ê</div><div class="td"><b>Cách phát âm:</b> Miệng hơi nhắm, mũi cong lên, âm kéo dài hơn E.<br>
-          <div class="exampleWords"><span class="exampleWord">bê <span class="ew">calf</span></span><span class="exampleWord">thế <span class="ew">how/about</span></span><span class="exampleWord">mê <span class="ew">love</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">bê <span class="ew">calf</span></span><span class="exampleWord">thế <span class="ew">how/about</span></span><span class="exampleWord">mê <span class="ew">love</span></span><span class="exampleWord">cái ghế <span class="ew">chair</span></span><span class="exampleWord">về quê <span class="ew">go home</span></span></div></div></div>
       </div>
 
       <div class="tipBox"><b>Mẹo:</b> So sánh: <b>mẹ</b> (mother) vs <b>mê</b> (love). Cùng nghĩa tiếng Anh nhưng âm khác hẳn!</div>
@@ -763,19 +776,19 @@ const LESSONS = [
       <div class="secTitle" data-icon="📖">O — Âm tròn, miệng chu</div>
       <div class="toneList">
         <div class="toneRow cyan"><div class="tg">O</div><div class="td"><b>Cách phát âm:</b> Miệng tròn như đang huýt sáo, âm dài.<br>
-          <div class="exampleWords"><span class="exampleWord">cô <span class="ew">aunt</span></span><span class="exampleWord">cho <span class="ew">give</span></span><span class="exampleWord">to <span class="ew">to</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">cô <span class="ew">aunt</span></span><span class="exampleWord">cho <span class="ew">give</span></span><span class="exampleWord">to <span class="ew">to</span></span><span class="exampleWord">con bò <span class="ew">cow</span></span><span class="exampleWord">to lớn <span class="ew">big</span></span></div></div></div>
       </div>
 
       <div class="secTitle" data-icon="📖">Ô — Âm mũi, mũi ưỡn lên</div>
       <div class="toneList">
         <div class="toneRow lime"><div class="tg">Ô</div><div class="td"><b>Cách phát âm:</b> Mũi ưỡn lên, môi tròn như "oo" trong "book".<br>
-          <div class="exampleWords"><span class="exampleWord">bố <span class="ew">father</span></span><span class="exampleWord">có <span class="ew">have</span></span><span class="exampleWord">nô <span class="ew">play</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">bố <span class="ew">father</span></span><span class="exampleWord">có <span class="ew">have</span></span><span class="exampleWord">nô <span class="ew">play</span></span><span class="exampleWord">cái ô <span class="ew">umbrella</span></span><span class="exampleWord">hôm nay <span class="ew">today</span></span></div></div></div>
       </div>
 
       <div class="secTitle" data-icon="📖">Ơ — Âm mở, lưỡi thấp</div>
       <div class="toneList">
         <div class="toneRow org"><div class="tg">Ơ</div><div class="td"><b>Cách phát âm:</b> Miệng mở, lưỡi thấp xuống, âm ngắn.<br>
-          <div class="exampleWords"><span class="exampleWord">mơ <span class="ew">dream</span></span><span class="exampleWord">dơ <span class="ew">dirty</span></span><span class="exampleWord">cơ <span class="ew">sticky rice</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">mơ <span class="ew">dream</span></span><span class="exampleWord">dơ <span class="ew">dirty</span></span><span class="exampleWord">cơ <span class="ew">sticky rice</span></span><span class="exampleWord">ăn cơm <span class="ew">eat rice</span></span><span class="exampleWord">tờ giấy <span class="ew">paper</span></span></div></div></div>
       </div>
 
       <div class="tipBox"><b>Mẹo:</b> So sánh: <b>cô</b> (aunt - O) vs <b>cô</b> (girl - Ô) vs <b>cơ</b> (sticky rice - Ơ). Cùng chữ "c" nhưng 3 âm khác nhau!</div>
@@ -789,13 +802,13 @@ const LESSONS = [
       <div class="secTitle" data-icon="📖">U — Âm tròn, môi chu</div>
       <div class="toneList">
         <div class="toneRow org"><div class="tg">U</div><div class="td"><b>Cách phát âm:</b> Môi tròn như đang hôn, âm dài.<br>
-          <div class="exampleWords"><span class="exampleWord">bù <span class="ew">compensate</span></span><span class="exampleWord">tủ <span class="ew">closet</span></span><span class="exampleWord">đủ <span class="ew">enough</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">bù <span class="ew">compensate</span></span><span class="exampleWord">tủ <span class="ew">closet</span></span><span class="exampleWord">đủ <span class="ew">enough</span></span><span class="exampleWord">chú chó <span class="ew">the dog</span></span><span class="exampleWord">mùa thu <span class="ew">autumn</span></span></div></div></div>
       </div>
 
       <div class="secTitle" data-icon="📖">Ư — Âm môi cong, miệng mở</div>
       <div class="toneList">
         <div class="toneRow yel"><div class="tg">Ư</div><div class="td"><b>Cách phát âm:</b> Môi cong như đang cười, miệng mở rộng.<br>
-          <div class="exampleWords"><span class="exampleWord">từ <span class="ew">from</span></span><span class="exampleWord">tư <span class="ew">personal</span></span><span class="exampleWord">vừa <span class="ew">just/enough</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">từ <span class="ew">from</span></span><span class="exampleWord">tư <span class="ew">personal</span></span><span class="exampleWord">vừa <span class="ew">just/enough</span></span><span class="exampleWord">chữ cái <span class="ew">letters</span></span><span class="exampleWord">cửa sổ <span class="ew">window</span></span></div></div></div>
       </div>
 
       <div class="tipBox"><b>Mẹo:</b> So sánh: <b>tủ</b> (closet - U) vs <b>từ</b> (from - Ư). Cùng "t" nhưng âm sau hoàn toàn khác!</div>
@@ -809,13 +822,13 @@ const LESSONS = [
       <div class="secTitle" data-icon="📖">I — Âm đơn giản</div>
       <div class="toneList">
         <div class="toneRow vio"><div class="tg">I</div><div class="td"><b>Cách phát âm:</b> Miệng mở rộng, môi cười như đang nói "ee".<br>
-          <div class="exampleWords"><span class="exampleWord">tin <span class="ew">news</span></span><span class="exampleWord">sinh <span class="ew">life</span></span><span class="exampleWord">tim <span class="ew">heart</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">tin <span class="ew">news</span></span><span class="exampleWord">sinh <span class="ew">life</span></span><span class="exampleWord">tim <span class="ew">heart</span></span><span class="exampleWord">đi học <span class="ew">go to school</span></span><span class="exampleWord">chim non <span class="ew">baby bird</span></span></div></div></div>
       </div>
 
       <div class="secTitle" data-icon="📖">Y — Y chỉ xuất hiện sau U</div>
       <div class="toneList">
         <div class="toneRow pink"><div class="tg">Y</div><div class="td"><b>Cách phát âm:</b> Giống I, nhưng chỉ sau U.<br>
-          <div class="exampleWords"><span class="exampleWord">tuy <span class="ew">though</span></span><span class="exampleWord">huy <span class="ew">wave</span></span><span class="exampleWord">nguy <span class="ew">danger</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">tuy <span class="ew">though</span></span><span class="exampleWord">huy <span class="ew">wave</span></span><span class="exampleWord">nguy <span class="ew">danger</span></span><span class="exampleWord">duy nhất <span class="ew">only</span></span><span class="exampleWord">suy nghĩ <span class="ew">think</span></span></div></div></div>
       </div>
 
       <div class="tipBox"><b>Mẹo:</b> Y không bao giờ đứng đầu từ! Nếu thấy Y, nhìn chữ trước đó chắc chắn là U. Remember: U + Y = always!</div>
