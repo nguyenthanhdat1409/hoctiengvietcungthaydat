@@ -53,7 +53,11 @@ const XP_GAME = 2;             // hoàn thành 1 trò chơi trong bài
 const XP_LESSON = 5;           // học xong 1 bài
 const LESSON_LEARN_SEC = 600;  // phải ở trong bài ≥ 10 phút mới tính là đã học
 
+/* CHỈ tính XP/tiến trình khi HỌC SINH đã đăng nhập */
+function isStudentLogged(){ try{ const u = getAuthUser(); return !!(u && u.role === "student"); }catch(e){ return false; } }
+
 function addXP(amount){
+  if(!isStudentLogged()) return;           // chưa đăng nhập → không cộng XP
   if(!amount || amount <= 0) return;
   progress.xp += amount;
   if(typeof xpFly === "function") xpFly(amount);
@@ -62,6 +66,7 @@ function addXP(amount){
   saveProgress(progress);
 }
 function recordQuiz(score, total){
+  if(!isStudentLogged()) return;           // chưa đăng nhập → không tính
   progress.totalQuizzes++;
   const pct = Math.round(score / total * 100);
   if(pct > progress.quizHighScore) progress.quizHighScore = pct;
@@ -72,6 +77,7 @@ function recordQuiz(score, total){
 function awardGameXP(){ addXP(XP_GAME); }   // gọi khi hoàn thành 1 trò chơi trong bài
 /* Bài học chỉ được tính là "đã học" khi ở trong bài đủ 10 phút */
 function checkLessonLearned(idx){
+  if(!isStudentLogged()) return;           // chưa đăng nhập → không tính
   if(idx == null) return;
   const t = (progress.lessonTime && progress.lessonTime[idx]) || 0;
   if(t >= LESSON_LEARN_SEC && !progress.lessonsViewed.includes(idx)){
@@ -81,6 +87,7 @@ function checkLessonLearned(idx){
   }
 }
 function updateStreak(){
+  if(!isStudentLogged()) return;           // chưa đăng nhập → không tính chuỗi ngày
   const today = new Date().toLocaleDateString("en-CA");   // YYYY-MM-DD theo giờ máy
   if(progress.lastStudyDate === today) return;
   const yest = new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
@@ -416,6 +423,16 @@ function renderHome(){
   document.getElementById("skillGrid").innerHTML = Object.values(CATS).map(c =>
     `<div class="skillCard" style="background:${c.color}"><span class="se">${c.emoji}</span><span class="sn">${c.name}</span></div>`).join("");
   const progEl = document.getElementById("homeProgress");
+  if(progEl && !isStudentLogged()){
+    // Chưa đăng nhập học sinh → không hiện điểm, mời đăng nhập
+    progEl.innerHTML = `<div class="progLogin">
+      <div class="plIc">🔒</div>
+      <div class="plTxt"><b>Đăng nhập để lưu điểm nhé!</b><span>XP, chuỗi ngày và thành tích chỉ được tính khi em đăng nhập tài khoản học sinh.</span></div>
+      <button class="btn small" onclick="openAuth()">👤 Đăng nhập</button>
+    </div>`;
+    initHeroAnim();
+    return;
+  }
   if(progEl){
     const xp = progress.xp || 0;
     const streak = progress.streak || 0;

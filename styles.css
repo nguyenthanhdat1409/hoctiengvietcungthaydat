@@ -649,6 +649,11 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .progHead h3{color:#fff; font-size:20px}
 .xpHelpBtn{background:rgba(255,255,255,.9); color:var(--vio); border:none; font-family:'Baloo 2',cursive; font-weight:800; font-size:13.5px; padding:8px 14px; border-radius:999px; cursor:pointer; box-shadow:0 4px 0 rgba(30,27,75,.18); transition:transform .12s}
 .xpHelpBtn:hover{transform:translateY(-2px)}
+.progLogin{display:flex; align-items:center; gap:14px; background:rgba(255,255,255,.15); border:2px dashed rgba(255,255,255,.6); border-radius:20px; padding:16px 20px; color:#fff; flex-wrap:wrap}
+.progLogin .plIc{font-size:30px}
+.progLogin .plTxt{flex:1; min-width:190px}
+.progLogin .plTxt b{display:block; font-family:'Baloo 2',cursive; font-size:17px}
+.progLogin .plTxt span{font-size:13px; opacity:.92; line-height:1.4}
 
 /* Popup cách nhận XP */
 .xhHead{display:flex; align-items:center; gap:14px; padding:22px 22px; background:linear-gradient(135deg,var(--org),var(--pink)); color:#fff; border-radius:26px 26px 0 0}
