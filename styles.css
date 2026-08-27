@@ -641,6 +641,37 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .stReset{padding:10px 18px 22px; text-align:center; border-top:1px solid #F1F5F9; margin-top:6px}
 .stResetBtn{background:#FEE2E2; color:#B91C1C; box-shadow:0 4px 0 rgba(185,28,28,.18)}
 .stResetBtn:hover{background:#FECACA}
+
+/* Khu tiến trình + nút Cách nhận XP */
+.progHead{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; flex-wrap:wrap}
+.progHead h3{color:#fff; font-size:20px}
+.xpHelpBtn{background:rgba(255,255,255,.9); color:var(--vio); border:none; font-family:'Baloo 2',cursive; font-weight:800; font-size:13.5px; padding:8px 14px; border-radius:999px; cursor:pointer; box-shadow:0 4px 0 rgba(30,27,75,.18); transition:transform .12s}
+.xpHelpBtn:hover{transform:translateY(-2px)}
+
+/* Popup cách nhận XP */
+.xhHead{display:flex; align-items:center; gap:14px; padding:22px 22px; background:linear-gradient(135deg,var(--org),var(--pink)); color:#fff; border-radius:26px 26px 0 0}
+.xhHead .xhAva{width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.25); display:flex; align-items:center; justify-content:center; font-size:30px; flex-shrink:0}
+.xhHead h2{font-size:22px; line-height:1.1}
+.xhHead p{font-size:13.5px; opacity:.92; margin:4px 0 0}
+.xhTitle{font-family:'Baloo 2',cursive; font-weight:800; font-size:16px; color:var(--ink); padding:16px 20px 6px}
+.xhRules{padding:0 16px; display:flex; flex-direction:column; gap:8px}
+.xhRule{display:flex; align-items:center; gap:12px; background:#F8FAFC; border:2px solid #EEF2FF; border-radius:14px; padding:11px 14px}
+.xhrIc{font-size:24px; flex-shrink:0}
+.xhrTxt{flex:1; min-width:0}
+.xhrTxt b{display:block; font-size:14.5px; color:var(--ink)}
+.xhrTxt span{font-size:12.5px; color:#64748B}
+.xhrXp{font-family:'Baloo 2',cursive; font-weight:800; font-size:16px; color:var(--org); background:#FFF7ED; padding:4px 12px; border-radius:999px; white-space:nowrap}
+.xhNote{font-size:13.5px; color:#475569; line-height:1.55; padding:0 20px; margin:2px 0}
+.xhBadges{padding:0 16px 20px; display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.xhBadge{display:flex; align-items:center; gap:10px; background:#F8FAFC; border:2px solid #EEF2FF; border-radius:14px; padding:10px 12px; opacity:.65}
+.xhBadge.got{opacity:1; border-color:var(--lime); background:#F0FDF4}
+.xhbIc{font-size:22px; flex-shrink:0}
+.xhbTxt{flex:1; min-width:0}
+.xhbTxt b{display:block; font-size:13.5px; color:var(--ink)}
+.xhbTxt span{font-size:11.5px; color:#64748B; line-height:1.3}
+.xhbChk{color:#16A34A; font-weight:800; font-size:16px}
+.xhbLock{font-size:13px; opacity:.6}
+@media (max-width:480px){ .xhBadges{grid-template-columns:1fr} }
 @media (max-width:480px){ .stSum{grid-template-columns:repeat(2,1fr)} }
 
 /* Hiệu ứng +XP bay lên ⚡ */

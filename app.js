@@ -32,6 +32,7 @@ function defaultProgress(){
     lastStudyDate: null,// ngày học cuối (YYYY-MM-DD)
     badges: [],         // badge đã đạt
     xp: 0,              // tổng XP
+    lessonTime: {},     // thời gian ở trong mỗi bài (giây) — đủ 10 phút mới tính "đã học"
   };
 }
 function saveProgress(p){
@@ -40,9 +41,23 @@ function saveProgress(p){
 }
 let progress = loadProgress();
 
+/* ===== QUY TẮC CỘNG XP =====
+   · Hoàn thành 1 Kiểm tra: +4 XP
+   · Luyện tập: mỗi 5 câu đúng: +1 XP
+   · Hoàn thành 1 trò chơi trong bài: +2 XP
+   · Học xong 1 bài (ở trong bài ≥ 10 phút): +5 XP
+*/
+const XP_TEST = 4;              // hoàn thành 1 bài kiểm tra
+const XP_PER5_PRACTICE = 5;    // cứ 5 câu đúng ở luyện tập = +1 XP
+const XP_GAME = 2;             // hoàn thành 1 trò chơi trong bài
+const XP_LESSON = 5;           // học xong 1 bài
+const LESSON_LEARN_SEC = 600;  // phải ở trong bài ≥ 10 phút mới tính là đã học
+
 function addXP(amount){
+  if(!amount || amount <= 0) return;
   progress.xp += amount;
-  if(amount > 0 && typeof xpFly === "function") xpFly(amount);
+  if(typeof xpFly === "function") xpFly(amount);
+  updateStreak();              // có cộng XP hôm nay = tính ngày học
   checkBadges();
   saveProgress(progress);
 }
@@ -51,34 +66,38 @@ function recordQuiz(score, total){
   const pct = Math.round(score / total * 100);
   if(pct > progress.quizHighScore) progress.quizHighScore = pct;
   progress.totalStars += Math.round(score);
-  updateStreak();
-  addXP(Math.round(score * 10));
+  updateStreak();             // làm bài = có học hôm nay (kể cả khi chưa đủ XP)
   saveProgress(progress);
 }
-function markLessonViewed(idx){
-  if(!progress.lessonsViewed.includes(idx)){
+function awardGameXP(){ addXP(XP_GAME); }   // gọi khi hoàn thành 1 trò chơi trong bài
+/* Bài học chỉ được tính là "đã học" khi ở trong bài đủ 10 phút */
+function checkLessonLearned(idx){
+  if(idx == null) return;
+  const t = (progress.lessonTime && progress.lessonTime[idx]) || 0;
+  if(t >= LESSON_LEARN_SEC && !progress.lessonsViewed.includes(idx)){
     progress.lessonsViewed.push(idx);
-    addXP(20);
+    addXP(XP_LESSON);
     saveProgress(progress);
   }
 }
 function updateStreak(){
-  const today = new Date().toISOString().slice(0,10);
-  const last = progress.lastStudyDate;
-  if(last === today) return;
-  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0,10);
-  progress.streak = (last === yesterday) ? progress.streak + 1 : 1;
+  const today = new Date().toLocaleDateString("en-CA");   // YYYY-MM-DD theo giờ máy
+  if(progress.lastStudyDate === today) return;
+  const yest = new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
+  progress.streak = (progress.lastStudyDate === yest) ? (progress.streak||0) + 1 : 1;
   progress.lastStudyDate = today;
   checkBadges();
   saveProgress(progress);
 }
 const BADGES = [
-  {id:"first_quiz", icon:"🎯", name:"Lần đầu chơi", desc:"Hoàn thành bài kiểm tra đầu tiên", check: () => progress.totalQuizzes >= 1},
-  {id:"streak3", icon:"🔥", name:"3 ngày liên tiếp", desc:"Học 3 ngày liên tiếp", check: () => progress.streak >= 3},
-  {id:"streak7", icon:"🌟", name:"1 tuần liên tiếp", desc:"Học 7 ngày liên tiếp", check: () => progress.streak >= 7},
-  {id:"high80", icon:"💎", name:"Đỉnh cao", desc:"Đạt trên 80% điểm kiểm tra", check: () => progress.quizHighScore >= 80},
-  {id:"all_lessons", icon:"📚", name:"Thủ khoa", desc:"Xem hết tất cả bài học", check: () => progress.lessonsViewed.length >= LESSONS.length},
-  {id:"xp500", icon:"💪", name:"Siêu nhân", desc:"Đạt 500 XP tổng cộng", check: () => progress.xp >= 500},
+  {id:"first_quiz",  icon:"🎯", name:"Lần đầu chơi", desc:"Làm bài kiểm tra đầu tiên", check: () => progress.totalQuizzes >= 1},
+  {id:"xp20",        icon:"🚀", name:"Khởi động",     desc:"Đạt 20 XP", check: () => progress.xp >= 20},
+  {id:"lessons3",    icon:"🧭", name:"Ham học",       desc:"Học xong 3 bài", check: () => progress.lessonsViewed.length >= 3},
+  {id:"streak3",     icon:"🔥", name:"3 ngày liên tiếp", desc:"Học 3 ngày liên tiếp", check: () => progress.streak >= 3},
+  {id:"high80",      icon:"💎", name:"Đỉnh cao",      desc:"Kiểm tra đạt ≥ 80%", check: () => progress.quizHighScore >= 80},
+  {id:"streak7",     icon:"🌟", name:"1 tuần liên tiếp", desc:"Học 7 ngày liên tiếp", check: () => progress.streak >= 7},
+  {id:"xp100",       icon:"💪", name:"Siêu nhân",     desc:"Đạt 100 XP", check: () => progress.xp >= 100},
+  {id:"all_lessons", icon:"📚", name:"Thủ khoa",      desc:"Học hết tất cả bài", check: () => progress.lessonsViewed.length >= LESSONS.length},
 ];
 function checkBadges(){
   BADGES.forEach(b => {
@@ -404,6 +423,10 @@ function renderHome(){
     const viewed = progress.lessonsViewed.length;
     const totalL = LESSONS.length;
     progEl.innerHTML = `
+      <div class="progHead">
+        <h3>🌟 Tiến trình của em</h3>
+        <button class="xpHelpBtn" onclick="openXpHelp()" title="Cách nhận XP">❓ Cách nhận XP</button>
+      </div>
       <div class="progGrid">
         <div class="progItem"><div class="progNum">${xp}</div><div class="progLbl">XP</div></div>
         <div class="progItem"><div class="progNum">${streak}🔥</div><div class="progLbl">Ngày liên tiếp</div></div>
@@ -1157,6 +1180,7 @@ function initQuizGame(body, g){
       body.innerHTML = lgResultHtml(score, qs.length);
       body.querySelector(".lgReplay").addEventListener("click", () => { idx = 0; score = 0; render(); });
       if(score >= Math.ceil(qs.length*0.7)) burst(6);
+      awardGameXP();
       return;
     }
     const q = qs[idx];
@@ -1189,6 +1213,7 @@ function initListenGameG(body, g){
       body.innerHTML = lgResultHtml(score, totalR);
       body.querySelector(".lgReplay").addEventListener("click", () => { round = 0; score = 0; nextRound(); });
       if(score >= Math.ceil(totalR*0.7)) burst(6);
+      awardGameXP();
       return;
     }
     target = rand(items);
@@ -1240,7 +1265,7 @@ function initMatchGame(body, g){
           info.innerHTML = matched === pairs.length
             ? "🎉 Giỏi quá! Nối đúng hết rồi!"
             : `Bấm 1 hình rồi bấm chữ đúng · Đã nối ${matched}/${pairs.length}`;
-          if(matched === pairs.length) burst(8);
+          if(matched === pairs.length){ burst(8); awardGameXP(); }
           selL = null;
         } else {
           c.classList.add("shake"); sfx.wrong();
@@ -1274,7 +1299,7 @@ function initSortGameG(body, g){
         const chip = document.createElement("span"); chip.className = "miniChip ok"; chip.textContent = sel.textContent;
         bin.querySelector(".lgBinDrop").appendChild(chip);
         sel.classList.add("used"); sel.classList.remove("sel"); sel = null; done++; sfx.correct();
-        if(done === total) burst(8);
+        if(done === total){ burst(8); awardGameXP(); }
       } else {
         bin.classList.add("bad"); sfx.wrong(); setTimeout(() => bin.classList.remove("bad"), 400);
       }
@@ -1501,8 +1526,8 @@ function renderLessons(){
 }
 function openLesson(i){
   const l = LESSONS[i];
-  markLessonViewed(i);
   logLesson(i);
+  startLessonTimer(i);          // bắt đầu tính giờ (≥10 phút = đã học)
   document.getElementById("lessonBody").innerHTML =
     `<div class="lessonHead"><div class="lh-ic">${l.icon}</div><div><h2>${l.title}</h2><p>${l.desc}</p></div></div>
      <div class="lContent">${l.body}${renderLessonGames(LESSON_GAMES[i])}</div>`;
@@ -1512,8 +1537,33 @@ function openLesson(i){
 }
 function closeLesson(e){
   if(e && e.target && e.target.id !== "lessonModal" && e.type === "click" && e.currentTarget.id === "lessonModal") return;
+  stopLessonTimer();            // cộng dồn thời gian, kiểm tra đủ 10 phút chưa
   document.getElementById("lessonModal").classList.add("hidden");
   document.body.style.overflow = "";
+}
+/* ---- Đếm thời gian ở trong bài học ---- */
+let _lsIdx = null, _lsStart = 0, _lsTimer = null;
+function startLessonTimer(i){
+  progress.lessonTime = progress.lessonTime || {};
+  _lsIdx = i; _lsStart = Date.now();
+  clearTimeout(_lsTimer);
+  if(progress.lessonsViewed.includes(i)) return;   // đã học rồi thì thôi
+  const already = progress.lessonTime[i] || 0;
+  const remain = Math.max(0, LESSON_LEARN_SEC - already) * 1000;
+  _lsTimer = setTimeout(() => {                     // ở đủ 10 phút liên tục → tính ngay
+    progress.lessonTime[i] = LESSON_LEARN_SEC;
+    checkLessonLearned(i);
+  }, remain);
+}
+function stopLessonTimer(){
+  if(_lsIdx == null) return;
+  clearTimeout(_lsTimer);
+  progress.lessonTime = progress.lessonTime || {};
+  const sec = Math.round((Date.now() - _lsStart) / 1000);
+  if(sec > 0) progress.lessonTime[_lsIdx] = (progress.lessonTime[_lsIdx] || 0) + sec;
+  checkLessonLearned(_lsIdx);
+  saveProgress(progress);
+  _lsIdx = null;
 }
 
 /* =========================================================
@@ -1974,6 +2024,7 @@ function showResult(){
   const el = document.getElementById("resultCard");
   const finalScore = Math.round(score);
   recordQuiz(finalScore, total);
+  addXP(XP_TEST);                       // hoàn thành 1 bài kiểm tra: +4 XP
   logQuiz("test", finalScore, total, p, star);
   if(p >= 60) sfx.win();
   el.innerHTML = `
@@ -2011,6 +2062,7 @@ function showPracticeResult(){
   const tier = tierOf(p);
   const catName = practiceCat === "all" ? "Tất cả chủ đề" : (CATS[practiceCat].emoji + " " + CATS[practiceCat].name);
   recordQuiz(Math.round(correct), total);
+  addXP(Math.floor(correct / XP_PER5_PRACTICE));   // luyện tập: mỗi 5 câu đúng = +1 XP
   logQuiz("practice", Math.round(correct), total, p, null);
   if(p >= 60) sfx.win();
 
@@ -3078,6 +3130,34 @@ async function openStudentDetail(id){
 function closeStudentDetail(e){
   if(e && e.type === "click" && e.currentTarget && e.target !== e.currentTarget) return;
   document.getElementById("studentModal").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+/* ---- Popup ❓ giải thích cách nhận XP & thành tích ---- */
+function openXpHelp(){
+  const rules = [
+    ["📖", "Học xong 1 bài học", "+" + XP_LESSON + " XP", "ở trong bài từ 10 phút trở lên"],
+    ["🏆", "Hoàn thành 1 bài Kiểm tra", "+" + XP_TEST + " XP", "làm xong là được"],
+    ["🎮", "Luyện tập (Bài tập)", "+1 XP", "mỗi " + XP_PER5_PRACTICE + " câu trả lời đúng"],
+    ["🧩", "Hoàn thành 1 trò chơi", "+" + XP_GAME + " XP", "các trò trong bài học"],
+  ];
+  const earned = progress.badges.filter(id => BADGES.some(b => b.id === id)).length;
+  const rulesHtml = rules.map(r =>
+    `<div class="xhRule"><span class="xhrIc">${r[0]}</span><div class="xhrTxt"><b>${r[1]}</b><span>${r[3]}</span></div><span class="xhrXp">${r[2]}</span></div>`).join("");
+  const badgesHtml = BADGES.map(b => {
+    const got = progress.badges.includes(b.id);
+    return `<div class="xhBadge ${got ? "got" : ""}"><span class="xhbIc">${b.icon}</span><div class="xhbTxt"><b>${b.name}</b><span>${b.desc}</span></div>${got ? '<span class="xhbChk">✓</span>' : '<span class="xhbLock">🔒</span>'}</div>`;
+  }).join("");
+  document.getElementById("xpHelpBody").innerHTML =
+    `<div class="xhHead"><span class="xhAva">⚡</span><div><h2>Cách nhận XP</h2><p>Học đều mỗi ngày để lên cấp nha!</p></div></div>` +
+    `<div class="xhTitle">💰 Em được cộng XP khi</div><div class="xhRules">${rulesHtml}</div>` +
+    `<div class="xhTitle">🔥 Chuỗi ngày liên tiếp</div><p class="xhNote">Ngày nào có <b>học xong bài</b> hoặc <b>làm bài</b> thì chuỗi <b>+1</b>. Nghỉ một ngày là chuỗi bắt đầu lại từ 1 — nên cố gắng học mỗi ngày nhé! 💪</p>` +
+    `<div class="xhTitle">🏅 Thành tích (${earned}/${BADGES.length})</div><div class="xhBadges">${badgesHtml}</div>`;
+  document.getElementById("xpHelpModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+function closeXpHelp(e){
+  if(e && e.type === "click" && e.currentTarget && e.target !== e.currentTarget) return;
+  document.getElementById("xpHelpModal").classList.add("hidden");
   document.body.style.overflow = "";
 }
 async function resetStudent(id){
