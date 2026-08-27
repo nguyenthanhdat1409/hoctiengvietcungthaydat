@@ -1239,6 +1239,28 @@ const LESSONS = [
 
       <div class="tipBox">💡 <b>Mẹo nhớ:</b> <b>Nguyên</b> âm = "nguyên vẹn", tự đọc trọn một mình. <b>Phụ</b> âm = "phụ giúp", phải có nguyên âm mới đọc thành tiếng.</div>
       <div class="challengeBox"><b>Thử thách:</b> Trong các chữ <b>a, b, o, m, e, t</b> — chữ nào là nguyên âm, chữ nào là phụ âm? (Gợi ý: nguyên âm là a, o, e.)</div>`},
+
+  {icon:"📙", color:"#F59E0B", title:"Dấu thanh là gì?", desc:"Bài mở đầu: dấu thanh làm đổi cao–thấp của giọng — đổi dấu là đổi nghĩa.",
+    body:`<p><b>🎯 Mục tiêu:</b> Hiểu <b>dấu thanh</b> là gì và vì sao nó quan trọng trong tiếng Việt.</p>
+      <div class="langBox"><b>Dấu thanh</b> là dấu đặt <b>trên hoặc dưới nguyên âm</b>, làm thay đổi <b>độ cao – thấp</b> của giọng khi đọc.<br>
+      👉 Cùng một chữ, <b>đổi dấu là đổi nghĩa</b> hoàn toàn!</div>
+
+      <div class="secTitle" data-icon="🎵">Tiếng Việt có 6 dấu thanh</div>
+      <div class="dlg">Nhìn cùng chữ <b>“ma”</b> với 6 dấu khác nhau — 6 nghĩa khác nhau:<br>
+      · <b>ma</b> (không dấu) — con ma 👻<br>
+      · <b>mà</b> (dấu huyền) — nhưng mà<br>
+      · <b>má</b> (dấu sắc) — đôi má 😊<br>
+      · <b>mả</b> (dấu hỏi) — ngôi mả<br>
+      · <b>mã</b> (dấu ngã) — con mã (cờ)<br>
+      · <b>mạ</b> (dấu nặng) — cây mạ 🌱</div>
+
+      <div class="secTitle" data-icon="✍️">Dấu đặt ở đâu?</div>
+      <div class="dlg"><b>5 dấu</b> (huyền, sắc, hỏi, ngã) đặt <b>trên</b> nguyên âm: à, á, ả, ã.<br>
+      Riêng <b>dấu nặng</b> đặt <b>dưới</b> nguyên âm: ạ.<br>
+      Thanh <b>ngang</b> thì <b>không có dấu</b>: a.</div>
+
+      <div class="tipBox">💡 <b>Mẹo:</b> Đọc dấu thanh như <b>nốt nhạc</b> lên – xuống. Vẽ tay theo đường: huyền (\\), sắc (/), hỏi (∨), ngã (~), nặng (chấm mạnh).</div>
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: ba – bà – bá – bả – bã – bạ. Nghe 6 giọng cao thấp khác nhau không? Bài sau em sẽ học kỹ từng dấu nha!</div>`},
 ];
 
 /* =========================================================
@@ -1669,6 +1691,15 @@ const LESSON_GAMES = {
       {q:"Chữ nào đọc được MỘT MÌNH thành tiếng?", opts:["o","b","t","m"], a:0},
     ]},
   ],
+  31: [ // Bài mở đầu: Dấu thanh là gì?
+    {type:"listen", title:"Nghe & chọn đúng dấu", items:["ma","mà","má","mả","mã","mạ"]},
+    {type:"quiz", title:"Đố nhanh về dấu thanh", questions:[
+      {q:"Tiếng Việt có mấy dấu thanh?", opts:["4","5","6","7"], a:2},
+      {q:"Dấu nào đặt DƯỚI nguyên âm?", opts:["Dấu nặng","Dấu sắc","Dấu huyền","Dấu hỏi"], a:0},
+      {q:"Thanh nào KHÔNG có dấu?", opts:["Ngang","Huyền","Sắc","Nặng"], a:0},
+      {q:"“má” (đôi má) mang dấu gì?", opts:["Sắc","Huyền","Hỏi","Nặng"], a:0},
+    ]},
+  ],
 };
 
 /* Thứ tự học hợp lý (giá trị = index thật trong mảng LESSONS).
@@ -1679,7 +1710,8 @@ const LESSON_SEQUENCE = [
   0, 1, 2, 3, 4,             // Nguyên âm (A/Ă/Â, E/Ê, O/Ô/Ơ, U/Ư, I/Y)
   14, 26, 27, 28, 29,        // Phụ âm: tổng quan + B·C·D·Đ, G·H·K·L, M·N·P·Q, R·S·T·V·X
   15,                        // Phụ âm ghép
-  5,                         // Dấu thanh
+  31,                        // Mở đầu: Dấu thanh là gì?
+  5,                         // Dấu thanh (6 dấu chi tiết)
   16,                        // Quy tắc chính tả
   8, 17,                     // Ghép vần, Vần thường gặp
   9,                         // Đọc hiểu
