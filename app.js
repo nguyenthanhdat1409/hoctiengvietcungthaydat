@@ -1160,6 +1160,55 @@ const LESSONS = [
 
       <div class="tipBox">💡 <b>Mẹo:</b> Khi hỏi AI, hãy hỏi <b>rõ ràng</b> điều mình muốn — hỏi càng rõ, câu trả lời càng đúng ý.</div>
       <div class="challengeBox"><b>Thử thách:</b> Kể tên 3 chỗ em thấy AI trong cuộc sống hằng ngày. Theo em, AI giúp ích gì cho mình?</div>`},
+
+  {icon:"🔡", color:"#7C3AED", title:"Bài 27: Phụ âm B · C · D · Đ", desc:"4 phụ âm đầu đầu tiên — bấm ví dụ để nghe và tập ghép vần.",
+    body:`<p><b>🎯 Mục tiêu:</b> Đọc đúng 4 phụ âm <b>B, C, D, Đ</b> và ghép với nguyên âm thành tiếng. Bấm ví dụ để nghe nha! 🔊</p>
+      <div class="langBox"><b>Phụ âm đầu</b> đọc trước nguyên âm: <b>b</b>+<b>a</b>=<b>ba</b>. Đọc nhẹ phụ âm rồi kéo sang nguyên âm.</div>
+      <div class="toneList">
+        <div class="toneRow vio"><div class="tg">B</div><div class="td"><b>B</b> — hai môi mím lại rồi bật ra.<div class="exampleWords"><span class="exampleWord">ba <span class="ew">dad</span></span><span class="exampleWord">bé <span class="ew">little</span></span><span class="exampleWord">bàn <span class="ew">table</span></span></div></div></div>
+        <div class="toneRow pink"><div class="tg">C</div><div class="td"><b>C</b> — âm "cờ", gốc lưỡi chạm vòm.<div class="exampleWords"><span class="exampleWord">cá <span class="ew">fish</span></span><span class="exampleWord">cơm <span class="ew">rice</span></span><span class="exampleWord">con <span class="ew">child</span></span></div></div></div>
+        <div class="toneRow cyan"><div class="tg">D</div><div class="td"><b>D</b> — âm "dờ" (như "z" tiếng Anh).<div class="exampleWords"><span class="exampleWord">da <span class="ew">skin</span></span><span class="exampleWord">dê <span class="ew">goat</span></span><span class="exampleWord">dây <span class="ew">string</span></span></div></div></div>
+        <div class="toneRow org"><div class="tg">Đ</div><div class="td"><b>Đ</b> — âm "đờ", đầu lưỡi chạm răng.<div class="exampleWords"><span class="exampleWord">đi <span class="ew">go</span></span><span class="exampleWord">đá <span class="ew">stone</span></span><span class="exampleWord">đẹp <span class="ew">pretty</span></span></div></div></div>
+      </div>
+      <div class="tipBox">💡 <b>Mẹo:</b> Phân biệt <b>d</b> và <b>đ</b>: "da" (làn da) khác "đa" (cây đa). Đọc chậm để nghe rõ nha!</div>
+      <div class="challengeBox"><b>Thử thách:</b> Ghép mỗi phụ âm với "a": ba – ca – da – đa. Đọc to 3 lần!</div>`},
+
+  {icon:"🔡", color:"#EC4899", title:"Bài 28: Phụ âm G · H · K · L", desc:"4 phụ âm tiếp theo — kèm ví dụ nghe được.",
+    body:`<p><b>🎯 Mục tiêu:</b> Đọc đúng <b>G, H, K, L</b>. Bấm ví dụ để nghe! 🔊</p>
+      <div class="langBox"><b>K</b> đọc giống <b>C</b> (âm "cờ") nhưng chỉ đứng trước <b>e, ê, i</b> (kể, kính). Xem lại luật chính tả ở Bài 17 nha!</div>
+      <div class="toneList">
+        <div class="toneRow lime"><div class="tg">G</div><div class="td"><b>G</b> — âm "gờ", gốc lưỡi rung nhẹ.<div class="exampleWords"><span class="exampleWord">gà <span class="ew">chicken</span></span><span class="exampleWord">gỗ <span class="ew">wood</span></span><span class="exampleWord">gạo <span class="ew">rice grain</span></span></div></div></div>
+        <div class="toneRow yel"><div class="tg">H</div><div class="td"><b>H</b> — âm "hờ", hơi thở ra nhẹ.<div class="exampleWords"><span class="exampleWord">hoa <span class="ew">flower</span></span><span class="exampleWord">học <span class="ew">study</span></span><span class="exampleWord">hồ <span class="ew">lake</span></span></div></div></div>
+        <div class="toneRow vio"><div class="tg">K</div><div class="td"><b>K</b> — âm "cờ", chỉ đi với e, ê, i.<div class="exampleWords"><span class="exampleWord">kem <span class="ew">ice cream</span></span><span class="exampleWord">kể <span class="ew">tell</span></span><span class="exampleWord">kính <span class="ew">glasses</span></span></div></div></div>
+        <div class="toneRow pink"><div class="tg">L</div><div class="td"><b>L</b> — âm "lờ", đầu lưỡi cong.<div class="exampleWords"><span class="exampleWord">lá <span class="ew">leaf</span></span><span class="exampleWord">lê <span class="ew">pear</span></span><span class="exampleWord">lúa <span class="ew">rice plant</span></span></div></div></div>
+      </div>
+      <div class="tipBox">💡 <b>Mẹo:</b> Đừng lẫn <b>l</b> và <b>n</b>: "lo" (lo lắng) khác "no" (ăn no). Chạm lưỡi khác nhau đó!</div>
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: gà – hoa – kem – lá. Tìm thêm 1 từ cho mỗi phụ âm nha!</div>`},
+
+  {icon:"🔡", color:"#06B6D4", title:"Bài 29: Phụ âm M · N · P · Q", desc:"Thêm 4 phụ âm — có mẹo với P và Q.",
+    body:`<p><b>🎯 Mục tiêu:</b> Đọc đúng <b>M, N, P, Q</b>. Bấm ví dụ để nghe! 🔊</p>
+      <div class="langBox"><b>Q</b> luôn đi cùng <b>u</b> thành <b>qu</b> (quả, quê). <b>P</b> đứng đầu rất hiếm (thường trong <b>ph</b>), hay gặp ở từ mượn như "pin".</div>
+      <div class="toneList">
+        <div class="toneRow cyan"><div class="tg">M</div><div class="td"><b>M</b> — hai môi mím, âm mũi.<div class="exampleWords"><span class="exampleWord">mẹ <span class="ew">mom</span></span><span class="exampleWord">mèo <span class="ew">cat</span></span><span class="exampleWord">mưa <span class="ew">rain</span></span></div></div></div>
+        <div class="toneRow org"><div class="tg">N</div><div class="td"><b>N</b> — đầu lưỡi chạm lợi, âm mũi.<div class="exampleWords"><span class="exampleWord">nó <span class="ew">it</span></span><span class="exampleWord">nai <span class="ew">deer</span></span><span class="exampleWord">nước <span class="ew">water</span></span></div></div></div>
+        <div class="toneRow lime"><div class="tg">P</div><div class="td"><b>P</b> — âm "pờ", hai môi bật mạnh (hiếm đứng đầu).<div class="exampleWords"><span class="exampleWord">pin <span class="ew">battery</span></span><span class="exampleWord">pi-a-nô <span class="ew">piano</span></span></div></div></div>
+        <div class="toneRow yel"><div class="tg">Q</div><div class="td"><b>Q</b> — luôn viết <b>qu</b>, đọc "quờ".<div class="exampleWords"><span class="exampleWord">quả <span class="ew">fruit</span></span><span class="exampleWord">quà <span class="ew">gift</span></span><span class="exampleWord">quê <span class="ew">homeland</span></span></div></div></div>
+      </div>
+      <div class="tipBox">💡 <b>Mẹo:</b> Thấy chữ <b>q</b> thì chắc chắn có <b>u</b> theo sau. Không có "q" đứng một mình đâu nha!</div>
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: mẹ – nai – pin – quà. Từ nào có phụ âm mũi (nghe ở mũi)?</div>`},
+
+  {icon:"🔡", color:"#22C55E", title:"Bài 30: Phụ âm R · S · T · V · X", desc:"5 phụ âm cuối — hoàn thành 17 phụ âm đầu!",
+    body:`<p><b>🎯 Mục tiêu:</b> Đọc đúng <b>R, S, T, V, X</b> — học xong là biết đủ 17 phụ âm đầu! Bấm ví dụ để nghe! 🔊</p>
+      <div class="langBox"><b>S</b> và <b>X</b> nghe hơi giống: <b>s</b> nặng hơn (uốn lưỡi), <b>x</b> nhẹ hơn (như "s" tiếng Anh). "sôi" khác "xôi".</div>
+      <div class="toneList">
+        <div class="toneRow vio"><div class="tg">R</div><div class="td"><b>R</b> — âm "rờ", đầu lưỡi rung nhẹ.<div class="exampleWords"><span class="exampleWord">rổ <span class="ew">basket</span></span><span class="exampleWord">rùa <span class="ew">turtle</span></span><span class="exampleWord">rơm <span class="ew">straw</span></span></div></div></div>
+        <div class="toneRow pink"><div class="tg">S</div><div class="td"><b>S</b> — âm "sờ" nặng, hơi uốn lưỡi.<div class="exampleWords"><span class="exampleWord">sách <span class="ew">book</span></span><span class="exampleWord">sao <span class="ew">star</span></span><span class="exampleWord">sữa <span class="ew">milk</span></span></div></div></div>
+        <div class="toneRow cyan"><div class="tg">T</div><div class="td"><b>T</b> — âm "tờ", đầu lưỡi chạm răng.<div class="exampleWords"><span class="exampleWord">tay <span class="ew">hand</span></span><span class="exampleWord">tô <span class="ew">bowl</span></span><span class="exampleWord">táo <span class="ew">apple</span></span></div></div></div>
+        <div class="toneRow org"><div class="tg">V</div><div class="td"><b>V</b> — âm "vờ", răng chạm môi dưới.<div class="exampleWords"><span class="exampleWord">vé <span class="ew">ticket</span></span><span class="exampleWord">voi <span class="ew">elephant</span></span><span class="exampleWord">vui <span class="ew">happy</span></span></div></div></div>
+        <div class="toneRow lime"><div class="tg">X</div><div class="td"><b>X</b> — âm "xờ" nhẹ.<div class="exampleWords"><span class="exampleWord">xe <span class="ew">vehicle</span></span><span class="exampleWord">xa <span class="ew">far</span></span><span class="exampleWord">xôi <span class="ew">sticky rice</span></span></div></div></div>
+      </div>
+      <div class="tipBox">💡 <b>Mẹo:</b> Luyện cặp dễ nhầm: <b>s – x</b> (sao/xao), <b>r – d</b> (ra/da). Đọc chậm nghe khác nhau nha!</div>
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: rùa – sao – tay – voi – xe. 🎉 Em đã biết đủ <b>17 phụ âm đầu</b> rồi đó!</div>`},
 ];
 
 /* =========================================================
@@ -1543,6 +1592,42 @@ const LESSON_GAMES = {
       {q:"Điều gì chỉ con người mới có?", opts:["Tình cảm & sáng tạo","Tính toán nhanh","Nhớ nhiều số","Chạy điện"], a:0},
     ]},
     {type:"match", title:"Nối AI với công việc nó giúp", pairs:[["🗣️","trợ lý ảo"],["🗺️","chỉ đường"],["🌐","dịch ngôn ngữ"],["📷","nhận diện khuôn mặt"],["💬","chatbot trò chuyện"]]},
+  ],
+  26: [ // Bài 27: Phụ âm B C D Đ
+    {type:"listen", title:"Nghe & chọn tiếng", items:["ba","cá","dê","đi","bé","con"]},
+    {type:"match", title:"Nối hình với từ", pairs:[["🐟","cá"],["🐐","dê"],["🍎","đá"],["🪑","bàn"]]},
+    {type:"quiz", title:"Đố nhanh B · C · D · Đ", questions:[
+      {q:"\"cá\" bắt đầu bằng phụ âm nào?", glyph:"🐟", opts:["c","k","d","đ"], a:0},
+      {q:"\"đi\" bắt đầu bằng phụ âm nào?", opts:["d","đ","b","t"], a:1},
+      {q:"Từ nào bắt đầu bằng B?", opts:["bàn","cơm","dê","đá"], a:0},
+    ]},
+  ],
+  27: [ // Bài 28: Phụ âm G H K L
+    {type:"listen", title:"Nghe & chọn tiếng", items:["gà","hoa","kem","lá","hồ","lê"]},
+    {type:"match", title:"Nối hình với từ", pairs:[["🐔","gà"],["🌸","hoa"],["🍨","kem"],["🍃","lá"]]},
+    {type:"quiz", title:"Đố nhanh G · H · K · L", questions:[
+      {q:"\"kem\" bắt đầu bằng phụ âm nào?", glyph:"🍨", opts:["c","k","g","h"], a:1},
+      {q:"K thường đứng trước chữ nào?", opts:["a, o, u","e, ê, i","tất cả"], a:1},
+      {q:"Từ nào bắt đầu bằng H?", opts:["hoa","gà","lá","kem"], a:0},
+    ]},
+  ],
+  28: [ // Bài 29: Phụ âm M N P Q
+    {type:"listen", title:"Nghe & chọn tiếng", items:["mẹ","nai","pin","quả","mèo","nước"]},
+    {type:"match", title:"Nối hình với từ", pairs:[["👩","mẹ"],["🦌","nai"],["🔋","pin"],["🍎","quả"]]},
+    {type:"quiz", title:"Đố nhanh M · N · P · Q", questions:[
+      {q:"Chữ Q luôn đi cùng chữ nào?", opts:["u","a","o","i"], a:0},
+      {q:"\"quả\" bắt đầu bằng?", glyph:"🍎", opts:["q (qu)","c","k","g"], a:0},
+      {q:"Từ nào bắt đầu bằng M?", opts:["mèo","nai","pin","quà"], a:0},
+    ]},
+  ],
+  29: [ // Bài 30: Phụ âm R S T V X
+    {type:"listen", title:"Nghe & chọn tiếng", items:["rùa","sao","tay","voi","xe","sữa"]},
+    {type:"match", title:"Nối hình với từ", pairs:[["🐢","rùa"],["⭐","sao"],["✋","tay"],["🐘","voi"],["🚗","xe"]]},
+    {type:"quiz", title:"Đố nhanh R · S · T · V · X", questions:[
+      {q:"\"voi\" bắt đầu bằng phụ âm nào?", glyph:"🐘", opts:["v","b","d","x"], a:0},
+      {q:"\"xe\" bắt đầu bằng phụ âm nào?", glyph:"🚗", opts:["x","s","t","c"], a:0},
+      {q:"Từ nào bắt đầu bằng S?", opts:["sao","xe","rùa","tay"], a:0},
+    ]},
   ],
 };
 
