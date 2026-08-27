@@ -2900,6 +2900,10 @@ async function authLogout(){
   const client = getSB();
   if(client){ try{ await client.auth.signOut(); }catch(e){} }
   clearAuthUser();
+  // Xoá tiến trình trên máy (thuộc về tài khoản vừa thoát) → về 0 khi chưa đăng nhập
+  progress = defaultProgress();
+  try{ localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress)); }catch(e){}
+  try{ renderHome(); }catch(e){}
   authMsg("", "");
 }
 function renderAuthState(){
