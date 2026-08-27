@@ -1209,6 +1209,36 @@ const LESSONS = [
       </div>
       <div class="tipBox">💡 <b>Mẹo:</b> Luyện cặp dễ nhầm: <b>s – x</b> (sao/xao), <b>r – d</b> (ra/da). Đọc chậm nghe khác nhau nha!</div>
       <div class="challengeBox"><b>Thử thách:</b> Đọc to: rùa – sao – tay – voi – xe. 🎉 Em đã biết đủ <b>17 phụ âm đầu</b> rồi đó!</div>`},
+
+  {icon:"📗", color:"#0EA5E9", title:"Nguyên âm & Phụ âm là gì?", desc:"Bài mở đầu: bảng chữ cái có 2 nhóm — nguyên âm và phụ âm; cách ghép thành tiếng.",
+    body:`<p><b>🎯 Mục tiêu:</b> Hiểu <b>chữ cái</b> tiếng Việt gồm 2 nhóm — <b>nguyên âm</b> và <b>phụ âm</b> — và cách ghép chúng thành tiếng.</p>
+      <div class="langBox"><b>Bảng chữ cái tiếng Việt có 29 chữ</b>, chia làm 2 nhóm:<br>
+      🔵 <b>Nguyên âm</b> (12 chữ) — đọc được <b>một mình</b>, miệng mở, hơi ra tự do.<br>
+      🟢 <b>Phụ âm</b> (17 chữ) — <b>không</b> đọc trọn một mình được, phải <b>ghép với nguyên âm</b>.</div>
+
+      <div class="secTitle" data-icon="🔵">Nguyên âm — 12 chữ (đọc một mình được)</div>
+      <div class="alphaGrid" style="grid-template-columns:repeat(auto-fill,minmax(46px,1fr))">
+        ${["a","ă","â","e","ê","i","o","ô","ơ","u","ư","y"].map(ch =>
+          `<span style="font-size:20px;font-weight:800;padding:10px 0;color:#0EA5E9">${ch}</span>`).join("")}
+      </div>
+      <div class="dlg"><b>Thử đọc:</b> a… o… e… ê… — chỉ cần mở miệng là ra tiếng, không cần chữ nào khác. Đó là <b>nguyên âm</b>!</div>
+
+      <div class="secTitle" data-icon="🟢">Phụ âm — 17 chữ (cần nguyên âm đi kèm)</div>
+      <div class="alphaGrid" style="grid-template-columns:repeat(auto-fill,minmax(46px,1fr))">
+        ${["b","c","d","đ","g","h","k","l","m","n","p","q","r","s","t","v","x"].map(ch =>
+          `<span style="font-size:20px;font-weight:800;padding:10px 0;color:#22C55E">${ch}</span>`).join("")}
+      </div>
+      <div class="dlg"><b>Thử đọc:</b> chữ <b>b</b> đọc là "bờ", chữ <b>m</b> đọc là "mờ" — nghe cụt cụt, chưa thành tiếng. Phải ghép nguyên âm mới trọn: <b>b + a = ba</b>.</div>
+
+      <div class="secTitle" data-icon="🧩">Ghép thành tiếng</div>
+      <div class="dlg"><b>Phụ âm + Nguyên âm (+ Dấu) = Tiếng</b><br>
+      · <b>b + a = ba</b> 👨 (dad)<br>
+      · <b>m + e = me</b> · <b>m + e + huyền = mè</b> (vừng)<br>
+      · <b>c + á = cá</b> 🐟 · <b>b + à = bà</b> 👵<br>
+      Nguyên âm cũng đứng một mình thành tiếng được: <b>a</b>, <b>ô</b> (cái ô), <b>y</b> (y tế).</div>
+
+      <div class="tipBox">💡 <b>Mẹo nhớ:</b> <b>Nguyên</b> âm = "nguyên vẹn", tự đọc trọn một mình. <b>Phụ</b> âm = "phụ giúp", phải có nguyên âm mới đọc thành tiếng.</div>
+      <div class="challengeBox"><b>Thử thách:</b> Trong các chữ <b>a, b, o, m, e, t</b> — chữ nào là nguyên âm, chữ nào là phụ âm? (Gợi ý: nguyên âm là a, o, e.)</div>`},
 ];
 
 /* =========================================================
@@ -1629,13 +1659,24 @@ const LESSON_GAMES = {
       {q:"Từ nào bắt đầu bằng S?", opts:["sao","xe","rùa","tay"], a:0},
     ]},
   ],
+  30: [ // Bài mở đầu: Nguyên âm & Phụ âm
+    {type:"sort", title:"Phân loại: Nguyên âm hay Phụ âm?", hint:"Bấm chữ rồi bỏ vào đúng nhóm!", bins:["Nguyên âm","Phụ âm"],
+      items:[["a","Nguyên âm"],["o","Nguyên âm"],["e","Nguyên âm"],["u","Nguyên âm"],["b","Phụ âm"],["m","Phụ âm"],["t","Phụ âm"],["c","Phụ âm"]]},
+    {type:"quiz", title:"Đố nhanh nguyên âm / phụ âm", questions:[
+      {q:"Chữ nào là NGUYÊN ÂM?", opts:["a","b","m","t"], a:0},
+      {q:"Chữ nào là PHỤ ÂM?", opts:["o","e","c","u"], a:2},
+      {q:"Phụ âm b ghép với nguyên âm a thành tiếng gì?", opts:["ba","ab","bờ","aa"], a:0},
+      {q:"Chữ nào đọc được MỘT MÌNH thành tiếng?", opts:["o","b","t","m"], a:0},
+    ]},
+  ],
 };
 
 /* Thứ tự học hợp lý (giá trị = index thật trong mảng LESSONS).
    Nguyên âm → Phụ âm → Phụ âm ghép → Dấu thanh → Chính tả → Ghép vần →
    Đọc hiểu → Từ vựng → Ngữ pháp → Hội thoại/Viết → AI. Games vẫn theo index thật. */
 const LESSON_SEQUENCE = [
-  0, 1, 2, 3, 4,              // Nguyên âm (A/Ă/Â, E/Ê, O/Ô/Ơ, U/Ư, I/Y)
+  30,                        // Mở đầu: Nguyên âm & Phụ âm là gì?
+  0, 1, 2, 3, 4,             // Nguyên âm (A/Ă/Â, E/Ê, O/Ô/Ơ, U/Ư, I/Y)
   14, 26, 27, 28, 29,        // Phụ âm: tổng quan + B·C·D·Đ, G·H·K·L, M·N·P·Q, R·S·T·V·X
   15,                        // Phụ âm ghép
   5,                         // Dấu thanh
