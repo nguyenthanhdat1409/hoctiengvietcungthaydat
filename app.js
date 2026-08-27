@@ -2374,7 +2374,7 @@ function hasVNVoice(){
 }
 /* ---- Lựa chọn giọng đọc của người dùng ---- */
 const VOICE_KEY = "thaydat_voice_v1";
-function getVoicePref(){ try{ return JSON.parse(localStorage.getItem(VOICE_KEY)) || { mode:"auto" }; }catch(e){ return { mode:"auto" }; } }
+function getVoicePref(){ try{ return JSON.parse(localStorage.getItem(VOICE_KEY)) || { mode:"online" }; }catch(e){ return { mode:"online" }; } }
 function setVoicePref(p){
   try{ localStorage.setItem(VOICE_KEY, JSON.stringify(p)); }catch(e){}
   // Nhớ theo tài khoản: học sinh đăng nhập → lưu vào tiến trình (đồng bộ cloud)
