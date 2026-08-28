@@ -12,6 +12,7 @@ const CATS = {
   viet:    {name:"Xếp câu (Viết)", chip:"#FEF2F2;color:#991B1B;border:2px solid #F87171", color:"#F87171", emoji:"🧩"},
   doc:     {name:"Đọc hiểu", chip:"#FFF7ED;color:#9A3412;border:2px solid #FB923C", color:"#FB923C", emoji:"📖"},
   nghe:    {name:"Nghe", chip:"#EEF2FF;color:#3730A3;border:2px solid #6366F1", color:"#6366F1", emoji:"🎧"},
+  dientu:  {name:"Điền từ", chip:"#FFF1F2;color:#9F1239;border:2px solid #F43F5E", color:"#F43F5E", emoji:"📝"},
 };
 
 /* =========================================================
@@ -193,6 +194,12 @@ const BANK = {
    {cat:"viet", type:"order", q:"Bấm vào các từ theo đúng thứ tự để thành câu có nghĩa!", words:["Con","chim","đang","hót"]},
    {cat:"doc", type:"read", passage:"Chú thỏ trắng có đôi tai dài. Chú rất thích ăn cà rốt.",
      q:"Chú thỏ thích ăn gì?", opts:["Bắp cải","Cà rốt","Rau muống","Cỏ"], a:1},
+   {cat:"dientu", type:"fill", q:"Hôm nay trời ... nên em đi học phải mang dù để không bị ướt.", opts:["mưa","nắng","đẹp","khô"], a:0},
+   {cat:"dientu", type:"fill", q:"Con mèo kêu ... nghe rất dễ thương.", opts:["meo meo","gâu gâu","ò ó o","ụt ịt"], a:0},
+   {cat:"dientu", type:"fill", q:"Buổi sáng thức dậy, em ... răng rồi rửa mặt.", opts:["đánh","ăn","đá","đọc"], a:0},
+   {cat:"dientu", type:"fill", q:"Mẹ ơi, con ... mẹ nhiều lắm!", opts:["yêu","sợ","quên","giận"], a:0},
+   {cat:"dientu", type:"fill", q:"Đàn cá bơi tung tăng dưới ... .", opts:["nước","trời","đất","cây"], a:0},
+   {cat:"dientu", type:"fill", q:"Đến giờ đi ngủ, em nói lời ... với ba mẹ.", opts:["chúc ngủ ngon","xin chào","cảm ơn","tạm biệt"], a:0},
 ],
 2: [
   {cat:"tuvung", type:"emojiQ", q:"Đây là chỗ nào?", glyph:"🏫", opts:["Bệnh viện","Chợ","Trường học","Công viên"], a:2},
@@ -297,6 +304,12 @@ const BANK = {
    {cat:"viet", type:"order", q:"Bấm vào các từ theo đúng thứ tự để thành câu có nghĩa!", words:["Mùa","hè","em","được","đi","biển"]},
    {cat:"doc", type:"read", passage:"Sáng nay trời đẹp. Bạn Lan cùng mẹ ra vườn tưới cây. Cây nào cũng xanh tốt.",
      q:"Bạn Lan và mẹ làm gì ở vườn?", opts:["Tưới cây","Hái quả","Nhổ cỏ","Bắt sâu"], a:0},
+   {cat:"dientu", type:"fill", q:"Mùa đông trời rất ... nên em phải mặc áo ấm.", opts:["lạnh","nóng","mát","oi"], a:0},
+   {cat:"dientu", type:"fill", q:"Khi gặp thầy cô, em lễ phép ... hỏi.", opts:["chào","cãi","trốn","cười"], a:0},
+   {cat:"dientu", type:"fill", q:"Đèn giao thông màu đỏ thì mọi người phải ... .", opts:["dừng lại","đi tiếp","chạy nhanh","rẽ trái"], a:0},
+   {cat:"dientu", type:"fill", q:"Trước khi ăn cơm, em nhớ ... tay cho sạch.", opts:["rửa","quét","gấp","lau"], a:0},
+   {cat:"dientu", type:"fill", q:"Con ong chăm chỉ bay đi hút ... để làm mật.", opts:["mật hoa","nước mưa","lá cây","hạt cát"], a:0},
+   {cat:"dientu", type:"fill", q:"Muốn học giỏi thì em phải ... chăm chỉ mỗi ngày.", opts:["luyện tập","ngủ nướng","đi chơi","xem tivi"], a:0},
 ],
 3: [
    {cat:"hoithoai", type:"chat", q:"Bảo sẽ trả lời thế nào?",
@@ -397,6 +410,12 @@ const BANK = {
      q:"Vì sao đàn kiến không bị đói vào mùa đông?", opts:["Vì kiến ngủ đông","Vì kiến chăm chỉ để dành thức ăn","Vì có người cho ăn","Vì mùa đông ấm"], a:1},
    {cat:"doc", type:"read", passage:"Trời mưa, một chú gà con bị lạc mẹ. Chú kêu \"chiếp chiếp\" tìm mẹ. May thay, gà mẹ nghe thấy và chạy đến ôm con vào lòng.",
      q:"Cuối cùng chú gà con thế nào?", opts:["Vẫn bị lạc","Được gà mẹ tìm thấy","Đi theo vịt","Trốn dưới lá"], a:1},
+   {cat:"dientu", type:"fill", q:"Sau cơn mưa, trên đường có nhiều ... nước nên em đi cẩn thận.", opts:["vũng","cơn","đám","làn"], a:0},
+   {cat:"dientu", type:"fill", q:"Nhờ ... chăm chỉ mỗi ngày, bạn Nam đã tiến bộ rất nhanh.", opts:["luyện tập","lười biếng","ngủ nướng","cãi nhau"], a:0},
+   {cat:"dientu", type:"fill", q:"Chúng ta nên ... nước sạch để bảo vệ môi trường.", opts:["tiết kiệm","lãng phí","đổ bỏ","làm bẩn"], a:0},
+   {cat:"dientu", type:"fill", q:"Khi qua đường, em phải nhìn ... rồi mới bước đi.", opts:["trước sau","lên trời","xuống đất","nhắm mắt"], a:0},
+   {cat:"dientu", type:"fill", q:"Bạn bè trong lớp phải biết ... và giúp đỡ lẫn nhau.", opts:["yêu thương","ghen ghét","tranh giành","nói xấu"], a:0},
+   {cat:"dientu", type:"fill", q:"Mặt trời ... ở đằng đông vào mỗi buổi sáng.", opts:["mọc","lặn","rơi","tắt"], a:0},
 ]
 };
 
@@ -1862,7 +1881,7 @@ function flipCard(){ document.getElementById("flashcard").classList.toggle("flip
 function nextCard(){ fcIndex = (fcIndex+1) % DECK.length; renderFlashcard(); }
 function prevCard(){ fcIndex = (fcIndex-1+DECK.length) % DECK.length; renderFlashcard(); }
 
-const PRACTICE_CATS = ["all","tuvung","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
+const PRACTICE_CATS = ["all","tuvung","dientu","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
 function renderTopicChips(){
   document.getElementById("topicChips").innerHTML = PRACTICE_CATS.map(k => {
     if(k === "all") return `<button class="topicChip" style="background:linear-gradient(135deg,#7C3AED,#EC4899)" onclick="startPractice('all')">🎲 Tất cả</button>`;
@@ -2135,6 +2154,11 @@ function render(){
     inner += `<div class="qTitle">Đúng hay Sai? 🤔</div>`;
     inner += `<div class="tfState">${q.q}</div>`;
   }
+  else if(q.type === "fill"){
+    inner += `<div class="qTitle">📝 Chọn từ thích hợp điền vào chỗ trống!</div>`;
+    const sentence = (q.q || "").replace(/_{2,}|\.{3,}|…/g, '<span class="fillBlank">?</span>');
+    inner += `<div class="fillSentence">${sentence}</div>`;
+  }
   else if(q.type === "emojiQ"){
     inner += `<div class="qTitle">${q.q}</div><div class="bigEmoji">${q.glyph}</div>`;
   }
@@ -2219,7 +2243,8 @@ const ADVICE_CAT = {
   noi:     "Tăng thời lượng <b>Nói tự do & đóng vai</b> — mục tiêu: bé nói liên tục 2–3 phút về một chủ đề quen.",
   viet:    "Luyện <b>ghép câu từ thẻ từ</b> (xếp – đọc to – chép lại) để quen trật tự từ tiếng Việt trước khi viết tay.",
   doc:     "Đúng trọng tâm lộ trình: <b>đọc đoạn ngắn có câu hỏi hiểu</b>, bắt đầu từ truyện tranh ít chữ, tăng dần độ dài.",
-  nghe:    "Luyện <b>nghe – nhận diện từ</b>: mỗi ngày nghe 5 từ rồi nhắc lại, tăng dần lên câu ngắn để quen ngữ điệu tiếng Việt."
+  nghe:    "Luyện <b>nghe – nhận diện từ</b>: mỗi ngày nghe 5 từ rồi nhắc lại, tăng dần lên câu ngắn để quen ngữ điệu tiếng Việt.",
+  dientu:  "Luyện <b>điền từ vào câu</b>: đọc cả câu, đoán từ còn thiếu theo ngữ cảnh — giúp bé hiểu nghĩa và dùng từ đúng."
 };
 
 function showResult(){
