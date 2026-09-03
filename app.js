@@ -2827,6 +2827,7 @@ function synthFallback(txt){
    Gọi Google Translate TTS để đọc đúng giọng người Việt trên mọi thiết bị.
    Google giới hạn ~200 ký tự/lần nên cắt câu dài thành từng đoạn ngắn. */
 let _ttsAudio = null;
+let _ttsGen = 0;   // tăng mỗi lần bắt đầu đọc mới → vô hiệu hoá fallback cũ còn treo
 function splitForTTS(txt, max){
   const words = (txt || '').trim().split(/\s+/);
   const out = []; let cur = '';
@@ -2839,24 +2840,35 @@ function splitForTTS(txt, max){
 }
 function googleTTS(txt, onFail){
   const chunks = splitForTTS(txt, 190);
-  let i = 0, failed = false;
+  const gen = _ttsGen;                        // "phiên" đọc này; đọc mới sẽ vô hiệu hoá nó
+  let i = 0, failed = false, started = false;
+  // Chỉ fallback sang giọng máy khi online THẬT SỰ chưa phát được tiếng nào,
+  // và chỉ khi phiên đọc này vẫn là phiên hiện tại. Nếu online đã bắt đầu phát
+  // (started) hoặc đã có lần đọc mới hơn (gen cũ) thì KHÔNG gọi giọng máy nữa
+  // → tránh nghe chồng 2 giọng (giọng máy tiếng Anh + giọng nữ online).
   const fail = (why) => {
-    if(failed) return; failed = true;
+    if(failed || started || gen !== _ttsGen) return; failed = true;
+    try{ if(_ttsAudio){ _ttsAudio.pause(); _ttsAudio = null; } }catch(e){}
     console.warn("[TTS] giọng online KHÔNG phát được → chuyển giọng máy.", why || "");
     if(onFail) onFail();
   };
   const playNext = () => {
-    if(failed || i >= chunks.length) return;
+    if(failed || gen !== _ttsGen || i >= chunks.length) return;
     const q = chunks[i++];
     const url = "/.netlify/functions/tts?tl=vi&q=" + encodeURIComponent(q);
     console.log("[TTS] online (qua proxy Netlify) đọc:", JSON.stringify(q));
     const a = new Audio();
     _ttsAudio = a;
+    a.onplaying = () => { started = true; };   // online đã ra tiếng → khoá fallback
     a.onended = playNext;
     a.onerror = () => fail("Audio onerror — proxy chưa deploy? Kiểm tra Network: " + url);
     a.src = url;
     const p = a.play();
-    if(p && p.catch) p.catch((err) => fail("play() bị chặn: " + (err && err.message)));
+    // play() đôi khi bị REJECT tạm thời ở lần đầu dù audio vẫn phát ngay sau đó.
+    // Không fallback ngay — chờ một nhịp, chỉ fallback nếu vẫn chưa ra tiếng.
+    if(p && p.catch) p.catch((err) => {
+      setTimeout(() => { if(!started) fail("play() bị chặn: " + (err && err.message)); }, 500);
+    });
   };
   try{ playNext(); }catch(e){ fail("exception: " + e.message); }
 }
@@ -2927,6 +2939,7 @@ function testVoice(){ speakVN("Xin chào, mình là Thầy Đạt. Chúc em họ
 function speakVN(txt){
   const key = (txt || '').trim();
   if(!key) return;
+  _ttsGen++;   // bắt đầu phiên đọc mới → huỷ mọi fallback cũ còn treo (tránh chồng giọng)
   try{ if(window.speechSynthesis) window.speechSynthesis.cancel(); }catch(e){}
   try{ if(_ttsAudio){ _ttsAudio.pause(); _ttsAudio = null; } }catch(e){}
   const url = SPEECH_AUDIO[key.toLowerCase()];
