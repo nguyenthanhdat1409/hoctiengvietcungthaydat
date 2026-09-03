@@ -13,6 +13,7 @@ const CATS = {
   doc:     {name:"Đọc hiểu", chip:"#FFF7ED;color:#9A3412;border:2px solid #FB923C", color:"#FB923C", emoji:"📖"},
   nghe:    {name:"Nghe", chip:"#EEF2FF;color:#3730A3;border:2px solid #6366F1", color:"#6366F1", emoji:"🎧"},
   dientu:  {name:"Điền từ", chip:"#FFF1F2;color:#9F1239;border:2px solid #F43F5E", color:"#F43F5E", emoji:"📝"},
+  chinhta: {name:"Viết chính tả", chip:"#E0F2FE;color:#075985;border:2px solid #0EA5E9", color:"#0EA5E9", emoji:"✏️"},
 };
 
 /* =========================================================
@@ -200,6 +201,11 @@ const BANK = {
    {cat:"dientu", type:"fill", q:"Mẹ ơi, con ... mẹ nhiều lắm!", opts:["yêu","sợ","quên","giận"], a:0},
    {cat:"dientu", type:"fill", q:"Đàn cá bơi tung tăng dưới ... .", opts:["nước","trời","đất","cây"], a:0},
    {cat:"dientu", type:"fill", q:"Đến giờ đi ngủ, em nói lời ... với ba mẹ.", opts:["chúc ngủ ngon","xin chào","cảm ơn","tạm biệt"], a:0},
+   {cat:"chinhta", type:"spell", letter:"Ă", answer:"ăn"},
+   {cat:"chinhta", type:"spell", letter:"A", answer:"cá"},
+   {cat:"chinhta", type:"spell", letter:"Ê", answer:"dê"},
+   {cat:"chinhta", type:"spell", letter:"O", answer:"bò"},
+   {cat:"chinhta", type:"spell", letter:"Ô", answer:"cô"},
 ],
 2: [
   {cat:"tuvung", type:"emojiQ", q:"Đây là chỗ nào?", glyph:"🏫", opts:["Bệnh viện","Chợ","Trường học","Công viên"], a:2},
@@ -310,6 +316,11 @@ const BANK = {
    {cat:"dientu", type:"fill", q:"Trước khi ăn cơm, em nhớ ... tay cho sạch.", opts:["rửa","quét","gấp","lau"], a:0},
    {cat:"dientu", type:"fill", q:"Con ong chăm chỉ bay đi hút ... để làm mật.", opts:["mật hoa","nước mưa","lá cây","hạt cát"], a:0},
    {cat:"dientu", type:"fill", q:"Muốn học giỏi thì em phải ... chăm chỉ mỗi ngày.", opts:["luyện tập","ngủ nướng","đi chơi","xem tivi"], a:0},
+   {cat:"chinhta", type:"spell", letter:"Ă", answer:"ăn kẹo"},
+   {cat:"chinhta", type:"spell", letter:"Â", answer:"ân cần"},
+   {cat:"chinhta", type:"spell", letter:"A", answer:"bạn An"},
+   {cat:"chinhta", type:"spell", letter:"Ơ", answer:"cái nơ"},
+   {cat:"chinhta", type:"spell", letter:"Ê", answer:"về quê"},
 ],
 3: [
    {cat:"hoithoai", type:"chat", q:"Bảo sẽ trả lời thế nào?",
@@ -416,6 +427,11 @@ const BANK = {
    {cat:"dientu", type:"fill", q:"Khi qua đường, em phải nhìn ... rồi mới bước đi.", opts:["trước sau","lên trời","xuống đất","nhắm mắt"], a:0},
    {cat:"dientu", type:"fill", q:"Bạn bè trong lớp phải biết ... và giúp đỡ lẫn nhau.", opts:["yêu thương","ghen ghét","tranh giành","nói xấu"], a:0},
    {cat:"dientu", type:"fill", q:"Mặt trời ... ở đằng đông vào mỗi buổi sáng.", opts:["mọc","lặn","rơi","tắt"], a:0},
+   {cat:"chinhta", type:"spell", letter:"Ă", answer:"ăn uống"},
+   {cat:"chinhta", type:"spell", letter:"Â", answer:"cẩn thận"},
+   {cat:"chinhta", type:"spell", letter:"A", answer:"an tâm"},
+   {cat:"chinhta", type:"spell", letter:"Ô", answer:"ôn tập"},
+   {cat:"chinhta", type:"spell", letter:"Ư", answer:"cư xử"},
 ]
 };
 
@@ -1881,7 +1897,7 @@ function flipCard(){ document.getElementById("flashcard").classList.toggle("flip
 function nextCard(){ fcIndex = (fcIndex+1) % DECK.length; renderFlashcard(); }
 function prevCard(){ fcIndex = (fcIndex-1+DECK.length) % DECK.length; renderFlashcard(); }
 
-const PRACTICE_CATS = ["all","tuvung","dientu","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
+const PRACTICE_CATS = ["all","tuvung","dientu","chinhta","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
 function renderTopicChips(){
   document.getElementById("topicChips").innerHTML = PRACTICE_CATS.map(k => {
     if(k === "all") return `<button class="topicChip" style="background:linear-gradient(135deg,#7C3AED,#EC4899)" onclick="startPractice('all')">🎲 Tất cả</button>`;
@@ -2018,9 +2034,9 @@ function startPractice(cat){
   mode = "practice"; runnerReturn = "baitap"; practiceCat = cat;
   queue = [];
   [1,2,3].forEach(lv => BANK[lv].forEach(q => {
-    if(q.opts && (cat === "all" || q.cat === cat)) queue.push(Object.assign({}, q, {lv}));
+    if((q.opts || q.type === "spell") && (cat === "all" || q.cat === cat)) queue.push(Object.assign({}, q, {lv}));
   }));
-  queue = shuffle(queue).slice(0, 10);
+  queue = shuffle(queue).slice(0, 15);
   total = queue.length;
   idx = 0; score = 0; locked = false; history = [];
   enterRunner(false);
@@ -2150,6 +2166,14 @@ function render(){
     inner += `<div class="center"><button class="btn hearBtn" type="button" onclick="playHear()">🔊 Nghe lại</button></div>`;
     inner += `<p class="qSub">Bấm loa để nghe. (Máy cần có giọng Việt hoặc có mạng để đọc đúng giọng người Việt.)</p>`;
   }
+  else if(q.type === "spell"){
+    inner += `<div class="qTitle">✏️ Nghe rồi VIẾT đúng từ nha!</div>`;
+    inner += `<div class="spellLetter">${q.letter}</div>`;
+    inner += `<p class="qSub">Từ này có chữ <b>${q.letter}</b>. Bấm loa để nghe rồi gõ lại cho đúng chính tả (nhớ dấu thanh)! 👇</p>`;
+    inner += `<div class="center"><button class="btn hearBtn" type="button" onclick="playSpell()">🔊 Nghe từ</button></div>`;
+    inner += `<div class="center"><input id="spellInput" class="spellInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Gõ từ em nghe được..." oninput="onSpellInput()" onkeydown="if(event.key==='Enter')checkSpell()"></div>`;
+    inner += `<div class="center"><button class="btn next" id="btnCheck" onclick="checkSpell()" disabled>Kiểm tra ✔</button></div>`;
+  }
   else if(q.type === "tf"){
     inner += `<div class="qTitle">Đúng hay Sai? 🤔</div>`;
     inner += `<div class="tfState">${q.q}</div>`;
@@ -2195,9 +2219,32 @@ function render(){
     renderOrder();
   }
   if(q.type === "hear"){ setTimeout(() => { if(current && current.say) speakVN(current.say); }, 350); }
+  if(q.type === "spell"){ setTimeout(() => {
+    const el = document.getElementById("spellInput"); if(el) el.focus();
+    if(current) speakVN(current.say || current.answer);
+  }, 350); }
   document.getElementById("runner").scrollTo({top:0});
 }
 function playHear(){ if(current && current.say) speakVN(current.say); }
+function playSpell(){ if(current) speakVN(current.say || current.answer); }
+function normSpell(s){ return (s || "").toLowerCase().trim().replace(/\s+/g, " "); }
+function onSpellInput(){
+  const el = document.getElementById("spellInput");
+  const btn = document.getElementById("btnCheck");
+  if(el && btn) btn.disabled = (el.value.trim() === "");
+}
+function checkSpell(){
+  if(locked) return;
+  const el = document.getElementById("spellInput");
+  if(!el || el.value.trim() === "") return;
+  const val = el.value;
+  const ok = normSpell(val) === normSpell(current.answer);
+  el.disabled = true;
+  document.getElementById("btnCheck").classList.add("hidden");
+  el.classList.add(ok ? "good" : "badl");
+  if(ok){ applyResult("full", val, ""); sfx.correct(); }
+  else { applyResult("none", val, "Từ đúng là: \"" + current.answer + "\""); sfx.wrong(); }
+}
 
 function pick(i, el){
   if(locked) return;
@@ -2244,7 +2291,8 @@ const ADVICE_CAT = {
   viet:    "Luyện <b>ghép câu từ thẻ từ</b> (xếp – đọc to – chép lại) để quen trật tự từ tiếng Việt trước khi viết tay.",
   doc:     "Đúng trọng tâm lộ trình: <b>đọc đoạn ngắn có câu hỏi hiểu</b>, bắt đầu từ truyện tranh ít chữ, tăng dần độ dài.",
   nghe:    "Luyện <b>nghe – nhận diện từ</b>: mỗi ngày nghe 5 từ rồi nhắc lại, tăng dần lên câu ngắn để quen ngữ điệu tiếng Việt.",
-  dientu:  "Luyện <b>điền từ vào câu</b>: đọc cả câu, đoán từ còn thiếu theo ngữ cảnh — giúp bé hiểu nghĩa và dùng từ đúng."
+  dientu:  "Luyện <b>điền từ vào câu</b>: đọc cả câu, đoán từ còn thiếu theo ngữ cảnh — giúp bé hiểu nghĩa và dùng từ đúng.",
+  chinhta: "Luyện <b>viết chính tả</b>: nghe từ rồi chép lại, chú ý dấu thanh và các chữ dễ lẫn (ă/â, o/ô/ơ) — mỗi ngày vài từ là quen tay."
 };
 
 function showResult(){
@@ -2281,6 +2329,7 @@ function showResult(){
     else if(h.q.type === "order") label = "Xếp câu: \"" + h.q.words.join(" ") + "\"";
     else if(h.q.type === "read") label = h.q.q + " (đoạn: " + h.q.passage.slice(0, 34) + "…)";
     else if(h.q.type === "hear") label = "Nghe từ: \"" + h.q.say + "\"";
+    else if(h.q.type === "spell") label = "Viết chính tả: \"" + h.q.answer + "\"";
     else if(h.q.glyph) label = h.q.q + " [" + h.q.glyph + "]";
     else label = h.q.q;
 
@@ -2290,7 +2339,7 @@ function showResult(){
     if(h.res === "full") ansLine = `Bé làm: <b class="good">${h.picked}</b>`;
     else if(h.res === "half") ansLine = `Kết quả: <b class="halfc">${h.picked}</b>`;
     else {
-      const correct = h.q.type === "order" ? h.q.words.join(" ") : (h.q.opts ? h.q.opts[h.q.a] : "");
+      const correct = h.q.type === "order" ? h.q.words.join(" ") : h.q.type === "spell" ? h.q.answer : (h.q.opts ? h.q.opts[h.q.a] : "");
       ansLine = `Bé làm: <b class="badc">${h.picked}</b>` + (correct ? ` → Đúng: <b class="good">${correct}</b>` : "");
     }
     review += `<div class="rv ${cls}"><div class="mark">${mark}</div><div class="body">
