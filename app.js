@@ -547,7 +547,8 @@ function renderHome(){
 }
 function initHeroAnim(){
   const hero = document.querySelector(".heroArt");
-  if(!hero) return;
+  if(!hero || hero.dataset.animBound) return;
+  hero.dataset.animBound = "1";
   hero.addEventListener("mousemove", e => {
     const rect = hero.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -3066,7 +3067,7 @@ openLesson = function(i){
    ========================================================= */
 const AUTH_KEY = "thaydat_auth_v1";
 function getAuthUser(){ try{ return JSON.parse(localStorage.getItem(AUTH_KEY)); }catch{ return null; } }
-function setAuthUser(u){ localStorage.setItem(AUTH_KEY, JSON.stringify(u)); renderAuthState(); }
+function setAuthUser(u){ localStorage.setItem(AUTH_KEY, JSON.stringify(u)); renderAuthState(); try{ renderHome(); }catch(e){} }
 function clearAuthUser(){ localStorage.removeItem(AUTH_KEY); renderAuthState(); }
 
 /* ---- Kết nối Supabase (chỉ URL + PUBLISHABLE key — an toàn để công khai) ---- */
