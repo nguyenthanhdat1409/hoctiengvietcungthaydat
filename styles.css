@@ -858,7 +858,14 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .subQ{background:#FFF7FB; border:2px solid #FBCFE8; border-radius:16px; padding:12px 14px; margin:12px 0}
 .subQTitle{font-family:'Baloo 2',cursive; font-weight:800; font-size:16px; color:var(--ink); margin-bottom:10px; line-height:1.4}
 .subQ .opts{margin:0}
-.opt.sel{border-color:#DB2777; background:#FCE7F3; box-shadow:0 4px 0 rgba(219,39,119,.3)}
+/* Đang chọn (chưa chấm) → viền xanh dương */
+.opt.sel{border-color:#2563EB; background:#EFF6FF; box-shadow:0 5px 0 rgba(37,99,235,.35)}
+.opt.sel .key{background:#2563EB}
+/* Giải thích hiện sau khi chấm */
+.subExp{margin-top:10px; background:#F0F9FF; border:2px solid #BAE6FD; border-radius:12px;
+  padding:9px 12px; font-size:14px; line-height:1.5; color:#0C4A6E}
+.subExp::before{content:"💡 "; }
+.subExp.hidden{display:none}
 .grade{display:grid; grid-template-columns:1fr; gap:10px}
 .gbtn{font-weight:700; font-size:16px; border-radius:16px; padding:14px; cursor:pointer;
   border:3px solid; background:#fff; box-shadow:0 5px 0; transition:transform .08s;
