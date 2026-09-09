@@ -14,6 +14,7 @@ const CATS = {
   nghe:    {name:"Nghe", chip:"#EEF2FF;color:#3730A3;border:2px solid #6366F1", color:"#6366F1", emoji:"🎧"},
   dientu:  {name:"Điền từ", chip:"#FFF1F2;color:#9F1239;border:2px solid #F43F5E", color:"#F43F5E", emoji:"📝"},
   chinhta: {name:"Viết chính tả", chip:"#E0F2FE;color:#075985;border:2px solid #0EA5E9", color:"#0EA5E9", emoji:"✏️"},
+  docdai:  {name:"Đọc đoạn dài", chip:"#FCE7F3;color:#9D174D;border:2px solid #DB2777", color:"#DB2777", emoji:"📰"},
 };
 
 /* =========================================================
@@ -873,6 +874,142 @@ const HARD = [
     q:"Bài đọc khuyên chúng ta điều gì?", opts:["Quý trọng thức ăn","Trồng thật nhiều lúa","Ăn thật nhiều cơm","Không cần ăn cơm"], a:0},
 ];
 HARD.forEach(q => BANK[3].push(q));
+
+/* =========================================================
+   ĐỌC ĐOẠN DÀI — mỗi đề là 1 đoạn văn + nhiều câu hỏi nhỏ.
+   Dùng riêng cho chủ đề "docdai" trong Bài tập (không vào Kiểm tra).
+   Mỗi lượt chơi rút ngẫu nhiên 10 đoạn; điểm tính theo số câu hỏi nhỏ đúng.
+   ========================================================= */
+const DOCDAI = [
+  {cat:"docdai", passage:"Chủ nhật, bạn An cùng bố đến siêu thị Điện Máy Xanh để mua một chiếc tivi mới cho phòng khách. Chiếc tivi An thích có giá 15 triệu đồng. May quá, trong tháng 9 siêu thị đang giảm giá nên chỉ còn 13 triệu đồng. Bố vui vẻ trả tiền và hẹn ngày mai cửa hàng sẽ giao tivi đến tận nhà.",
+    subs:[
+      {q:"Ai đã đi mua tivi cùng bố?", opts:["Bạn An","Bạn Bảo","Bạn Lan","Cô giáo"], a:0},
+      {q:"Gia đình mua tivi ở đâu?", opts:["Siêu thị Điện Máy Xanh","Ở chợ","Hiệu sách","Nhà bạn An"], a:0},
+      {q:"Sau khi giảm giá, chiếc tivi còn bao nhiêu tiền?", opts:["13 triệu đồng","15 triệu đồng","2 triệu đồng","30 triệu đồng"], a:0},
+      {q:"Vì sao chiếc tivi được giảm giá?", opts:["Vì tháng 9 siêu thị giảm giá","Vì tivi bị lỗi","Vì bố quen chủ cửa hàng","Vì An học giỏi"], a:0},
+    ]},
+  {cat:"docdai", passage:"Bảo rủ An: \"Chiều nay mình cùng ra thư viện đọc sách nhé!\" An đáp: \"Ý hay đó! Mình muốn mượn cuốn truyện về khủng long.\" Đến nơi, hai bạn đọc sách suốt hai tiếng. Trước khi về, mỗi bạn mượn hai cuốn sách mang về nhà đọc tiếp.",
+    subs:[
+      {q:"Bảo rủ An đi đâu?", opts:["Ra thư viện đọc sách","Đi công viên","Đi siêu thị","Đi bơi"], a:0},
+      {q:"An muốn mượn cuốn truyện về gì?", opts:["Khủng long","Nàng tiên cá","Xe hơi","Nấu ăn"], a:0},
+      {q:"Hai bạn đọc sách trong bao lâu?", opts:["Hai tiếng","Mười phút","Cả ngày","Nửa tiếng"], a:0},
+      {q:"Mỗi bạn mượn mấy cuốn mang về?", opts:["Hai cuốn","Một cuốn","Ba cuốn","Không cuốn nào"], a:0},
+    ]},
+  {cat:"docdai", passage:"Kỳ nghỉ hè, gia đình bạn Mai đi du lịch Đà Lạt bằng ô tô. Đường đi mất khoảng sáu tiếng. Ở Đà Lạt trời se lạnh, Mai được ngắm vườn hoa đủ màu và ăn dâu tây tươi. Cả nhà ở lại chơi ba ngày rồi mới về.",
+    subs:[
+      {q:"Gia đình Mai đi du lịch ở đâu?", opts:["Đà Lạt","Nha Trang","Hà Nội","Vũng Tàu"], a:0},
+      {q:"Họ đi bằng phương tiện gì?", opts:["Ô tô","Máy bay","Tàu hỏa","Xe đạp"], a:0},
+      {q:"Thời tiết Đà Lạt như thế nào?", opts:["Se lạnh","Nóng bức","Mưa bão","Có tuyết"], a:0},
+      {q:"Gia đình ở lại chơi mấy ngày?", opts:["Ba ngày","Một ngày","Một tuần","Nửa ngày"], a:0},
+    ]},
+  {cat:"docdai", passage:"Sáng nay, Lan giúp mẹ nấu bữa sáng. Mẹ chiên trứng, còn Lan rửa rau và bày bát đũa. Món ăn hôm nay là bánh mì trứng và một ly sữa. Cả nhà ăn sáng vui vẻ trước khi Lan đi học lúc bảy giờ.",
+    subs:[
+      {q:"Lan giúp mẹ làm việc gì?", opts:["Rửa rau và bày bát đũa","Lái xe","Đi chợ","Giặt đồ"], a:0},
+      {q:"Món ăn sáng hôm nay là gì?", opts:["Bánh mì trứng và sữa","Phở bò","Cơm rang","Bún chả"], a:0},
+      {q:"Ai là người chiên trứng?", opts:["Mẹ","Lan","Bố","Bà"], a:0},
+      {q:"Lan đi học lúc mấy giờ?", opts:["Bảy giờ","Sáu giờ","Tám giờ","Chín giờ"], a:0},
+    ]},
+  {cat:"docdai", passage:"Bản tin thời tiết báo chiều nay sẽ có mưa to. Vì vậy, mẹ dặn Bảo mang theo áo mưa khi đi học. Đúng như dự báo, tan học trời đổ mưa. Nhờ có áo mưa, Bảo về nhà mà không bị ướt.",
+    subs:[
+      {q:"Bản tin thời tiết báo điều gì?", opts:["Chiều có mưa to","Trời nắng đẹp","Có tuyết rơi","Có bão lớn"], a:0},
+      {q:"Mẹ dặn Bảo mang theo gì?", opts:["Áo mưa","Kính râm","Mũ len","Quạt tay"], a:0},
+      {q:"Nhờ đâu Bảo không bị ướt?", opts:["Nhờ mang áo mưa","Nhờ chạy nhanh","Nhờ bạn che","Nhờ trời tạnh"], a:0},
+    ]},
+  {cat:"docdai", passage:"Hôm nay là sinh nhật lần thứ chín của An. Mẹ làm một chiếc bánh kem dâu thật to. Các bạn đến chơi và tặng An nhiều món quà. An thích nhất là hộp bút màu mà bạn Bảo tặng. Cả nhóm cùng hát và thổi nến rất vui.",
+    subs:[
+      {q:"An tròn mấy tuổi?", opts:["Chín tuổi","Tám tuổi","Mười tuổi","Bảy tuổi"], a:0},
+      {q:"Mẹ làm bánh gì?", opts:["Bánh kem dâu","Bánh chưng","Bánh mì","Bánh bao"], a:0},
+      {q:"Món quà An thích nhất là gì?", opts:["Hộp bút màu","Con gấu bông","Quả bóng","Cuốn sách"], a:0},
+      {q:"Ai tặng An hộp bút màu?", opts:["Bạn Bảo","Mẹ","Bạn Lan","Bố"], a:0},
+    ]},
+  {cat:"docdai", passage:"Lớp của Bảo đi tham quan sở thú. Bảo được nhìn thấy voi, hổ, khỉ và cả hươu cao cổ. Bạn thích nhất là chú khỉ tinh nghịch biết đưa tay xin đồ ăn. Cô giáo dặn cả lớp không cho thú ăn bậy để bảo vệ chúng.",
+    subs:[
+      {q:"Lớp của Bảo đi tham quan ở đâu?", opts:["Sở thú","Bảo tàng","Công viên nước","Nông trại"], a:0},
+      {q:"Bảo thích con vật nào nhất?", opts:["Chú khỉ","Con voi","Con hổ","Hươu cao cổ"], a:0},
+      {q:"Cô giáo dặn cả lớp điều gì?", opts:["Không cho thú ăn bậy","Không chụp ảnh","Không nói chuyện","Không uống nước"], a:0},
+    ]},
+  {cat:"docdai", passage:"Mỗi ngày, Mai để dành hai nghìn đồng vào con heo đất. Sau ba tháng, Mai đập heo và đếm được một trăm tám mươi nghìn đồng. Bạn dùng số tiền đó mua một cuốn từ điển và tặng mẹ một bông hoa.",
+    subs:[
+      {q:"Mỗi ngày Mai để dành bao nhiêu tiền?", opts:["Hai nghìn đồng","Năm nghìn đồng","Mười nghìn đồng","Một nghìn đồng"], a:0},
+      {q:"Sau ba tháng Mai có bao nhiêu tiền?", opts:["Một trăm tám mươi nghìn đồng","Hai trăm nghìn đồng","Một trăm nghìn đồng","Năm mươi nghìn đồng"], a:0},
+      {q:"Mai dùng tiền để làm gì?", opts:["Mua từ điển và tặng mẹ hoa","Mua kẹo bánh","Chơi điện tử","Mua đồ chơi"], a:0},
+    ]},
+  {cat:"docdai", passage:"Trường của An phát động phong trào thu gom vỏ chai nhựa. Mỗi lớp đặt một thùng để bỏ vỏ chai. Sau một tuần, lớp An gom được hơn hai trăm vỏ chai. Số nhựa này được mang đi tái chế để bảo vệ môi trường.",
+    subs:[
+      {q:"Trường của An phát động phong trào gì?", opts:["Thu gom vỏ chai nhựa","Trồng cây xanh","Quyên góp sách","Nhặt lá rụng"], a:0},
+      {q:"Lớp An gom được bao nhiêu vỏ chai?", opts:["Hơn hai trăm","Khoảng mười","Một nghìn","Năm mươi"], a:0},
+      {q:"Số nhựa được mang đi làm gì?", opts:["Tái chế để bảo vệ môi trường","Đốt bỏ","Chôn xuống đất","Vứt ra sông"], a:0},
+    ]},
+  {cat:"docdai", passage:"Sáng thứ Bảy, Bảo cùng ông trồng một cây xoài trong vườn. Ông đào hố, Bảo đặt cây con xuống rồi cùng lấp đất và tưới nước. Ông bảo phải chăm sóc vài năm cây mới cho quả. Bảo hứa sẽ tưới cây mỗi ngày.",
+    subs:[
+      {q:"Bảo trồng cây gì cùng ông?", opts:["Cây xoài","Cây bàng","Cây hoa hồng","Cây tre"], a:0},
+      {q:"Ai đào hố để trồng cây?", opts:["Ông","Bảo","Bố","Mẹ"], a:0},
+      {q:"Bao lâu cây mới cho quả?", opts:["Vài năm","Một ngày","Một tuần","Một tháng"], a:0},
+      {q:"Bảo hứa điều gì?", opts:["Tưới cây mỗi ngày","Không tưới cây","Chặt cây đi","Bán cây"], a:0},
+    ]},
+  {cat:"docdai", passage:"Trong hội chợ khoa học, nhóm của Lan làm một ngọn núi lửa phun trào bằng bột nở và giấm. Khi trộn hai thứ lại, bọt trắng trào ra như dung nham. Các bạn và thầy cô đều trầm trồ. Nhóm Lan được trao giải nhì.",
+    subs:[
+      {q:"Nhóm Lan làm mô hình gì?", opts:["Núi lửa phun trào","Cầu vồng","Tên lửa","Máy bay"], a:0},
+      {q:"Họ dùng gì để tạo bọt trào ra?", opts:["Bột nở và giấm","Nước và cát","Dầu ăn","Đường và muối"], a:0},
+      {q:"Nhóm Lan đạt giải gì?", opts:["Giải nhì","Giải nhất","Giải ba","Không có giải"], a:0},
+    ]},
+  {cat:"docdai", passage:"An đi xe buýt đến nhà bà ngoại. Trên xe, An thấy một cụ già đứng nên đứng dậy nhường ghế. Cụ mỉm cười cảm ơn. Bác tài xế khen An ngoan. An cảm thấy rất vui vì đã làm được việc tốt.",
+    subs:[
+      {q:"An đi xe buýt đến đâu?", opts:["Nhà bà ngoại","Trường học","Bệnh viện","Siêu thị"], a:0},
+      {q:"An đã làm gì trên xe?", opts:["Nhường ghế cho cụ già","Ngủ gật","Nghe nhạc","Ăn quà"], a:0},
+      {q:"Ai đã khen An ngoan?", opts:["Bác tài xế","Mẹ","Cô giáo","Bạn Bảo"], a:0},
+    ]},
+  {cat:"docdai", passage:"Sáng sớm, Mai theo bà đi chợ. Bà mua rau muống, hai con cá và một ít trái cây. Người bán hàng tính tất cả hết năm mươi nghìn đồng. Bà trả tiền rồi hai bà cháu cùng xách giỏ về nhà nấu cơm.",
+    subs:[
+      {q:"Mai đi chợ cùng ai?", opts:["Bà","Mẹ","Bố","Bạn"], a:0},
+      {q:"Bà đã mua những gì?", opts:["Rau muống, cá và trái cây","Bánh kẹo","Quần áo","Đồ chơi"], a:0},
+      {q:"Tổng cộng hết bao nhiêu tiền?", opts:["Năm mươi nghìn đồng","Một trăm nghìn đồng","Mười nghìn đồng","Hai mươi nghìn đồng"], a:0},
+    ]},
+  {cat:"docdai", passage:"Bảo bị sốt nên mẹ đưa đi khám bác sĩ. Bác sĩ đo nhiệt độ, nghe tim phổi rồi kê thuốc. Bác dặn Bảo uống nhiều nước, nghỉ ngơi và uống thuốc đúng giờ. Hai ngày sau, Bảo khỏe lại và đi học bình thường.",
+    subs:[
+      {q:"Vì sao Bảo phải đi khám?", opts:["Vì bị sốt","Vì đau chân","Vì đau răng","Vì mỏi mắt"], a:0},
+      {q:"Bác sĩ dặn Bảo làm gì?", opts:["Uống nhiều nước, nghỉ ngơi, uống thuốc đúng giờ","Chạy nhảy nhiều","Ăn thật nhiều kẹo","Thức khuya"], a:0},
+      {q:"Sau mấy ngày Bảo khỏe lại?", opts:["Hai ngày","Một tuần","Một tháng","Một ngày"], a:0},
+    ]},
+  {cat:"docdai", passage:"Chiều nay lớp 4A đá bóng với lớp 4B. Bảo là thủ môn của lớp 4A. Trận đấu diễn ra sôi nổi, tỉ số hòa 1-1. Đến phút cuối, An ghi bàn giúp lớp 4A thắng 2-1. Cả lớp reo hò vui sướng.",
+    subs:[
+      {q:"Lớp 4A đá bóng với lớp nào?", opts:["Lớp 4B","Lớp 5A","Lớp 3B","Lớp 4C"], a:0},
+      {q:"Bảo giữ vị trí gì?", opts:["Thủ môn","Tiền đạo","Trọng tài","Cổ động viên"], a:0},
+      {q:"Ai ghi bàn thắng quyết định?", opts:["An","Bảo","Cô giáo","Bạn Mai"], a:0},
+      {q:"Lớp 4A thắng với tỉ số bao nhiêu?", opts:["2-1","1-1","3-0","0-2"], a:0},
+    ]},
+  {cat:"docdai", passage:"Đêm Trung thu, xóm của Lan tổ chức rước đèn. Lan cầm chiếc đèn ông sao đỏ rực. Các bạn vừa đi vừa hát, ngắm chị Hằng trên trời. Sau đó, mọi người cùng phá cỗ với bánh nướng và bưởi.",
+    subs:[
+      {q:"Câu chuyện diễn ra vào dịp nào?", opts:["Đêm Trung thu","Tết Nguyên đán","Sinh nhật","Ngày khai giảng"], a:0},
+      {q:"Lan cầm chiếc đèn gì?", opts:["Đèn ông sao","Đèn lồng cá","Đèn kéo quân","Đèn pin"], a:0},
+      {q:"Mọi người phá cỗ với món gì?", opts:["Bánh nướng và bưởi","Phở","Kem","Chè"], a:0},
+    ]},
+  {cat:"docdai", passage:"Tối qua, An xem một bộ phim tài liệu về rừng nhiệt đới. An biết được rừng là nơi sống của rất nhiều loài vật như hổ, vẹt và bướm. Rừng còn giúp lọc không khí. An mong lớn lên sẽ trở thành người bảo vệ rừng.",
+    subs:[
+      {q:"An đã xem gì tối qua?", opts:["Phim tài liệu về rừng nhiệt đới","Phim hoạt hình","Trận bóng đá","Ca nhạc"], a:0},
+      {q:"Rừng là nơi sống của những loài nào?", opts:["Hổ, vẹt và bướm","Cá heo","Chim cánh cụt","Lạc đà"], a:0},
+      {q:"An mong lớn lên làm gì?", opts:["Người bảo vệ rừng","Ca sĩ","Cầu thủ","Phi công"], a:0},
+    ]},
+  {cat:"docdai", passage:"Bảo nuôi một chú chó nhỏ tên Mực. Mỗi sáng, Bảo cho Mực ăn và thay nước sạch. Buổi chiều, hai đứa cùng chạy trong sân. Nhờ được chăm sóc, Mực lớn nhanh và rất quấn quýt bên Bảo.",
+    subs:[
+      {q:"Chú chó của Bảo tên gì?", opts:["Mực","Vàng","Đốm","Mun"], a:0},
+      {q:"Mỗi sáng Bảo làm gì cho Mực?", opts:["Cho ăn và thay nước sạch","Tắm cho nó","Dắt đi chợ","Dạy nó học"], a:0},
+      {q:"Vì sao Mực lớn nhanh?", opts:["Nhờ được chăm sóc tốt","Nhờ ngủ nhiều","Nhờ sủa to","Nhờ chạy nhanh"], a:0},
+    ]},
+  {cat:"docdai", passage:"An hỏi Bảo: \"Cuối tuần bạn muốn làm gì?\" Bảo đáp: \"Mình muốn đi thả diều ở công viên.\" An reo lên: \"Tuyệt! Mình sẽ mang theo hai con diều.\" Hai bạn hẹn gặp nhau lúc ba giờ chiều Chủ nhật.",
+    subs:[
+      {q:"Bảo muốn làm gì vào cuối tuần?", opts:["Đi thả diều ở công viên","Đi bơi","Xem phim","Ở nhà ngủ"], a:0},
+      {q:"An sẽ mang theo gì?", opts:["Hai con diều","Quả bóng","Hộp màu","Cái ô"], a:0},
+      {q:"Hai bạn hẹn gặp lúc mấy giờ?", opts:["Ba giờ chiều Chủ nhật","Bảy giờ sáng","Chín giờ tối","Trưa thứ Bảy"], a:0},
+    ]},
+  {cat:"docdai", passage:"Trước năm học mới, mẹ dẫn An đi mua đồ dùng học tập. An mua năm quyển vở, hai cây bút và một hộp bút chì màu. Tổng cộng hết chín mươi nghìn đồng. Về nhà, An bọc vở và dán nhãn cẩn thận.",
+    subs:[
+      {q:"Mẹ dẫn An đi mua gì?", opts:["Đồ dùng học tập","Quần áo","Đồ ăn","Đồ chơi"], a:0},
+      {q:"An đã mua bao nhiêu quyển vở?", opts:["Năm quyển","Hai quyển","Mười quyển","Một quyển"], a:0},
+      {q:"Tổng cộng hết bao nhiêu tiền?", opts:["Chín mươi nghìn đồng","Năm mươi nghìn đồng","Một trăm nghìn đồng","Hai mươi nghìn đồng"], a:0},
+      {q:"Về nhà An làm gì với vở?", opts:["Bọc vở và dán nhãn","Vẽ bậy vào vở","Xé vở","Cho bạn hết"], a:0},
+    ]},
+];
 
 const PRAISE = ["Chuẩn luôn! 🔥","Quá đỉnh! ⚡","10 điểm! 💯","Xịn xò! 😎","Đỉnh của chóp! 🏆"];
 const KEYS = ["A","B","C","D"];
@@ -2337,7 +2474,7 @@ function flipCard(){ document.getElementById("flashcard").classList.toggle("flip
 function nextCard(){ fcIndex = (fcIndex+1) % DECK.length; renderFlashcard(); }
 function prevCard(){ fcIndex = (fcIndex-1+DECK.length) % DECK.length; renderFlashcard(); }
 
-const PRACTICE_CATS = ["all","tuvung","dientu","chinhta","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
+const PRACTICE_CATS = ["all","docdai","tuvung","dientu","chinhta","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
 function renderTopicChips(){
   document.getElementById("topicChips").innerHTML = PRACTICE_CATS.map(k => {
     if(k === "all") return `<button class="topicChip" style="background:linear-gradient(135deg,#7C3AED,#EC4899)" onclick="startPractice('all')">🎲 Tất cả</button>`;
@@ -2473,10 +2610,15 @@ function startQuiz(){
 function startPractice(cat){
   mode = "practice"; runnerReturn = "baitap"; practiceCat = cat;
   queue = [];
-  [1,2,3].forEach(lv => BANK[lv].forEach(q => {
-    if((q.opts || q.type === "spell") && (cat === "all" || q.cat === cat)) queue.push(Object.assign({}, q, {lv}));
-  }));
-  queue = shuffle(queue).slice(0, 15);
+  if(cat === "docdai"){
+    // Đọc đoạn dài: rút ngẫu nhiên 10 đoạn (mỗi đoạn nhiều câu hỏi nhỏ)
+    queue = shuffle(DOCDAI.map(p => Object.assign({}, p, {type:"multi"}))).slice(0, 10);
+  } else {
+    [1,2,3].forEach(lv => BANK[lv].forEach(q => {
+      if((q.opts || q.type === "spell") && (cat === "all" || q.cat === cat)) queue.push(Object.assign({}, q, {lv}));
+    }));
+    queue = shuffle(queue).slice(0, 15);
+  }
   total = queue.length;
   idx = 0; score = 0; locked = false; history = [];
   enterRunner(false);
@@ -2521,6 +2663,36 @@ function speakGrade(res, el){
   el.classList.add("chosen");
   const label = res === "full" ? "Nói tốt" : res === "half" ? "Nói được một phần" : "Chưa nói được";
   applyResult(res, label, "");
+}
+
+/* ---- Đọc đoạn dài: chọn đáp án cho từng câu hỏi nhỏ rồi chấm cả cụm ---- */
+let multiState = null;
+function pickMulti(si, oi, el){
+  if(locked) return;
+  multiState.picks[si] = oi;
+  const wrap = el.closest(".subQ");
+  wrap.querySelectorAll(".opt").forEach(b => b.classList.remove("sel"));
+  el.classList.add("sel");
+  document.getElementById("btnCheck").disabled = !multiState.picks.every(p => p !== null);
+}
+function checkMulti(){
+  if(locked) return;
+  if(!multiState || multiState.picks.some(p => p === null)) return;
+  let correct = 0;
+  const subQs = document.querySelectorAll(".subQ");
+  multiState.subs.forEach((su, si) => {
+    const optBtns = subQs[si].querySelectorAll(".opt");
+    optBtns.forEach(b => b.classList.add("locked"));
+    const pk = multiState.picks[si];
+    if(pk === su.a){ correct++; optBtns[pk].classList.add("correct"); }
+    else { if(pk != null) optBtns[pk].classList.add("wrong"); optBtns[su.a].classList.add("correct"); }
+  });
+  const n = multiState.subs.length;
+  document.getElementById("btnCheck").classList.add("hidden");
+  const res = correct === n ? "full" : correct === 0 ? "none" : "half";
+  applyResult(res, "Đúng " + correct + "/" + n, "Đúng " + correct + "/" + n + " câu hỏi");
+  // lưu điểm chi tiết theo số câu hỏi nhỏ (dùng cho màn kết quả)
+  if(history.length) history[history.length - 1].sub = { c: correct, n: n };
 }
 
 // res: 'full' | 'half' | 'none'
@@ -2570,9 +2742,27 @@ function render(){
   document.getElementById("bar").style.width = (idx / total * 100) + "%";
 
   let inner = `<span class="catChip" style="background:${cat.chip}">${cat.emoji} ${cat.name}</span>`;
-  inner += `<span class="lvChip">${"⭐".repeat(q.lv)} Câu ${q.lv} sao</span>`;
+  if(q.lv) inner += `<span class="lvChip">${"⭐".repeat(q.lv)} Câu ${q.lv} sao</span>`;
 
-  if(q.type === "speak"){
+  if(q.type === "multi"){
+    inner += `<div class="qTitle">📰 Đọc kỹ đoạn văn rồi trả lời các câu hỏi nha!</div>`;
+    inner += `<p class="readNote">🤫 Phần này bé TỰ ĐỌC — người lớn đừng đọc giúp nha!</p>`;
+    inner += `<div class="passage">${q.passage}</div>`;
+    // Xáo thứ tự đáp án từng câu hỏi nhỏ, nhớ lại vị trí đáp án đúng
+    multiState = { subs: q.subs.map(su => {
+      const pairs = shuffle(su.opts.map((o, i) => [o, i === su.a]));
+      return { q: su.q, opts: pairs.map(p => p[0]), a: pairs.findIndex(p => p[1]) };
+    }), picks: q.subs.map(() => null) };
+    multiState.subs.forEach((su, si) => {
+      inner += `<div class="subQ" data-si="${si}"><div class="subQTitle">${si+1}. ${su.q}</div><div class="opts">`;
+      su.opts.forEach((o, oi) => {
+        inner += `<button class="opt" onclick="pickMulti(${si},${oi},this)"><span class="key">${KEYS[oi]}</span><span>${o}</span></button>`;
+      });
+      inner += `</div></div>`;
+    });
+    inner += `<div class="center"><button class="btn next" id="btnCheck" onclick="checkMulti()" disabled>Kiểm tra ✔</button></div>`;
+  }
+  else if(q.type === "speak"){
     inner += `<div class="speakBox"><div class="mic">🎤</div><div class="prompt">${q.q}</div></div>`;
     inner += `<p class="qSub">Bé trả lời bằng lời — người lớn nghe rồi bấm chấm giúp nha! 👇</p>`;
     inner += `<div class="grade">
@@ -2840,11 +3030,18 @@ function showPracticeResult(){
   document.getElementById("bar").style.width = "100%";
   document.getElementById("qCard").classList.add("hidden");
   document.getElementById("runnerTop").classList.add("hidden");
-  const correct = history.filter(h => h.res === "full").length;
-  const p = total ? Math.round(correct / total * 100) : 0;
+  // Nếu là Đọc đoạn dài (có câu hỏi nhỏ) → tính điểm theo tổng số câu hỏi nhỏ
+  const hasSub = history.some(h => h.sub);
+  const correct = hasSub
+    ? history.reduce((s, h) => s + (h.sub ? h.sub.c : (h.res === "full" ? 1 : 0)), 0)
+    : history.filter(h => h.res === "full").length;
+  const denom = hasSub
+    ? history.reduce((s, h) => s + (h.sub ? h.sub.n : 1), 0)
+    : total;
+  const p = denom ? Math.round(correct / denom * 100) : 0;
   const tier = tierOf(p);
   const catName = practiceCat === "all" ? "Tất cả chủ đề" : (CATS[practiceCat].emoji + " " + CATS[practiceCat].name);
-  recordQuiz(Math.round(correct), total);
+  recordQuiz(Math.round(correct), denom);
   addXP(Math.floor(correct / XP_PER5_PRACTICE));   // luyện tập: mỗi 5 câu đúng = +1 XP
   logQuiz("practice", Math.round(correct), total, p, null);
   if(p >= 60) sfx.win();
@@ -2854,7 +3051,8 @@ function showPracticeResult(){
     <div class="hostMini" style="margin:0 auto; width:66px; height:66px; font-size:36px">🎉</div>
     <h2 style="margin-top:10px">Xong buổi luyện rồi!</h2>
     <p class="center muted" style="margin-top:4px">Chủ đề: <b>${catName}</b></p>
-    <div class="scoreRing" style="--p:${p}"><div class="inner"><span class="num">${correct}/${total}</span><span style="font-size:13px; color:#64748B">${p}%</span></div></div>
+    <div class="scoreRing" style="--p:${p}"><div class="inner"><span class="num">${correct}/${denom}</span><span style="font-size:13px; color:#64748B">${p}%</span></div></div>
+    ${hasSub ? `<p class="center muted" style="margin-top:2px">Trả lời đúng ${correct} câu hỏi nhỏ trong ${total} đoạn văn 📖</p>` : ""}
     <div class="tier">${tier}</div>
     <div class="advice center" style="margin-top:14px">Cứ luyện đều mỗi ngày là tiến bộ nhanh lắm đó! 💪</div>
     <div class="center">
