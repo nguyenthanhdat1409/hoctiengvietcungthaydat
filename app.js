@@ -3825,7 +3825,7 @@ function burst(n){
 }
 
 /* =========================================================
-   TRÒ CHƠI: TRUY NÃ TỪ SAI (soát lỗi chính tả kiểu phá án)
+   TRÒ CHƠI: TRUY TÌM TỪ SAI (soát lỗi chính tả kiểu phá án)
    Mỗi "vụ án" là 1 đoạn văn: token là chuỗi (đúng) hoặc {b,o} (bị sai).
    Bé bấm bắt từ sai; buộc tội oan từ đúng bị trừ 5 giây.
    ========================================================= */
@@ -3846,49 +3846,94 @@ const DETECTIVE_CASES = [
   { title:"Vụ án bạn Lan gương mẫu", time:70, words:[
     "Bạn", "Lan", "rất", "chăm", {b:"chĩ",o:"chỉ"}, "luôn", {b:"giử",o:"giữ"}, "gìn", "sách", "vở",
     {b:"xạch",o:"sạch"}, {b:"xẽ",o:"sẽ"}, "và", "giúp", {b:"đở",o:"đỡ"}, "bạn", "bè." ] },
+  { title:"Vụ án giờ ra chơi", time:70, words:[
+    "Giờ", "ra", {b:"trơi",o:"chơi"}, "các", "bạn", "chạy", {b:"nhãy",o:"nhảy"}, "trên",
+    {b:"xân",o:"sân"}, {b:"chường",o:"trường"}, "thật", {b:"zui",o:"vui"}, "nhộn." ] },
+  { title:"Vụ án khu vườn của bà", time:70, words:[
+    {b:"Mổi",o:"Mỗi"}, "buổi", {b:"chìu",o:"chiều"}, "em", "thường", "ra", "vườn", {b:"tưi",o:"tưới"},
+    "cây", "và", {b:"nhỗ",o:"nhổ"}, "cỏ", {b:"zúp",o:"giúp"}, "bà." ] },
+  { title:"Vụ án chú chim buổi sớm", time:70, words:[
+    "Con", "chim", {b:"nhõ",o:"nhỏ"}, "hót", {b:"lứu",o:"líu"}, "lo", {b:"chên",o:"trên"}, "cành",
+    {b:"câi",o:"cây"}, "vào", "buổi", {b:"xáng",o:"sáng"}, "sớm." ] },
+  { title:"Vụ án lớp học chăm ngoan", time:70, words:[
+    "Bạn", "Nam", "rất", "chăm", {b:"chĩ",o:"chỉ"}, {b:"nêm",o:"nên"}, "luôn", "được", "cô",
+    {b:"záo",o:"giáo"}, {b:"khem",o:"khen"}, {b:"ngơi",o:"ngợi"}, "trước", "cả", "lớp." ] },
+  { title:"Vụ án kỳ nghỉ mùa hè", time:70, words:[
+    "Vào", "mùa", "hè", "em", {b:"đươc",o:"được"}, "bố", "mẹ", "cho", "đi", {b:"tắn",o:"tắm"},
+    {b:"biễn",o:"biển"}, "và", {b:"xâi",o:"xây"}, {b:"lâo",o:"lâu"}, "đài", "cát." ] },
+  { title:"Vụ án chú gà trống", time:70, words:[
+    "Chú", "gà", "trống", "gáy", "thật", "to", {b:"đắnh",o:"đánh"}, {b:"thứt",o:"thức"}, "mọi",
+    {b:"ngừơi",o:"người"}, {b:"dẫy",o:"dậy"}, "đi", {b:"nàm",o:"làm"}, "việc." ] },
+  { title:"Vụ án cuốn truyện tranh", time:70, words:[
+    "Em", "rất", {b:"thít",o:"thích"}, "đọc", {b:"truiện",o:"truyện"}, "tranh", "vì", "có",
+    {b:"nhìu",o:"nhiều"}, "hình", {b:"vẻ",o:"vẽ"}, {b:"đẹt",o:"đẹp"}, "và", "màu", "sắc." ] },
+  { title:"Vụ án lời hay ý đẹp", time:70, words:[
+    "Mẹ", "dạy", "em", {b:"phãi",o:"phải"}, {b:"biếc",o:"biết"}, "nói", "lời", {b:"cãm",o:"cảm"},
+    "ơn", "và", {b:"sin",o:"xin"}, {b:"lổi",o:"lỗi"}, "mọi", "người." ] },
+  { title:"Vụ án bầu trời đêm", time:70, words:[
+    "Trên", "bầu", {b:"chời",o:"trời"}, "đêm", "có", "rất", {b:"nhìu",o:"nhiều"}, "ngôi", "sao",
+    {b:"láp",o:"lấp"}, "lánh", {b:"xáng",o:"sáng"}, {b:"lunh",o:"lung"}, "linh." ] },
+  { title:"Vụ án về quê thăm bà", time:70, words:[
+    {b:"Chũ",o:"Chủ"}, "nhật", "em", {b:"cùnh",o:"cùng"}, {b:"za",o:"gia"}, "đình", "về", "quê",
+    {b:"thăn",o:"thăm"}, "ông", "bà", "nội", {b:"ỡ",o:"ở"}, "vùng", "nông", "thôn." ] },
+  { title:"Vụ án cô bạn tóc dài", time:70, words:[
+    "Bạn", "Hoa", "có", "mái", {b:"tót",o:"tóc"}, "dài", "đen", {b:"nháng",o:"nhánh"}, "và",
+    {b:"nũ",o:"nụ"}, {b:"cừơi",o:"cười"}, "rất", {b:"tưoi",o:"tươi"}, "tắn." ] },
+  { title:"Vụ án cánh đồng lúa chín", time:70, words:[
+    "Sáng", {b:"xớm",o:"sớm"}, "bà", "đã", "ra", "đồng", {b:"gặc",o:"gặt"}, "lúa", {b:"chíng",o:"chín"},
+    "vàng", {b:"trỉu",o:"trĩu"}, "bông", {b:"thơn",o:"thơm"}, "ngát." ] },
+  { title:"Vụ án dòng sông quê", time:70, words:[
+    "Chiếc", {b:"thuiền",o:"thuyền"}, {b:"nhõ",o:"nhỏ"}, {b:"chôi",o:"trôi"}, {b:"nhẽ",o:"nhẹ"}, "trên",
+    {b:"giòng",o:"dòng"}, "sông", "quê", "hương", "yên", "bình." ] },
+  { title:"Vụ án lòng biết ơn", time:70, words:[
+    "Em", "yêu", {b:"quí",o:"quý"}, {b:"thầi",o:"thầy"}, "cô", "và", {b:"nuôn",o:"luôn"}, "cố",
+    {b:"gắnh",o:"gắng"}, "học", {b:"tậb",o:"tập"}, "thật", "chăm", "chỉ." ] },
+  { title:"Vụ án cây phượng sân trường", time:70, words:[
+    "Ngoài", {b:"xân",o:"sân"}, {b:"chường",o:"trường"}, "có", "một", "cây", {b:"phựơng",o:"phượng"},
+    "già", {b:"nỡ",o:"nở"}, {b:"hua",o:"hoa"}, "đỏ", "rực", "mỗi", "khi", "hè", "về." ] },
 ];
+const DET_ROUNDS = 5;   // mỗi lượt chơi gồm 5 màn (5 vụ án ngẫu nhiên)
 let tnState = null;
 
 function startDetective(){
-  const c = rand(DETECTIVE_CASES);
-  tnState = {
-    c,
-    total: c.words.filter(w => typeof w === "object").length,
-    caught: 0, wrong: 0,
-    time: c.time || 70,
-    timer: null, done: false,
-    found: new Set(), accused: new Set()
-  };
+  const queue = shuffle(DETECTIVE_CASES.slice()).slice(0, DET_ROUNDS);
+  tnState = { queue, round: 0, sess: { caught:0, errs:0, wrong:0, stars:0, solved:0 } };
   document.getElementById("detModal").classList.remove("hidden");
   document.body.style.overflow = "hidden";
+  startDetRound();
+}
+function startDetRound(){
+  const s = tnState, c = s.queue[s.round];
+  s.r = { c, total: c.words.filter(w => typeof w === "object").length, caught:0, wrong:0,
+          time: c.time || 70, timer:null, done:false, found:new Set(), accused:new Set() };
   renderDetective();
-  clearInterval(tnState.timer);
-  tnState.timer = setInterval(detTick, 1000);
+  clearInterval(s.r.timer);
+  s.r.timer = setInterval(detTick, 1000);
 }
 function closeDetective(e){
   if(e && e.target && e.target.id !== "detModal" && e.type === "click" && e.currentTarget.id === "detModal") return;
-  if(tnState && tnState.timer) clearInterval(tnState.timer);
+  if(tnState && tnState.r && tnState.r.timer) clearInterval(tnState.r.timer);
   document.getElementById("detModal").classList.add("hidden");
   document.body.style.overflow = "";
 }
 function renderDetective(){
-  const s = tnState, c = s.c;
+  const s = tnState, r = s.r, c = r.c;
   const words = c.words.map((w, i) => {
     const txt = (typeof w === "object") ? w.b : w;
     let cls = "detWord";
-    if(s.found.has(i)) cls += " caught";
-    if(s.accused.has(i)) cls += " cleared";
-    const show = s.found.has(i) ? (w.o + " ✓") : txt;
+    if(r.found.has(i)) cls += " caught";
+    if(r.accused.has(i)) cls += " cleared";
+    const show = r.found.has(i) ? (w.o + " ✓") : txt;
     return `<span class="${cls}" id="dw${i}" onclick="tapWord(${i})">${show}</span>`;
   }).join(" ");
   document.getElementById("detBody").innerHTML = `
     <div class="detHead">
       <div class="detBadge">🕵️</div>
-      <div class="detHeadTxt"><h2>Truy nã từ sai</h2><p>${c.title}</p></div>
+      <div class="detHeadTxt"><h2>Truy tìm từ sai <span class="detRoundChip">Màn ${s.round+1}/${DET_ROUNDS}</span></h2><p>${c.title}</p></div>
     </div>
     <div class="detBar">
-      <div class="detStat"><span class="detStatNum" id="detWanted">${s.total - s.caught}</span><span class="detStatLbl">từ sai cần bắt</span></div>
-      <div class="detTimerWrap"><div class="detTimerBar" id="detTimerBar"></div><span class="detTimerNum" id="detTimerNum">${s.time}s</span></div>
+      <div class="detStat"><span class="detStatNum" id="detWanted">${r.total - r.caught}</span><span class="detStatLbl">từ sai cần bắt</span></div>
+      <div class="detTimerWrap"><div class="detTimerBar" id="detTimerBar"></div><span class="detTimerNum" id="detTimerNum">${r.time}s</span></div>
     </div>
     <p class="detHint">🔎 Đọc kỹ rồi bấm vào những <b>từ viết sai</b> để bắt nhé!</p>
     <div class="detPassage" id="detPassage">${words}</div>
@@ -3896,38 +3941,38 @@ function renderDetective(){
   updateDetTimer();
 }
 function updateDetTimer(){
-  const s = tnState; if(!s) return;
+  const r = tnState && tnState.r; if(!r) return;
   const bar = document.getElementById("detTimerBar");
   const num = document.getElementById("detTimerNum");
-  const pct = Math.max(0, Math.round(s.time / (s.c.time || 70) * 100));
-  if(bar){ bar.style.width = pct + "%"; bar.classList.toggle("low", s.time <= 15); }
-  if(num){ num.textContent = s.time + "s"; num.classList.toggle("low", s.time <= 15); }
+  const pct = Math.max(0, Math.round(r.time / (r.c.time || 70) * 100));
+  if(bar){ bar.style.width = pct + "%"; bar.classList.toggle("low", r.time <= 15); }
+  if(num){ num.textContent = r.time + "s"; num.classList.toggle("low", r.time <= 15); }
 }
 function detTick(){
-  const s = tnState; if(!s || s.done) return;
-  s.time--;
+  const r = tnState && tnState.r; if(!r || r.done) return;
+  r.time--;
   updateDetTimer();
-  if(s.time <= 0) endDetective(false);
+  if(r.time <= 0) endDetective(false);
 }
 function tapWord(i){
-  const s = tnState; if(!s || s.done) return;
-  if(s.found.has(i) || s.accused.has(i)) return;
-  const w = s.c.words[i];
+  const r = tnState && tnState.r; if(!r || r.done) return;
+  if(r.found.has(i) || r.accused.has(i)) return;
+  const w = r.c.words[i];
   const el = document.getElementById("dw" + i);
   if(typeof w === "object"){        // đúng là từ sai → BẮT được
-    s.found.add(i); s.caught++;
+    r.found.add(i); r.caught++;
     el.classList.add("caught");
     el.innerHTML = w.o + " ✓";
     detFloat(el, "🚔 Bắt!", "good");
     sfx.correct();
     const wanted = document.getElementById("detWanted");
-    if(wanted) wanted.textContent = s.total - s.caught;
-    if(s.caught === s.total) setTimeout(() => endDetective(true), 450);
+    if(wanted) wanted.textContent = r.total - r.caught;
+    if(r.caught === r.total) setTimeout(() => endDetective(true), 450);
   } else {                          // buộc tội oan → trừ 5 giây
-    s.accused.add(i); s.wrong++;
+    r.accused.add(i); r.wrong++;
     el.classList.add("falseAcc");
     setTimeout(() => { el.classList.remove("falseAcc"); el.classList.add("cleared"); }, 650);
-    s.time = Math.max(0, s.time - 5);
+    r.time = Math.max(0, r.time - 5);
     updateDetTimer();
     detFloat(el, "−5 giây", "bad");
     sfx.wrong();
@@ -3935,58 +3980,91 @@ function tapWord(i){
 }
 function detFloat(el, text, kind){
   try{
-    const r = el.getBoundingClientRect();
+    const rc = el.getBoundingClientRect();
     const t = document.createElement("div");
     t.className = "detFloat " + (kind || "");
     t.textContent = text;
-    t.style.left = (r.left + r.width / 2) + "px";
-    t.style.top = (r.top) + "px";
+    t.style.left = (rc.left + rc.width / 2) + "px";
+    t.style.top = (rc.top) + "px";
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 1000);
   }catch(e){}
 }
-function endDetective(win){
-  const s = tnState; if(!s || s.done) return;
-  s.done = true;
-  clearInterval(s.timer);
-  const solved = s.caught === s.total;
-  // Lộ diện các từ sai còn sót + đoạn văn đã chữa đúng
-  const fixed = s.c.words.map((w, i) => {
+function endDetective(win){   // kết thúc 1 MÀN → cộng vào tổng, hiện kết quả màn
+  const s = tnState, r = s && s.r; if(!r || r.done) return;
+  r.done = true;
+  clearInterval(r.timer);
+  const solved = r.caught === r.total;
+  const stars = solved && r.wrong === 0 ? 3 : solved ? 2 : r.caught >= Math.ceil(r.total / 2) ? 1 : 0;
+  s.sess.caught += r.caught; s.sess.errs += r.total; s.sess.wrong += r.wrong;
+  s.sess.stars += stars; if(solved) s.sess.solved++;
+  const fixed = r.c.words.map((w, i) => {
     if(typeof w === "object"){
-      const cls = s.found.has(i) ? "detWord caught" : "detWord missed";
+      const cls = r.found.has(i) ? "detWord caught" : "detWord missed";
       return `<span class="${cls}">${w.o}</span>`;
     }
     return `<span class="detWord plain">${w}</span>`;
   }).join(" ");
-  const acc = s.total ? Math.round(s.caught / s.total * 100) : 0;
-  const stars = solved && s.wrong === 0 ? 3 : solved ? 2 : s.caught >= Math.ceil(s.total / 2) ? 1 : 0;
-  // Cộng XP nếu làm tốt (bắt được ≥ nửa số lỗi) — chỉ khi đã đăng nhập
-  let xpNote = "";
-  if(s.caught >= Math.ceil(s.total / 2)){
-    if(isStudentLogged()){ awardGameXP(); xpNote = `<div class="detXp">⚡ +${XP_GAME} XP đã cộng vào tiến trình!</div>`; }
-    else { xpNote = `<div class="detXp muted">💡 Đăng nhập để được cộng XP nha!</div>`; }
-  }
+  const acc = r.total ? Math.round(r.caught / r.total * 100) : 0;
+  const isLast = s.round >= DET_ROUNDS - 1;
   const head = solved
     ? `<div class="detBadge big">🏆</div><h2>Phá án thành công!</h2>`
-    : (s.time <= 0 ? `<div class="detBadge big">⏰</div><h2>Hết giờ rồi!</h2>` : `<div class="detBadge big">📋</div><h2>Đã nộp hồ sơ!</h2>`);
+    : (r.time <= 0 ? `<div class="detBadge big">⏰</div><h2>Hết giờ rồi!</h2>` : `<div class="detBadge big">📋</div><h2>Đã nộp hồ sơ!</h2>`);
+  const nextBtn = isLast
+    ? `<button class="btn" onclick="showDetSession()">Xem tổng kết 🏁</button>`
+    : `<button class="btn" onclick="nextDetRound()">Màn tiếp theo ▶</button>`;
   document.getElementById("detBody").innerHTML = `
     <div class="detResult">
+      <div class="detRoundChip center-chip">Màn ${s.round+1}/${DET_ROUNDS}</div>
       ${head}
       <div class="detStars">${"⭐".repeat(stars)}${"▫️".repeat(3 - stars)}</div>
       <div class="detScoreRow">
-        <div class="detScoreBox good"><b>${s.caught}/${s.total}</b><span>bắt đúng</span></div>
-        <div class="detScoreBox bad"><b>${s.wrong}</b><span>buộc tội oan</span></div>
+        <div class="detScoreBox good"><b>${r.caught}/${r.total}</b><span>bắt đúng</span></div>
+        <div class="detScoreBox bad"><b>${r.wrong}</b><span>buộc tội oan</span></div>
         <div class="detScoreBox"><b>${acc}%</b><span>chính xác</span></div>
       </div>
-      ${xpNote}
       <div class="detFixedTitle">📖 Đoạn văn đã chữa đúng (đỏ = còn sót):</div>
       <div class="detPassage small">${fixed}</div>
-      <div class="center">
-        <button class="btn" onclick="startDetective()">Vụ án khác 🔎</button>
+      <div class="center">${nextBtn}
+        <button class="btn light" onclick="closeDetective()" style="margin-left:8px">Thoát ↩️</button>
+      </div>
+    </div>`;
+  if(solved){ sfx.win(); burst(14); } else if(r.caught > 0){ sfx.pop(); }
+}
+function nextDetRound(){ if(!tnState) return; tnState.round++; startDetRound(); }
+function showDetSession(){
+  const s = tnState; if(!s) return;
+  const sess = s.sess;
+  const acc = sess.errs ? Math.round(sess.caught / sess.errs * 100) : 0;
+  const bigStars = sess.stars >= 13 ? 3 : sess.stars >= 8 ? 2 : sess.stars >= 4 ? 1 : 0;
+  let xpNote = "";
+  if(sess.caught >= Math.ceil(sess.errs / 2)){
+    if(isStudentLogged()){ awardGameXP(); xpNote = `<div class="detXp">⚡ +${XP_GAME} XP đã cộng vào tiến trình!</div>`; }
+    else { xpNote = `<div class="detXp muted">💡 Đăng nhập để được cộng XP nha!</div>`; }
+  }
+  const title = bigStars >= 3 ? "Thám tử đại tài! 🎖️" : bigStars >= 2 ? "Cảnh sát cừ khôi! 👮" : bigStars >= 1 ? "Tiến bộ rồi nè! 💪" : "Cố lên nào! 🚀";
+  document.getElementById("detBody").innerHTML = `
+    <div class="detResult">
+      <div class="detBadge big">🏁</div>
+      <h2>Hoàn thành ${DET_ROUNDS} màn!</h2>
+      <p class="center muted" style="margin-top:2px">${title}</p>
+      <div class="detStars">${"⭐".repeat(bigStars)}${"▫️".repeat(3 - bigStars)}</div>
+      <div class="detScoreRow">
+        <div class="detScoreBox good"><b>${sess.caught}/${sess.errs}</b><span>bắt đúng</span></div>
+        <div class="detScoreBox bad"><b>${sess.wrong}</b><span>tội oan</span></div>
+        <div class="detScoreBox"><b>${acc}%</b><span>chính xác</span></div>
+      </div>
+      <div class="detScoreRow">
+        <div class="detScoreBox"><b>${sess.solved}/${DET_ROUNDS}</b><span>vụ phá trọn</span></div>
+        <div class="detScoreBox"><b>${sess.stars}/${DET_ROUNDS*3}</b><span>tổng sao ⭐</span></div>
+      </div>
+      ${xpNote}
+      <div class="center" style="margin-top:14px">
+        <button class="btn" onclick="startDetective()">Chơi lại (5 màn mới) 🔄</button>
         <button class="btn light" onclick="closeDetective()" style="margin-left:8px">Về Bài tập ↩️</button>
       </div>
     </div>`;
-  if(solved){ sfx.win(); burst(22); } else if(s.caught > 0){ sfx.pop(); }
+  if(bigStars >= 2){ sfx.win(); burst(28); }
 }
 
 /* =========================================================

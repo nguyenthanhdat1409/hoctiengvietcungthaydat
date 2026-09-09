@@ -881,6 +881,10 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
   font-size:30px; background:linear-gradient(135deg,#6366F1,#8B5CF6); box-shadow:0 5px 0 rgba(55,48,163,.3)}
 .detBadge.big{width:76px; height:76px; font-size:44px; border-radius:22px; margin:0 auto 8px}
 .detHeadTxt h2{font-size:22px; color:var(--ink)}
+.detRoundChip{display:inline-block; vertical-align:middle; margin-left:6px; font-family:'Be Vietnam Pro',sans-serif;
+  font-size:12px; font-weight:800; color:#3730A3; background:#EEF2FF; border:2px solid #C7D2FE;
+  border-radius:999px; padding:2px 10px}
+.detRoundChip.center-chip{display:block; width:max-content; margin:0 auto 8px}
 .detHeadTxt p{margin:2px 0 0; font-size:13.5px; color:#64748B; font-weight:600}
 .detBar{display:flex; align-items:center; gap:12px; margin-bottom:10px}
 .detStat{background:#FEF2F2; border:2px solid #FCA5A5; border-radius:14px; padding:6px 12px; text-align:center; flex:0 0 auto}
