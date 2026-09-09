@@ -123,6 +123,12 @@
       <p class="muted">Chọn một chủ đề để làm 10 câu luyện tập (trộn đủ mức độ). Có sửa đáp án ngay!</p>
       <div class="topicChips" id="topicChips"></div>
     </div>
+
+    <div class="card practiceCard gameCard">
+      <h3 class="blockTitle">🕵️ Truy nã từ sai <span class="gameTag">Trò chơi · Rèn chính tả</span></h3>
+      <p class="muted">Một đoạn văn bị gài lỗi chính tả! Bé làm <b>“cảnh sát chính tả”</b> bấm bắt hết từ sai trước khi hết giờ. Bắt đúng được thưởng, buộc tội oan bị trừ giờ nha! ⏱️</p>
+      <div class="center"><button class="btn detStartBtn" onclick="startDetective()">🚔 Vào ca trực!</button></div>
+    </div>
   </section>
 
   <!-- ---------- KIỂM TRA (màn giới thiệu) ---------- -->
@@ -231,6 +237,14 @@
   <div class="modalBox" onclick="event.stopPropagation()">
     <button class="modalClose" onclick="closeLesson()" aria-label="Đóng">✕</button>
     <div id="lessonBody"></div>
+  </div>
+</div>
+
+<!-- ===================== MODAL TRÒ CHƠI: TRUY NÃ TỪ SAI ===================== -->
+<div id="detModal" class="modal hidden" onclick="closeDetective(event)">
+  <div class="modalBox detBox" onclick="event.stopPropagation()">
+    <button class="modalClose" onclick="closeDetective()" aria-label="Đóng">✕</button>
+    <div id="detBody"></div>
   </div>
 </div>
 

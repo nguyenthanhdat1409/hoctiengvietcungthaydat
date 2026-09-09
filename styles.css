@@ -866,6 +866,72 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
   padding:9px 12px; font-size:14px; line-height:1.5; color:#0C4A6E}
 .subExp::before{content:"💡 "; }
 .subExp.hidden{display:none}
+
+/* ============ TRÒ CHƠI: TRUY NÃ TỪ SAI ============ */
+.gameCard{border-top:5px solid #6366F1}
+.gameTag{display:inline-block; vertical-align:middle; margin-left:6px; font-family:'Be Vietnam Pro',sans-serif;
+  font-size:11px; font-weight:700; color:#3730A3; background:#EEF2FF; border:1.5px solid #C7D2FE;
+  border-radius:999px; padding:2px 9px}
+.detBox{max-width:640px}
+#detBody{overflow-y:auto; overflow-x:hidden; flex:1 1 auto; padding:22px 22px 26px;
+  scrollbar-width:none; -ms-overflow-style:none}
+#detBody::-webkit-scrollbar{width:0; height:0; display:none}
+.detHead{display:flex; align-items:center; gap:12px; margin-bottom:14px}
+.detBadge{width:52px; height:52px; border-radius:16px; display:flex; align-items:center; justify-content:center;
+  font-size:30px; background:linear-gradient(135deg,#6366F1,#8B5CF6); box-shadow:0 5px 0 rgba(55,48,163,.3)}
+.detBadge.big{width:76px; height:76px; font-size:44px; border-radius:22px; margin:0 auto 8px}
+.detHeadTxt h2{font-size:22px; color:var(--ink)}
+.detHeadTxt p{margin:2px 0 0; font-size:13.5px; color:#64748B; font-weight:600}
+.detBar{display:flex; align-items:center; gap:12px; margin-bottom:10px}
+.detStat{background:#FEF2F2; border:2px solid #FCA5A5; border-radius:14px; padding:6px 12px; text-align:center; flex:0 0 auto}
+.detStatNum{font-family:'Baloo 2',cursive; font-weight:800; font-size:24px; color:#DC2626; line-height:1; display:block}
+.detStatLbl{font-size:10.5px; color:#991B1B; font-weight:700}
+.detTimerWrap{position:relative; flex:1 1 auto; height:26px; background:#EEF2FF; border-radius:999px; overflow:hidden;
+  border:2px solid #C7D2FE}
+.detTimerBar{position:absolute; inset:0 auto 0 0; width:100%; background:linear-gradient(90deg,#22C55E,#84CC16);
+  border-radius:999px; transition:width 1s linear}
+.detTimerBar.low{background:linear-gradient(90deg,#F97316,#EF4444)}
+.detTimerNum{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-family:'Baloo 2',cursive; font-weight:800; font-size:14px; color:#1E293B}
+.detTimerNum.low{color:#fff}
+.detHint{font-size:13.5px; color:#475569; text-align:center; margin:4px 0 12px}
+.detPassage{background:#FFFDF7; border:2px dashed #CBD5E1; border-radius:18px; padding:16px 14px; line-height:2.1;
+  font-size:clamp(17px,4.6vw,20px); color:var(--ink); text-align:center; margin-bottom:16px;
+  background-image:repeating-linear-gradient(180deg,transparent,transparent 39px,#EEF2F6 39px,#EEF2F6 40px)}
+.detPassage.small{font-size:16px; line-height:1.9; background-image:none; text-align:left}
+.detWord{display:inline-block; padding:2px 7px; border-radius:8px; cursor:pointer; transition:transform .1s, background .12s;
+  border:2px solid transparent}
+.detWord:hover{background:#EEF2FF; transform:translateY(-1px)}
+.detWord.caught{background:#F0FDF4; border-color:var(--ok); color:#166534; font-weight:700; cursor:default}
+.detWord.falseAcc{background:#FEF2F2; border-color:var(--bad); color:#991B1B; animation:shake .3s}
+.detWord.cleared{opacity:.5; cursor:default}
+.detWord.cleared:hover{background:transparent; transform:none}
+.detWord.missed{background:#FEF2F2; border-color:var(--bad); color:#DC2626; font-weight:800; text-decoration:underline wavy #EF4444}
+.detWord.plain{cursor:default}
+.detWord.plain:hover{background:transparent; transform:none}
+.detFloat{position:fixed; transform:translate(-50%,-8px); z-index:130; pointer-events:none; white-space:nowrap;
+  font-family:'Baloo 2',cursive; font-weight:800; font-size:16px; animation:detUp 1s ease forwards}
+.detFloat.good{color:#16A34A}
+.detFloat.bad{color:#DC2626}
+@keyframes detUp{0%{opacity:0; transform:translate(-50%,4px) scale(.8)}
+  20%{opacity:1; transform:translate(-50%,-8px) scale(1.05)}
+  100%{opacity:0; transform:translate(-50%,-42px) scale(1)}}
+/* Kết quả phá án */
+.detResult{text-align:center}
+.detResult h2{font-size:24px; color:var(--ink); margin-top:4px}
+.detStars{font-size:26px; letter-spacing:2px; margin:8px 0}
+.detScoreRow{display:flex; gap:10px; justify-content:center; margin:12px 0}
+.detScoreBox{background:#F8FAFC; border:2px solid #E2E8F0; border-radius:14px; padding:10px 8px; flex:1 1 0; max-width:130px}
+.detScoreBox b{font-family:'Baloo 2',cursive; font-size:24px; color:var(--ink); display:block; line-height:1}
+.detScoreBox span{font-size:11.5px; color:#64748B; font-weight:700}
+.detScoreBox.good{background:#F0FDF4; border-color:#86EFAC}
+.detScoreBox.good b{color:#16A34A}
+.detScoreBox.bad{background:#FEF2F2; border-color:#FCA5A5}
+.detScoreBox.bad b{color:#DC2626}
+.detXp{font-family:'Baloo 2',cursive; font-weight:800; color:#B45309; background:#FEF3C7; border:2px solid #FCD34D;
+  border-radius:12px; padding:8px 12px; margin:6px auto 2px; display:inline-block; font-size:14px}
+.detXp.muted{color:#64748B; background:#F1F5F9; border-color:#E2E8F0}
+.detFixedTitle{font-family:'Baloo 2',cursive; font-weight:800; font-size:14.5px; color:var(--ink); text-align:left; margin:16px 0 8px}
 .grade{display:grid; grid-template-columns:1fr; gap:10px}
 .gbtn{font-weight:700; font-size:16px; border-radius:16px; padding:14px; cursor:pointer;
   border:3px solid; background:#fff; box-shadow:0 5px 0; transition:transform .08s;
