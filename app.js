@@ -3422,7 +3422,7 @@ function checkMulti(){
   const subQs = document.querySelectorAll(".subQ");
   multiState.subs.forEach((su, si) => {
     const optBtns = subQs[si].querySelectorAll(".opt");
-    optBtns.forEach(b => b.classList.add("locked"));
+    optBtns.forEach(b => { b.classList.add("locked"); b.classList.remove("sel"); }); // bỏ viền chọn để màu đúng/sai hiện đúng
     const pk = multiState.picks[si];
     if(pk === su.a){ correct++; optBtns[pk].classList.add("correct"); }
     else { if(pk != null) optBtns[pk].classList.add("wrong"); optBtns[su.a].classList.add("correct"); }
