@@ -3897,7 +3897,7 @@ let tnState = null;
 
 function startDetective(){
   const queue = shuffle(DETECTIVE_CASES.slice()).slice(0, DET_ROUNDS);
-  tnState = { queue, round: 0, sess: { caught:0, errs:0, wrong:0, stars:0, solved:0 } };
+  tnState = { queue, round: 0, sess: { caught:0, errs:0, wrong:0, stars:0, solved:0, xp:0 } };
   document.getElementById("detModal").classList.remove("hidden");
   document.body.style.overflow = "hidden";
   startDetRound();
@@ -3923,30 +3923,64 @@ function renderDetective(){
     let cls = "detWord";
     if(r.found.has(i)) cls += " caught";
     if(r.accused.has(i)) cls += " cleared";
-    const show = r.found.has(i) ? (w.o + " ✓") : txt;
+    const show = r.found.has(i) ? (w.o + `<span class="detWordBadge">✓</span>`) : txt;
     return `<span class="${cls}" id="dw${i}" onclick="tapWord(${i})">${show}</span>`;
   }).join(" ");
   document.getElementById("detBody").innerHTML = `
+    <div class="detGlow"></div>
     <div class="detHead">
-      <div class="detBadge">🕵️</div>
-      <div class="detHeadTxt"><h2>Truy tìm từ sai <span class="detRoundChip">Màn ${s.round+1}/${DET_ROUNDS}</span></h2><p>${c.title}</p></div>
+      <div class="detBadge detBadgePro"><span class="detBadgeRing"></span><span class="detBadgeIcon">🕵️</span></div>
+      <div class="detHeadTxt"><h2>TRUY TÌM TỪ SAI</h2><p>${c.title}</p></div>
+      <div class="detCaseChip">HỒ SƠ ${s.round+1}/${DET_ROUNDS}</div>
     </div>
-    <div class="detBar">
-      <div class="detStat"><span class="detStatNum" id="detWanted">${r.total - r.caught}</span><span class="detStatLbl">từ sai cần bắt</span></div>
-      <div class="detTimerWrap"><div class="detTimerBar" id="detTimerBar"></div><span class="detTimerNum" id="detTimerNum">${r.time}s</span></div>
+    <div class="detRewardRow">
+      <div class="detReward xp"><span class="detRewardIc">⚡</span><b id="detXpNum">+${s.sess.xp}</b><span class="detRewardLbl">XP</span></div>
+      <div class="detReward star"><span class="detRewardIc">⭐</span><b id="detStarNum">${s.sess.stars}</b><span class="detRewardLbl">Sao</span></div>
+      <div class="detReward clue"><span class="detRewardIc">🔍</span><b><span id="detClueNum">${r.caught}</span>/${r.total}</b><span class="detRewardLbl">Manh mối</span></div>
+    </div>
+    <div class="detCountdown">
+      <div class="detRing" id="detRing"><span class="detRingNum" id="detTimerNum">${r.time}</span></div>
+      <div class="detCountLbl">Giây còn lại</div>
     </div>
     <p class="detHint">🔎 Đọc kỹ rồi bấm vào những <b>từ viết sai</b> để bắt nhé!</p>
     <div class="detPassage" id="detPassage">${words}</div>
-    <div class="center"><button class="btn light" onclick="endDetective(false)">Nộp hồ sơ 📋</button></div>`;
+    <div class="center"><button class="btn detSubmitBtn" onclick="endDetective(false)">📋 Nộp hồ sơ</button></div>`;
   updateDetTimer();
 }
 function updateDetTimer(){
   const r = tnState && tnState.r; if(!r) return;
-  const bar = document.getElementById("detTimerBar");
+  const ring = document.getElementById("detRing");
   const num = document.getElementById("detTimerNum");
-  const pct = Math.max(0, Math.round(r.time / (r.c.time || 70) * 100));
-  if(bar){ bar.style.width = pct + "%"; bar.classList.toggle("low", r.time <= 15); }
-  if(num){ num.textContent = r.time + "s"; num.classList.toggle("low", r.time <= 15); }
+  const pct = Math.max(0, r.time / (r.c.time || 70) * 100);
+  const low = r.time <= 15;
+  if(ring){ ring.style.setProperty("--pct", pct); ring.classList.toggle("low", low); }
+  if(num){ num.textContent = r.time; num.classList.toggle("low", low); }
+}
+function detBumpXp(amount){
+  const s = tnState; if(!s) return;
+  s.sess.xp += amount;
+  const el = document.getElementById("detXpNum");
+  if(el){ el.textContent = "+" + s.sess.xp; el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); }
+}
+function detSparkle(el){
+  try{
+    const rc = el.getBoundingClientRect();
+    const cx = rc.left + rc.width / 2, cy = rc.top + rc.height / 2;
+    const em = ["✨","⭐","💫","🌟"];
+    for(let i = 0; i < 8; i++){
+      const sp = document.createElement("span");
+      sp.className = "detSpark";
+      sp.textContent = em[i % em.length];
+      const ang = (Math.PI * 2 * i) / 8 + Math.random() * 0.5;
+      const dist = 34 + Math.random() * 26;
+      sp.style.left = cx + "px";
+      sp.style.top = cy + "px";
+      sp.style.setProperty("--dx", Math.cos(ang) * dist + "px");
+      sp.style.setProperty("--dy", Math.sin(ang) * dist + "px");
+      document.body.appendChild(sp);
+      setTimeout(() => sp.remove(), 720);
+    }
+  }catch(e){}
 }
 function detTick(){
   const r = tnState && tnState.r; if(!r || r.done) return;
@@ -3961,13 +3995,16 @@ function tapWord(i){
   const el = document.getElementById("dw" + i);
   if(typeof w === "object"){        // đúng là từ sai → BẮT được
     r.found.add(i); r.caught++;
-    el.classList.add("caught");
-    el.innerHTML = w.o + " ✓";
+    el.classList.add("caught", "spring");
+    setTimeout(() => el.classList.remove("spring"), 420);
+    el.innerHTML = w.o + `<span class="detWordBadge">✓</span>`;
+    detSparkle(el);
     detFloat(el, "🚔 Bắt!", "good");
+    detBumpXp(5);
     sfx.correct();
-    const wanted = document.getElementById("detWanted");
-    if(wanted) wanted.textContent = r.total - r.caught;
-    if(r.caught === r.total) setTimeout(() => endDetective(true), 450);
+    const clue = document.getElementById("detClueNum");
+    if(clue) clue.textContent = r.caught;
+    if(r.caught === r.total){ setTimeout(detWinSequence, 350); }
   } else {                          // buộc tội oan → trừ 5 giây
     r.accused.add(i); r.wrong++;
     el.classList.add("falseAcc");
@@ -3976,6 +4013,21 @@ function tapWord(i){
     updateDetTimer();
     detFloat(el, "−5 giây", "bad");
     sfx.wrong();
+  }
+}
+function detWinSequence(){
+  const r = tnState && tnState.r; if(!r || r.done) return;
+  detBumpXp(20);                       // thưởng phá án +20 XP
+  sfx.win(); burst(26);
+  const box = document.querySelector("#detModal .detBox");
+  if(box){
+    const stamp = document.createElement("div");
+    stamp.className = "detStamp";
+    stamp.innerHTML = `<div class="detStampInner">ĐÃ PHÁ ÁN<span class="detStampXp">+20 XP ⚡</span></div>`;
+    box.appendChild(stamp);
+    setTimeout(() => { stamp.remove(); endDetective(true); }, 1600);
+  } else {
+    endDetective(true);
   }
 }
 function detFloat(el, text, kind){
@@ -4029,7 +4081,7 @@ function endDetective(win){   // kết thúc 1 MÀN → cộng vào tổng, hi�
         <button class="btn light" onclick="closeDetective()" style="margin-left:8px">Thoát ↩️</button>
       </div>
     </div>`;
-  if(solved){ sfx.win(); burst(14); } else if(r.caught > 0){ sfx.pop(); }
+  if(!solved && r.caught > 0){ sfx.pop(); }   // thắng đã được ăn mừng ở detWinSequence
 }
 function nextDetRound(){ if(!tnState) return; tnState.round++; startDetRound(); }
 function showDetSession(){
@@ -4057,6 +4109,7 @@ function showDetSession(){
       <div class="detScoreRow">
         <div class="detScoreBox"><b>${sess.solved}/${DET_ROUNDS}</b><span>vụ phá trọn</span></div>
         <div class="detScoreBox"><b>${sess.stars}/${DET_ROUNDS*3}</b><span>tổng sao ⭐</span></div>
+        <div class="detScoreBox good"><b>+${sess.xp}</b><span>điểm XP ⚡</span></div>
       </div>
       ${xpNote}
       <div class="center" style="margin-top:14px">
