@@ -2559,9 +2559,29 @@ const LESSONS = [
         <div class="vocabItem"><div class="ve">🌐</div><div class="vw">Dịch từ tiếng này sang tiếng khác</div></div>
       </div>
 
+      <div class="secTitle" data-icon="✨">AI có thể giúp em làm gì?</div>
+      <p style="color:#64748B;font-size:14px;margin:-4px 0 10px">AI như một người trợ giúp siêu nhanh — em bảo gì, nó thử làm nấy:</p>
+      <div class="vocabGrid">
+        <div class="vocabItem"><div class="ve">✍️</div><div class="vw">Viết và sửa câu chữ</div></div>
+        <div class="vocabItem"><div class="ve">🌐</div><div class="vw">Dịch tiếng nước ngoài</div></div>
+        <div class="vocabItem"><div class="ve">❓</div><div class="vw">Trả lời câu hỏi của em</div></div>
+        <div class="vocabItem"><div class="ve">🎨</div><div class="vw">Vẽ tranh, tạo hình vui</div></div>
+        <div class="vocabItem"><div class="ve">📚</div><div class="vw">Gợi ý cách học, giải thích bài</div></div>
+        <div class="vocabItem"><div class="ve">🔢</div><div class="vw">Tính toán thật nhanh</div></div>
+      </div>
+
       <div class="secTitle" data-icon="⚙️">AI học như thế nào?</div>
       <div class="dlg"><b>AI học từ ví dụ</b> — càng nhiều ví dụ, càng giỏi. Giống em luyện đọc: đọc <b>đi đọc lại</b> nhiều lần thì nhớ lâu.<br>
       Nhớ trò "lặp lại 5 lần" ở bài đầu tiên (A, Ă, Â) không? Việc lặp đó gọi là <b>vòng lặp (loop)</b> — máy tính cũng lặp như thế để học đó! 🔁</div>
+
+      <div class="secTitle" data-icon="📊">Dữ liệu — "thức ăn" của AI</div>
+      <div class="dlg"><b>Dữ liệu</b> (tiếng Anh: <i>data</i>) là những <b>ví dụ, hình ảnh, câu chữ</b> mà con người cho AI xem để học. Càng nhiều dữ liệu tốt, AI càng <b>giỏi và ít nhầm</b>. Giống như em đọc nhiều sách hay thì viết văn càng giỏi vậy! 📖</div>
+
+      <div class="secTitle" data-icon="🤨">AI cũng có lúc nhầm</div>
+      <div class="dlg">AI <b>không phải lúc nào cũng đúng</b>. Đôi khi nó trả lời <b>nghe rất tự tin nhưng lại sai</b>, thậm chí "bịa" ra thông tin không có thật. Vì vậy khi AI nói điều gì quan trọng, em hãy <b>hỏi lại thầy cô, ba mẹ</b> hoặc xem thêm sách để chắc chắn nha! 🔍</div>
+
+      <div class="secTitle" data-icon="🗨️">Hỏi AI cho khéo</div>
+      <div class="dlg">Muốn AI giúp đúng ý, em hãy <b>nói rõ mình muốn gì</b>. Ví dụ, thay vì hỏi trống không <i>"kể chuyện"</i>, hãy hỏi <b>"kể cho em một câu chuyện ngắn, vui, về một chú mèo con biết bay"</b>. Hỏi càng rõ → trả lời càng hay! 🎯</div>
 
       <div class="secTitle" data-icon="🛡️">Dùng AI an toàn & thông minh</div>
       <div class="toneList">
@@ -2573,8 +2593,11 @@ const LESSONS = [
       <div class="secTitle" data-icon="💜">AI không thay được em</div>
       <div class="dlg">AI tính rất nhanh, nhớ rất nhiều, nhưng <b>sự sáng tạo, tình cảm và lòng tốt</b> là điều <b>chỉ con người mới có</b>. AI là công cụ giúp em giỏi hơn, còn người quyết định vẫn là <b>em</b>! 🌟</div>
 
+      <div class="secTitle" data-icon="🌏">Vài từ tiếng Anh về AI</div>
+      <div class="langBox"><b>AI</b> = trí tuệ nhân tạo · <b>Robot</b> = người máy · <b>Data</b> = dữ liệu · <b>Smart</b> = thông minh</div>
+
       <div class="tipBox">💡 <b>Mẹo:</b> Khi hỏi AI, hãy hỏi <b>rõ ràng</b> điều mình muốn — hỏi càng rõ, câu trả lời càng đúng ý.</div>
-      <div class="challengeBox"><b>Thử thách:</b> Kể tên 3 chỗ em thấy AI trong cuộc sống hằng ngày. Theo em, AI giúp ích gì cho mình?</div>`},
+      <div class="challengeBox"><b>Thử thách:</b> Kể tên 3 chỗ em thấy AI trong cuộc sống hằng ngày. Theo em, AI giúp ích gì cho mình — và có điều gì AI <b>không</b> làm thay em được?</div>`},
 
   {icon:"🔡", color:"#7C3AED", title:"Bài 27: Phụ âm B · C · D · Đ", desc:"4 phụ âm đầu đầu tiên — bấm ví dụ để nghe và tập ghép vần.",
     body:`<p><b>🎯 Mục tiêu:</b> Đọc đúng 4 phụ âm <b>B, C, D, Đ</b> và ghép với nguyên âm thành tiếng. Bấm ví dụ để nghe nha! 🔊</p>
@@ -3050,15 +3073,25 @@ const LESSON_GAMES = {
       {q:"Đoạn văn giới thiệu bản thân nên có câu nào?", opts:["Tên của mình","Món ăn em ghét","Số nhà hàng xóm","Không câu nào"], a:0},
     ]},
   ],
-  25: [ // Bài 26: Làm quen với AI
+  25: [ // Bài 32: Làm quen với AI
     {type:"quiz", title:"Đố nhanh về AI", questions:[
       {q:"AI là viết tắt của điều gì?", opts:["Trí tuệ nhân tạo","Ăn ít","Anh Isaac","Ánh sáng"], a:0},
+      {q:"AI thực chất là gì?", opts:["Chương trình do con người tạo ra","Một người thật","Con vật thông minh","Phép thuật"], a:0},
       {q:"AI học giỏi hơn nhờ điều gì?", opts:["Xem thật nhiều ví dụ","Ngủ nhiều","Ăn kẹo","Không cần học"], a:0},
-      {q:"Khi AI trả lời, em nên?", opts:["Kiểm tra lại, không tin 100%","Tin hết mọi thứ","Không bao giờ dùng","Giấu ba mẹ"], a:0},
+      {q:"\"Dữ liệu\" (data) mà AI học là gì?", opts:["Ví dụ, hình ảnh, câu chữ cho AI xem","Đồ ăn của máy","Pin điện thoại","Màn hình máy tính"], a:0},
+      {q:"AI có thể trả lời SAI không?", opts:["Có, nên phải kiểm tra lại","Không bao giờ sai","Chỉ sai ban đêm","AI không biết trả lời"], a:0},
+      {q:"Khi AI trả lời điều quan trọng, em nên?", opts:["Hỏi lại thầy cô, ba mẹ cho chắc","Tin ngay 100%","Không bao giờ dùng","Giấu ba mẹ"], a:0},
+      {q:"Muốn AI trả lời đúng ý, em nên hỏi thế nào?", opts:["Hỏi thật rõ điều mình muốn","Hỏi trống không","Không nói gì","Hỏi thật khó hiểu"], a:0},
       {q:"Điều nào KHÔNG nên chia sẻ cho AI hay người lạ?", opts:["Mật khẩu, địa chỉ nhà","Màu em thích","Con vật em thích","Món ăn ngon"], a:0},
-      {q:"Điều gì chỉ con người mới có?", opts:["Tình cảm & sáng tạo","Tính toán nhanh","Nhớ nhiều số","Chạy điện"], a:0},
+      {q:"Điều gì chỉ con người mới có?", opts:["Tình cảm và sáng tạo","Tính toán nhanh","Nhớ nhiều số","Chạy bằng điện"], a:0},
+      {q:"Cách dùng AI thông minh nhất là?", opts:["Coi AI là trợ giúp, mình vẫn tự suy nghĩ","Để AI làm hết, mình khỏi nghĩ","Chép y nguyên, không đọc lại","Không hỏi ai bao giờ"], a:0},
     ]},
+    {type:"sort", title:"Dùng AI: Nên hay Không nên?", hint:"Bấm từng việc rồi bỏ vào đúng ô Nên / Không nên nha!", bins:["Nên ✅","Không nên 🚫"],
+      items:[["Hỏi ba mẹ khi dùng","Nên ✅"],["Kiểm tra lại câu trả lời","Nên ✅"],["Coi AI là trợ giúp","Nên ✅"],["Cho AI biết mật khẩu","Không nên 🚫"],["Nói địa chỉ nhà","Không nên 🚫"],["Tin AI 100%","Không nên 🚫"]]},
+    {type:"sort", title:"AI giỏi hay chỉ Người làm được?", hint:"Việc nào AI làm rất giỏi, việc nào chỉ con người mới làm được?", bins:["AI làm giỏi 🤖","Chỉ Người 💜"],
+      items:[["Tính rất nhanh","AI làm giỏi 🤖"],["Nhớ nhiều thứ","AI làm giỏi 🤖"],["Dịch nhiều tiếng","AI làm giỏi 🤖"],["Yêu thương","Chỉ Người 💜"],["Sáng tạo từ trái tim","Chỉ Người 💜"],["Biết điều đúng - sai","Chỉ Người 💜"]]},
     {type:"match", title:"Nối AI với công việc nó giúp", pairs:[["🗣️","trợ lý ảo"],["🗺️","chỉ đường"],["🌐","dịch ngôn ngữ"],["📷","nhận diện khuôn mặt"],["💬","chatbot trò chuyện"]]},
+    {type:"match", title:"Nối từ tiếng Anh với nghĩa", pairs:[["AI","trí tuệ nhân tạo"],["Robot","người máy"],["Data","dữ liệu"],["Smart","thông minh"]]},
   ],
   26: [ // Bài 27: Phụ âm B C D Đ
     {type:"listen", title:"Nghe & chọn tiếng", items:["ba","cá","dê","đi","bé","con"]},

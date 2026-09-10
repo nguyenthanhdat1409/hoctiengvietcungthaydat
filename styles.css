@@ -1107,8 +1107,11 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 /* ============ TRÒ CHƠI: BÁC SĨ CHỮA DẤU (bản cao cấp) ============ */
 /* (Thẻ .drCard ở trang Bài tập được style chung trong khối "Thẻ trò chơi cao cấp") */
 
-/* Modal kính mờ nền y tế xanh */
-.drModalPremium{background:radial-gradient(circle at 30% 12%, rgba(45,212,191,.5), rgba(6,78,59,.86))}
+/* Modal kính mờ — nền hình y tế phía sau lớp kính, phủ tông xanh */
+.drModalPremium{
+  background:linear-gradient(rgba(6,60,58,.52), rgba(6,78,59,.72)),
+    url("images/baitap/bacSiChuaDau.svg") center/cover no-repeat;
+}
 /* Huy hiệu bác sĩ cao cấp (tròn, xanh) — đè lên .detBadgePro */
 .drBadgePro{background:linear-gradient(145deg,#34D399,#0D9488);
   box-shadow:0 8px 22px rgba(13,148,136,.5), inset 0 2px 4px rgba(255,255,255,.6)}
