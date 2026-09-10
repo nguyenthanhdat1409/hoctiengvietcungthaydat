@@ -1897,6 +1897,13 @@ const sfx = {
   wrong:  () => { playTone(200, 0.2, "sawtooth", 0.06); setTimeout(()=>playTone(150, 0.3, "sawtooth", 0.04), 150); },
   win:    () => { [523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f, 0.15, "square", 0.07), i*100)); },
   pop:    () => playTone(400, 0.06, "sine", 0.04),
+  // Fanfare "PHÁ ÁN" — kèn khải hoàn riêng cho lúc phá án thành công
+  solved: () => {
+    [[523,0],[659,90],[784,175],[1047,285]].forEach(([f,d]) => setTimeout(()=>playTone(f, 0.16, "square", 0.08), d));
+    setTimeout(()=>{ playTone(784,0.55,"triangle",0.06); playTone(1047,0.55,"triangle",0.06); playTone(1319,0.6,"triangle",0.05); }, 440); // hợp âm chốt ngân dài
+    setTimeout(()=>playTone(262,0.45,"sawtooth",0.05), 440);   // nốt trầm "đóng hồ sơ"
+    setTimeout(()=>playTone(1568,0.2,"square",0.06), 700);     // điểm nhấn cao lấp lánh
+  },
 };
 document.addEventListener("click", e => {
   if(e.target.closest("button, .opt, .chip, .topicChip, .lessonCard, .flashcard")) sfx.click();
@@ -4018,7 +4025,7 @@ function tapWord(i){
 function detWinSequence(){
   const r = tnState && tnState.r; if(!r || r.done) return;
   detBumpXp(20);                       // thưởng phá án +20 XP
-  sfx.win(); burst(26);
+  sfx.solved(); burst(26);             // kèn khải hoàn riêng cho phá án thành công
   const box = document.querySelector("#detModal .detBox");
   if(box){
     const stamp = document.createElement("div");
