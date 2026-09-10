@@ -873,8 +873,11 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
   font-size:11px; font-weight:700; color:#3730A3; background:#EEF2FF; border:1.5px solid #C7D2FE;
   border-radius:999px; padding:2px 9px}
 
-/* --- Modal kính mờ (glassmorphism) --- */
-.detModalPremium{background:radial-gradient(circle at 30% 15%, rgba(129,140,248,.5), rgba(30,27,75,.85))}
+/* --- Modal kính mờ (glassmorphism) — nền là ảnh vụ án phía sau lớp kính --- */
+.detModalPremium{
+  background:linear-gradient(rgba(20,18,50,.60), rgba(30,27,75,.74)),
+    url("images/baitap/troChoiTruyTimTuSai.jpg") center/cover no-repeat;
+}
 .detBox{max-width:720px}
 .detGlass{background:linear-gradient(160deg, rgba(255,255,255,.80), rgba(238,242,255,.60));
   backdrop-filter:blur(24px) saturate(165%); -webkit-backdrop-filter:blur(24px) saturate(165%);

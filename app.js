@@ -4006,8 +4006,8 @@ function tapWord(i){
     setTimeout(() => el.classList.remove("spring"), 420);
     el.innerHTML = w.o + `<span class="detWordBadge">✓</span>`;
     detSparkle(el);
-    detFloat(el, "🚔 Bắt!", "good");
-    detBumpXp(5);
+    detFloat(el, "🚔 +1 XP", "good");
+    detBumpXp(1);                       // mỗi lần bắt đúng +1 XP
     sfx.correct();
     const clue = document.getElementById("detClueNum");
     if(clue) clue.textContent = r.caught;
@@ -4024,13 +4024,13 @@ function tapWord(i){
 }
 function detWinSequence(){
   const r = tnState && tnState.r; if(!r || r.done) return;
-  detBumpXp(20);                       // thưởng phá án +20 XP
   sfx.solved(); burst(26);             // kèn khải hoàn riêng cho phá án thành công
+  const earned = r.caught;             // XP kiếm được trong màn = số từ bắt đúng (đã +1 mỗi lần)
   const box = document.querySelector("#detModal .detBox");
   if(box){
     const stamp = document.createElement("div");
     stamp.className = "detStamp";
-    stamp.innerHTML = `<div class="detStampInner">ĐÃ PHÁ ÁN<span class="detStampXp">+20 XP ⚡</span></div>`;
+    stamp.innerHTML = `<div class="detStampInner">ĐÃ PHÁ ÁN<span class="detStampXp">+${earned} XP ⚡</span></div>`;
     box.appendChild(stamp);
     setTimeout(() => { stamp.remove(); endDetective(true); }, 1600);
   } else {
