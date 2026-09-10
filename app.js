@@ -2754,10 +2754,10 @@ function initListenGameG(body, g){
   const totalR = Math.min(10, Math.max(4, items.length));
   let round = 0, score = 0, target = null;
   const play = () => { if(target) speakVN(target); };
-  const nextRound = () => {
+  const nextRound = (autoPlay) => {
     if(round >= totalR){
       body.innerHTML = lgResultHtml(score, totalR);
-      body.querySelector(".lgReplay").addEventListener("click", () => { round = 0; score = 0; nextRound(); });
+      body.querySelector(".lgReplay").addEventListener("click", () => { round = 0; score = 0; nextRound(false); });
       if(score >= Math.ceil(totalR*0.7)) burst(6);
       awardGameXP();
       return;
@@ -2777,11 +2777,11 @@ function initListenGameG(body, g){
       const ok = btn.dataset.w === target;
       body.querySelectorAll(".lgOpt").forEach(b => { b.classList.add("locked"); if(b.dataset.w === target) b.classList.add("ok"); });
       if(ok){ score++; sfx.correct(); } else { btn.classList.add("no"); sfx.wrong(); }
-      setTimeout(() => { round++; delete body.dataset.locked; nextRound(); }, 900);
+      setTimeout(() => { round++; delete body.dataset.locked; nextRound(true); }, 900);
     }));
-    setTimeout(play, 350);
+    if(autoPlay) setTimeout(play, 350);   // chỉ tự đọc ở các lượt SAU khi bé đã chơi, KHÔNG tự đọc lúc mở bài
   };
-  nextRound();
+  nextRound(false);   // lượt đầu: chờ bé bấm 🔊 Nghe, không tự phát âm
 }
 /* ---- Nối hình với chữ ---- */
 function initMatchGame(body, g){
