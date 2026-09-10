@@ -3145,8 +3145,8 @@ function lessonTitle(ri){
 function renderLessons(){
   document.getElementById("lessonGrid").innerHTML = LESSON_SEQUENCE.map((ri, pos) => {
     const l = LESSONS[ri];
-    return `<div class="lessonCard" style="border-top-color:${l.color}" onclick="openLesson(${ri})">
-       <div class="lIcon">${l.icon}</div>
+    return `<div class="lessonCard" style="--lc:${l.color}" onclick="openLesson(${ri})">
+       <div class="lBadge"><span class="lBadgeRing"></span><span class="lBadgeIc">${l.icon}</span></div>
        <h3>${lessonTitle(ri)}</h3><p>${l.desc}</p>
        <span class="lGo">Xem bài học ➜</span>
      </div>`;

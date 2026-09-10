@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=63">
+<link rel="stylesheet" href="styles.css?v=64">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -104,7 +104,7 @@
 
     <div class="card practiceCard toolCard fcToolCard">
       <div class="toolCardHead">
-        <div class="toolBadge">🃏</div>
+        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">🃏</span></div>
         <div class="toolTitleWrap">
           <span class="toolTag">📖 Luyện tập · Từ vựng</span>
           <h3 class="toolTitle">Thẻ từ vựng</h3>
@@ -126,7 +126,7 @@
 
     <div class="card practiceCard toolCard quizToolCard">
       <div class="toolCardHead">
-        <div class="toolBadge">🎯</div>
+        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">🎯</span></div>
         <div class="toolTitleWrap">
           <span class="toolTag">✏️ Luyện tập · Trắc nghiệm</span>
           <h3 class="toolTitle">Luyện trắc nghiệm nhanh</h3>
@@ -175,9 +175,9 @@
         <div class="rule rand"><div class="ic">🎲</div><div><div class="tt">Ngẫu nhiên</div><div class="dd">Mỗi lần một bộ mới</div></div></div>
       </div>
       <div class="tags">
-        <span>🖼️ Hình → từ</span><span>💬 Hội thoại</span>
-        <span>🔤 Mặt chữ</span><span>🌏 Anh → Việt</span><span>🎵 Dấu thanh</span>
-        <span>🎧 Nghe</span><span>🎤 Nói</span><span>🧩 Xếp câu</span><span>📖 Đọc hiểu</span>
+        <span class="tg-doc">🖼️ Hình → từ</span><span class="tg-noi">💬 Hội thoại</span>
+        <span class="tg-doc">🔤 Mặt chữ</span><span class="tg-doc">🌏 Anh → Việt</span><span class="tg-viet">🎵 Dấu thanh</span>
+        <span class="tg-nghe">🎧 Nghe</span><span class="tg-noi">🎤 Nói</span><span class="tg-viet">🧩 Xếp câu</span><span class="tg-doc">📖 Đọc hiểu</span>
       </div>
       <div class="tutorNote">👩‍🏫 <b>Phụ huynh (Thầy Cô) chỉ được hỗ trợ:</b> đọc hộ câu hỏi (trừ 📖 &amp; 🎧 — bé tự làm). Câu 🎤 Nói: nghe bé rồi chấm giúp, đừng sửa giữa chừng nhé! 💜</div>
       <button class="btn pulseBtn" onclick="startQuiz()">Bắt đầu luôn! 🎮</button>
@@ -193,7 +193,7 @@
     <div class="contactWrap">
       <div class="card contactInfo" id="contactInfo"></div>
       <div class="card contactForm">
-        <h3 class="blockTitle">📝 Gửi lời nhắn</h3>
+        <div class="cardHead"><span class="cardHeadIco cardHeadIco--pink">📝</span><h3 class="blockTitle">Gửi lời nhắn</h3></div>
         <form id="cForm" onsubmit="return sendContact(event)">
           <label>Tên của em / phụ huynh
             <input type="text" id="cName" required placeholder="Ví dụ: Chị Lan (mẹ bé Na)">
@@ -220,7 +220,7 @@
     <div id="dashGuard"></div>
     <div id="dashMain" class="hidden">
       <div class="card">
-        <h3 class="blockTitle">➕ Tạo tài khoản học sinh</h3>
+        <div class="cardHead"><span class="cardHeadIco cardHeadIco--vio">➕</span><h3 class="blockTitle">Tạo tài khoản học sinh</h3></div>
         <form id="csForm" class="csForm" onsubmit="return createStudent(event)">
           <input id="csUser" placeholder="Tên đăng nhập (vd: bena)" required autocomplete="off">
           <input id="csName" placeholder="Biệt danh (vd: Bé Na)" required autocomplete="off">
@@ -233,7 +233,7 @@
 
       <div class="card">
         <div class="dashTop">
-          <h3 class="blockTitle">📅 Hoạt động theo ngày</h3>
+          <div class="cardHead"><span class="cardHeadIco cardHeadIco--cyan">📅</span><h3 class="blockTitle">Hoạt động theo ngày</h3></div>
           <div class="dashCtrl">
             <input type="date" id="dashDate" onchange="loadDashboard()">
             <button class="btn small ghost" onclick="loadDashboard()">↻ Tải lại</button>
@@ -380,6 +380,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=63"></script>
+<script src="app.js?v=64"></script>
 </body>
 </html>
