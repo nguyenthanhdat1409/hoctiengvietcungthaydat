@@ -1074,6 +1074,9 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
   box-shadow:0 8px 22px rgba(49,46,129,.4); transition:transform .12s, box-shadow .2s}
 .detSubmitBtn:hover{transform:translateY(-2px); box-shadow:0 12px 28px rgba(49,46,129,.5)}
 .detSubmitBtn:active{transform:translateY(1px)}
+/* Nút Thoát ngay trong màn chơi (để luôn thoát được, chưa cần xong 5 màn) */
+.detExitBtn{font-size:15px; padding:12px 22px; margin-top:10px; margin-left:8px; box-shadow:0 5px 0 rgba(30,27,75,.18)}
+.detExitBtn:active{box-shadow:0 2px 0 rgba(30,27,75,.18)}
 
 /* Con dấu "ĐÃ PHÁ ÁN" khi thắng */
 .detStamp{position:absolute; inset:0; z-index:120; display:flex; align-items:center; justify-content:center;

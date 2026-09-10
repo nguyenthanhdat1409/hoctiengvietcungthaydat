@@ -4048,7 +4048,10 @@ function renderDetective(){
     </div>
     <p class="detHint">🔎 Đọc kỹ rồi bấm vào những <b>từ viết sai</b> để bắt nhé!</p>
     <div class="detPassage" id="detPassage">${words}</div>
-    <div class="center"><button class="btn detSubmitBtn" onclick="endDetective(false)">📋 Nộp hồ sơ</button></div>`;
+    <div class="center">
+      <button class="btn detSubmitBtn" onclick="endDetective(false)">📋 Nộp hồ sơ</button>
+      <button class="btn light detExitBtn" onclick="closeDetective()">Thoát ↩️</button>
+    </div>`;
   updateDetTimer();
 }
 function updateDetTimer(){
@@ -4302,7 +4305,8 @@ function renderDoctor(){
     </div>
     <p class="detHint">🩺 Câu này bị “mất dấu”! Chọn đúng dấu cho từng chữ để chữa lành.</p>
     <div class="drPatient" id="drPatient">${sentence}</div>
-    <div id="drTrayWrap">${tray}</div>`;
+    <div id="drTrayWrap">${tray}</div>
+    <div class="center" style="margin-top:14px"><button class="btn light detExitBtn" onclick="closeDoctor()">Thoát ↩️</button></div>`;
 }
 function pickSlot(i){
   const p = drState && drState.p; if(!p || p.done) return;
