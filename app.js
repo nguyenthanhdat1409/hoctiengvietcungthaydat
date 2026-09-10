@@ -4046,10 +4046,12 @@ function renderDetective(){
       <div class="detRing" id="detRing"><span class="detRingNum" id="detTimerNum">${r.time}</span></div>
       <div class="detCountLbl">Giây còn lại</div>
     </div>
-    <p class="detHint">🔎 Đọc kỹ rồi bấm vào những <b>từ viết sai</b> để bắt nhé!</p>
+    <p class="detHint">${r.time <= 0
+      ? "⏰ <b>Hết giờ rồi!</b> Bấm <b>Nộp hồ sơ</b> để xem kết quả nha."
+      : "🔎 Đọc kỹ rồi bấm vào những <b>từ viết sai</b> để bắt nhé! Bắt hết manh mối là phá án ngay 🚔"}</p>
     <div class="detPassage" id="detPassage">${words}</div>
     <div class="center">
-      <button class="btn detSubmitBtn" onclick="endDetective(false)">📋 Nộp hồ sơ</button>
+      ${r.time <= 0 ? `<button class="btn detSubmitBtn" onclick="endDetective(false)">📋 Nộp hồ sơ</button>` : ``}
       <button class="btn light detExitBtn" onclick="closeDetective()">Thoát ↩️</button>
     </div>`;
   updateDetTimer();
@@ -4093,10 +4095,15 @@ function detTick(){
   const r = tnState && tnState.r; if(!r || r.done) return;
   r.time--;
   updateDetTimer();
-  if(r.time <= 0) endDetective(false);
+  if(r.time <= 0){                     // hết giờ: dừng đồng hồ & hiện nút "Nộp hồ sơ" (không tự nộp)
+    r.time = 0;
+    clearInterval(r.timer);
+    renderDetective();
+  }
 }
 function tapWord(i){
   const r = tnState && tnState.r; if(!r || r.done) return;
+  if(r.time <= 0) return;              // hết giờ thì không bắt thêm được nữa
   if(r.found.has(i) || r.accused.has(i)) return;
   const w = r.c.words[i];
   const el = document.getElementById("dw" + i);
