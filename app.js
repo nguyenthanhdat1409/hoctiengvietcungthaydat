@@ -3334,9 +3334,17 @@ function drawQuestion(){
     }
   }
   if(pool.length === 0){ used[lv] = new Set(); pool = BANK[lv].map((_,i) => i); }
-  const pi = pool[Math.floor(Math.random()*pool.length)];
+  // Ưu tiên câu chưa gặp ở các lần chơi trước; hết câu mới thì mới lấy lại câu cũ
+  let cand = pool;
+  if(_testSeen){
+    const fresh = pool.filter(i => !_testSeen.has(qKey(BANK[lv][i])));
+    if(fresh.length) cand = fresh;
+  }
+  const pi = cand[Math.floor(Math.random()*cand.length)];
   used[lv].add(pi);
-  return prep(Object.assign({}, BANK[lv][pi], {lv}));
+  const q = BANK[lv][pi];
+  if(_testDrawn) _testDrawn.push(qKey(q));
+  return prep(Object.assign({}, q, {lv}));
 }
 
 function updateStars(pulse){
@@ -3345,10 +3353,62 @@ function updateStars(pulse){
   if(pulse){ box.classList.remove("pulse"); void box.offsetWidth; box.classList.add("pulse"); }
 }
 
+/* =========================================================
+   CHỐNG LẶP CÂU HỎI (theo lịch sử — localStorage)
+   Nhớ các câu đã ra gần đây → ưu tiên câu MỚI, câu cũ xuất hiện ít hơn.
+   ========================================================= */
+const SEEN_KEY = "quizSeenV1";
+const SEEN_CAP = 220;                 // nhớ ~220 câu gần nhất (≈ hơn 10 lượt chơi)
+function qKey(q){
+  return [q.cat||"", q.type||"", q.q||"", q.glyph||"", q.answer||"", q.say||"",
+    (q.words ? q.words.join("") : ""),
+    (q.passage ? q.passage.slice(0,50) : ""),
+    (q.opts ? q.opts.join("|") : "")].join("¦");
+}
+function getSeen(){ try{ return JSON.parse(localStorage.getItem(SEEN_KEY)) || []; }catch(e){ return []; } }
+function addSeen(keys){
+  try{
+    if(!keys || !keys.length) return;
+    let s = getSeen().concat(keys);
+    if(s.length > SEEN_CAP) s = s.slice(s.length - SEEN_CAP);
+    localStorage.setItem(SEEN_KEY, JSON.stringify(s));
+  }catch(e){}
+}
+let _testSeen = null, _testDrawn = null;   // ảnh chụp lịch sử + câu đã bốc trong lượt kiểm tra
+
+// Dựng danh sách câu luyện tập: tỉ lệ khó nhiều hơn + ưu tiên câu chưa gặp gần đây
+function buildPracticeQueue(cat, target){
+  const seen = new Set(getSeen());
+  const byLv = {1:[], 2:[], 3:[]};
+  [1,2,3].forEach(lv => BANK[lv].forEach(q => {
+    if((q.opts || q.type === "spell") && (cat === "all" || q.cat === cat)) byLv[lv].push(Object.assign({}, q, {lv}));
+  }));
+  // Tỉ lệ độ khó: dễ ÍT, khó NHIỀU (≈ 20% dễ · 35% vừa · 45% khó)
+  const want = { 1: Math.round(target*0.20), 2: Math.round(target*0.35) };
+  want[3] = target - want[1] - want[2];
+  const takeFrom = (arr, n) => {                       // ưu tiên câu mới, hết mới lấy câu cũ
+    if(n <= 0 || !arr.length) return [];
+    const fresh = shuffle(arr.filter(q => !seen.has(qKey(q))));
+    const old   = shuffle(arr.filter(q =>  seen.has(qKey(q))));
+    return fresh.concat(old).slice(0, n);
+  };
+  let pick = [];
+  [1,2,3].forEach(lv => pick = pick.concat(takeFrom(byLv[lv], want[lv])));
+  if(pick.length < target){                            // mức nào thiếu câu → bù (ưu tiên khó→vừa→dễ, câu mới trước)
+    const chosen = new Set(pick.map(qKey));
+    const rest = [...byLv[3], ...byLv[2], ...byLv[1]].filter(q => !chosen.has(qKey(q)));
+    const restFresh = shuffle(rest.filter(q => !seen.has(qKey(q))));
+    const restOld   = shuffle(rest.filter(q =>  seen.has(qKey(q))));
+    pick = pick.concat(restFresh.concat(restOld).slice(0, target - pick.length));
+  }
+  return shuffle(pick).slice(0, target);
+}
+
 function startQuiz(){
-  mode = "test"; runnerReturn = "kiemtra"; total = 15;
+  mode = "test"; runnerReturn = "kiemtra"; total = 20;
   star = 1; idx = 0; score = 0; locked = false; history = [];
   used = {1:new Set(), 2:new Set(), 3:new Set()};
+  _testSeen = new Set(getSeen()); _testDrawn = [];   // ưu tiên câu chưa gặp trong lượt này
   enterRunner(true);
   updateStars(false);
   render();
@@ -3358,15 +3418,18 @@ function startPractice(cat){
   mode = "practice"; runnerReturn = "baitap"; practiceCat = cat;
   queue = [];
   if(cat === "docdai"){
-    // Đọc đoạn dài: rút ngẫu nhiên 10 đoạn (mỗi đoạn nhiều câu hỏi nhỏ)
-    queue = shuffle(DOCDAI.map(p => Object.assign({}, p, {type:"multi"}))).slice(0, 10);
+    // Đọc đoạn dài: rút 15 đoạn, ưu tiên đoạn chưa gặp gần đây (mỗi đoạn nhiều câu hỏi nhỏ)
+    const seen = new Set(getSeen());
+    const arr = DOCDAI.map(p => Object.assign({}, p, {type:"multi"}));
+    const fresh = shuffle(arr.filter(p => !seen.has(qKey(p))));
+    const old   = shuffle(arr.filter(p =>  seen.has(qKey(p))));
+    queue = fresh.concat(old).slice(0, 15);
   } else {
-    [1,2,3].forEach(lv => BANK[lv].forEach(q => {
-      if((q.opts || q.type === "spell") && (cat === "all" || q.cat === cat)) queue.push(Object.assign({}, q, {lv}));
-    }));
-    queue = shuffle(queue).slice(0, 15);
+    // Luyện tập: 20 câu, tỉ lệ khó cao hơn + hạn chế lặp câu cũ
+    queue = buildPracticeQueue(cat, 20);
   }
   total = queue.length;
+  addSeen(queue.map(qKey));            // ghi nhận các câu vừa đưa vào lượt chơi
   idx = 0; score = 0; locked = false; history = [];
   enterRunner(false);
   render();
@@ -3682,6 +3745,7 @@ const ADVICE_CAT = {
 function showResult(){
   if(mode === "practice") return showPracticeResult();
 
+  if(_testDrawn){ addSeen(_testDrawn); _testDrawn = null; }   // ghi nhận câu đã ra để lần sau đỡ lặp
   document.getElementById("bar").style.width = "100%";
   document.getElementById("qCard").classList.add("hidden");
   document.getElementById("runnerTop").classList.add("hidden");
