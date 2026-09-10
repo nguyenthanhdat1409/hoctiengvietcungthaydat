@@ -4068,6 +4068,211 @@ function showDetSession(){
 }
 
 /* =========================================================
+   TRÒ CHƠI: BÁC SĨ CHỮA DẤU (rèn dấu thanh)
+   Câu bị mất dấu → bé chọn đúng dấu cho từng chữ để "chữa lành".
+   Mỗi lượt 5 bệnh nhân + 1 "ca đặc biệt" (cùng chữ, nhiều nghĩa).
+   ========================================================= */
+const DOCTOR_CASES = [
+  { words:[ {b:"me",ok:"mẹ",opts:["mẹ","mè","mé","me"]}, {b:"toi",ok:"tôi",opts:["tôi","tối","tồi","tơi"]}, {b:"di",ok:"đi",opts:["đi","dì","dí","dị"]}, {b:"cho",ok:"chợ",opts:["chợ","chó","chở","cho"]}, {b:"mua",ok:"mua",opts:["mua","mùa","múa","mủa"]}, {b:"ca",ok:"cá",opts:["cá","cà","ca","cạ"]} ] },
+  { words:[ {b:"be",ok:"bé",opts:["bé","bè","bẻ","be"]}, {b:"an",ok:"An",opts:["An","ăn","án","àn"]}, {b:"dang",ok:"đang",opts:["đang","dâng","đảng","dang"]}, {b:"hoc",ok:"học",opts:["học","hóc","hộc","hoc"]}, {b:"bai",ok:"bài",opts:["bài","bãi","bái","bai"]} ] },
+  { words:[ {b:"con",ok:"con",opts:["con","còn","cón","cọn"]}, {b:"cho",ok:"chó",opts:["chó","chợ","chở","cho"]}, {b:"chay",ok:"chạy",opts:["chạy","cháy","chảy","chay"]}, {b:"ra",ok:"ra",opts:["ra","rà","rá","rả"]}, {b:"san",ok:"sân",opts:["sân","sạn","sàn","san"]} ] },
+  { words:[ {b:"troi",ok:"trời",opts:["trời","trơi","trối","trổi"]}, {b:"mua",ok:"mưa",opts:["mưa","mua","mùa","múa"]}, {b:"rat",ok:"rất",opts:["rất","rát","rạt","rat"]}, {b:"to",ok:"to",opts:["to","tò","tó","tọ"]} ] },
+  { words:[ {b:"ba",ok:"bà",opts:["bà","ba","bá","bạ"]}, {b:"cho",ok:"cho",opts:["cho","chó","chợ","chở"]}, {b:"be",ok:"bé",opts:["bé","bè","bẻ","be"]}, {b:"qua",ok:"quả",opts:["quả","qua","quà","quá"]}, {b:"banh",ok:"bánh",opts:["bánh","bành","bảnh","banh"]} ] },
+  { words:[ {b:"em",ok:"em",opts:["em","ém","èm","ẹm"]}, {b:"yeu",ok:"yêu",opts:["yêu","yếu","yểu","yều"]}, {b:"chu",ok:"chú",opts:["chú","chù","chủ","chu"]}, {b:"bo",ok:"bộ",opts:["bộ","bồ","bổ","bố"]}, {b:"doi",ok:"đội",opts:["đội","đôi","đối","đồi"]} ] },
+  { words:[ {b:"co",ok:"cô",opts:["cô","cồ","cổ","cỗ"]}, {b:"giao",ok:"giáo",opts:["giáo","giao","giào","giảo"]}, {b:"khen",ok:"khen",opts:["khen","khén","khèn","khẻn"]}, {b:"em",ok:"em",opts:["em","ém","èm","ẹm"]}, {b:"hoc",ok:"học",opts:["học","hóc","hộc","hoc"]}, {b:"gioi",ok:"giỏi",opts:["giỏi","giòi","giói","gioi"]} ] },
+  { words:[ {b:"ong",ok:"ông",opts:["ông","ống","ổng","ồng"]}, {b:"trong",ok:"trồng",opts:["trồng","trong","trổng","trộng"]}, {b:"cay",ok:"cây",opts:["cây","cấy","cày","cảy"]}, {b:"trong",ok:"trong",opts:["trong","tróng","tròng","trỏng"]}, {b:"vuon",ok:"vườn",opts:["vườn","vươn","vượn","vuơn"]} ] },
+  { words:[ {b:"chi",ok:"chị",opts:["chị","chi","chì","chỉ"]}, {b:"nau",ok:"nấu",opts:["nấu","nâu","nầu","nẩu"]}, {b:"com",ok:"cơm",opts:["cơm","cớm","cờm","com"]}, {b:"cho",ok:"cho",opts:["cho","chó","chò","chọ"]}, {b:"ca",ok:"cả",opts:["cả","ca","cà","cạ"]}, {b:"nha",ok:"nhà",opts:["nhà","nha","nhá","nhạ"]} ] },
+  { words:[ {b:"ban",ok:"bạn",opts:["bạn","ban","bàn","bán"]}, {b:"nho",ok:"nhỏ",opts:["nhỏ","nho","nhó","nhõ"]}, {b:"mim",ok:"mỉm",opts:["mỉm","mim","mìm","mím"]}, {b:"cuoi",ok:"cười",opts:["cười","cươi","cưới","cưởi"]}, {b:"tuoi",ok:"tươi",opts:["tươi","tưới","tuổi","tuơi"]} ] },
+  { words:[ {b:"tre",ok:"trẻ",opts:["trẻ","tre","trè","tré"]}, {b:"em",ok:"em",opts:["em","ém","èm","ẹm"]}, {b:"can",ok:"cần",opts:["cần","can","cẩn","cạn"]}, {b:"ngu",ok:"ngủ",opts:["ngủ","ngu","ngù","ngú"]}, {b:"du",ok:"đủ",opts:["đủ","đu","đù","đú"]}, {b:"giac",ok:"giấc",opts:["giấc","giac","giác","giậc"]} ] },
+  { words:[ {b:"vuon",ok:"vườn",opts:["vườn","vươn","vượn","vuơn"]}, {b:"hoa",ok:"hoa",opts:["hoa","hóa","hòa","hỏa"]}, {b:"no",ok:"nở",opts:["nở","no","nợ","nỡ"]}, {b:"ro",ok:"rộ",opts:["rộ","ro","rổ","rỗ"]}, {b:"mua",ok:"mùa",opts:["mùa","mua","múa","mủa"]}, {b:"xuan",ok:"xuân",opts:["xuân","xuần","xuấn","xuan"]} ] },
+];
+const DOCTOR_BONUS = [
+  { bare:"tho", opts:[{t:"thỏ (con thỏ)",ok:true},{t:"thọ (sống thọ)",ok:true},{t:"thò (thò tay)",ok:true},{t:"thõ",ok:false}] },
+  { bare:"tra", opts:[{t:"trà (uống trà)",ok:true},{t:"trả (trả lại)",ok:true},{t:"trá (gian trá)",ok:true},{t:"trã",ok:false}] },
+  { bare:"sao", opts:[{t:"sao (ngôi sao)",ok:true},{t:"sáo (chim sáo)",ok:true},{t:"sào (cây sào)",ok:true},{t:"sảo",ok:false}] },
+  { bare:"gia", opts:[{t:"già (người già)",ok:true},{t:"giá (giá tiền)",ok:true},{t:"giả (đồ giả)",ok:true},{t:"giạ",ok:false}] },
+  { bare:"beo", opts:[{t:"béo (mập)",ok:true},{t:"bèo (bèo tấm)",ok:true},{t:"bẹo (bẹo má)",ok:true},{t:"bẻo",ok:false}] },
+];
+const DR_PATIENTS = 5;
+let drState = null;
+
+function startDoctor(){
+  const queue = shuffle(DOCTOR_CASES.slice()).slice(0, DR_PATIENTS);
+  drState = { queue, round:0, sess:{ cured:0, wrong:0, bonusFound:0, bonusTotal:0 }, bonus:null };
+  document.getElementById("drModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  startPatient();
+}
+function closeDoctor(e){
+  if(e && e.target && e.target.id !== "drModal" && e.type === "click" && e.currentTarget.id === "drModal") return;
+  document.getElementById("drModal").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+function startPatient(){
+  const s = drState;
+  s.p = { c: s.queue[s.round], filled:new Set(), active:0, wrong:0, done:false };
+  renderDoctor();
+}
+function renderDoctor(){
+  const s = drState, p = s.p, words = p.c.words;
+  const total = words.length;
+  const sentence = words.map((w, i) => {
+    let cls = "drSlot";
+    if(p.filled.has(i)) cls += " done";
+    else if(i === p.active) cls += " active";
+    const txt = p.filled.has(i) ? w.ok : w.b;
+    return `<span class="${cls}" id="drs${i}" onclick="pickSlot(${i})">${txt}</span>`;
+  }).join(" ");
+  let tray = "";
+  if(p.active != null && !p.filled.has(p.active)){
+    const w = words[p.active];
+    tray = `<div class="drTrayLbl">Chọn dấu đúng cho chữ <b>“${w.b}”</b>:</div>
+      <div class="drTray">` + w.opts.map((o, oi) => `<button class="drOpt" onclick="pickTone(${oi})">${o}</button>`).join("") + `</div>`;
+  } else {
+    tray = `<div class="drTrayLbl">👆 Bấm vào một chữ (màu cam) để chữa dấu nhé!</div>`;
+  }
+  document.getElementById("drBody").innerHTML = `
+    <div class="detHead">
+      <div class="detBadge drBadge">🩺</div>
+      <div class="detHeadTxt"><h2>Bác sĩ chữa dấu <span class="detRoundChip drChip">Bệnh nhân ${s.round+1}/${DR_PATIENTS}</span></h2><p>Chữa "bệnh mất dấu" cho câu</p></div>
+    </div>
+    <p class="detHint">🔎 Câu này bị mất dấu! Chọn đúng dấu cho từng chữ để chữa lành.</p>
+    <div class="drProgress">Đã chữa: <b>${p.filled.size}</b>/${total} chữ · Chẩn sai: <b>${p.wrong}</b></div>
+    <div class="drPatient" id="drPatient">${sentence}</div>
+    <div id="drTrayWrap">${tray}</div>`;
+}
+function pickSlot(i){
+  const p = drState && drState.p; if(!p || p.done) return;
+  if(p.filled.has(i)) return;
+  p.active = i;
+  renderDoctor();
+}
+function pickTone(oi){
+  const s = drState, p = s.p; if(!p || p.done) return;
+  const w = p.c.words[p.active];
+  const el = document.getElementById("drs" + p.active);
+  if(w.opts[oi] === w.ok){
+    p.filled.add(p.active);
+    if(el){ el.textContent = w.ok; }
+    detFloat(el, "✓ khỏi!", "good");
+    sfx.correct();
+    // chuyển sang chữ chưa chữa tiếp theo
+    let nxt = null;
+    for(let k = 0; k < p.c.words.length; k++){ if(!p.filled.has(k)){ nxt = k; break; } }
+    p.active = nxt;
+    if(p.filled.size === p.c.words.length){ patientCured(); return; }
+    renderDoctor();
+  } else {
+    p.wrong++; s.sess.wrong++;
+    sfx.wrong();
+    detFloat(el, "chưa đúng", "bad");
+    // nháy đỏ nút vừa chọn
+    const btns = document.querySelectorAll("#drTrayWrap .drOpt");
+    if(btns[oi]){ btns[oi].classList.add("drWrong"); setTimeout(() => { if(btns[oi]) btns[oi].classList.remove("drWrong"); }, 500); }
+    renderDoctorProgress();
+  }
+}
+function renderDoctorProgress(){
+  const p = drState && drState.p; if(!p) return;
+  const el = document.querySelector(".drProgress");
+  if(el) el.innerHTML = `Đã chữa: <b>${p.filled.size}</b>/${p.c.words.length} chữ · Chẩn sai: <b>${p.wrong}</b>`;
+}
+function patientCured(){
+  const s = drState, p = s.p;
+  p.done = true;
+  if(p.wrong === 0) s.sess.cured++;   // "chữa lành hoàn hảo" khi không chẩn sai
+  const cured = p.c.words.map(w => w.ok).join(" ");
+  const isLast = s.round >= DR_PATIENTS - 1;
+  const nextBtn = isLast
+    ? `<button class="btn" onclick="startDoctorBonus()">Ca đặc biệt 🔮</button>`
+    : `<button class="btn" onclick="nextPatient()">Bệnh nhân tiếp ▶</button>`;
+  document.getElementById("drBody").innerHTML = `
+    <div class="detResult">
+      <div class="detBadge big drBadge">💊</div>
+      <h2>Chữa lành rồi!</h2>
+      <div class="detRoundChip drChip center-chip">Bệnh nhân ${s.round+1}/${DR_PATIENTS}</div>
+      <div class="drCured">${cured}</div>
+      <p class="center muted">${p.wrong === 0 ? "Tuyệt vời, không chẩn sai lần nào! 🌟" : "Chẩn sai " + p.wrong + " lần — lần sau cẩn thận hơn nha!"}</p>
+      <div class="center" style="margin-top:12px">${nextBtn}
+        <button class="btn light" onclick="closeDoctor()" style="margin-left:8px">Thoát ↩️</button>
+      </div>
+    </div>`;
+  sfx.win(); burst(12);
+}
+function nextPatient(){ if(!drState) return; drState.round++; startPatient(); }
+function startDoctorBonus(){
+  const s = drState;
+  s.bonus = { b: rand(DOCTOR_BONUS), picks:new Set(), done:false };
+  renderDoctorBonus();
+}
+function renderDoctorBonus(){
+  const b = drState.bonus.b, picks = drState.bonus.picks;
+  const opts = b.opts.map((o, oi) => {
+    const sel = picks.has(oi) ? " sel" : "";
+    return `<button class="drBonusOpt${sel}" onclick="toggleBonus(${oi})">${o.t}</button>`;
+  }).join("");
+  document.getElementById("drBody").innerHTML = `
+    <div class="detResult">
+      <div class="detBadge big drBadge">🔮</div>
+      <h2>Ca đặc biệt!</h2>
+      <p class="center muted" style="margin-top:2px">Cùng một chữ, thêm dấu khác nhau ra <b>nhiều nghĩa</b> khác nhau đó!</p>
+      <div class="drBonusPrompt">Chọn <b>TẤT CẢ</b> từ CÓ NGHĨA khi thêm dấu vào chữ “<b>${b.bare}</b>”:</div>
+      <div class="drBonusGrid">${opts}</div>
+      <div class="center" style="margin-top:12px"><button class="btn" onclick="submitBonus()">Chốt đáp án ✔</button></div>
+    </div>`;
+}
+function toggleBonus(oi){
+  const st = drState.bonus; if(st.done) return;
+  if(st.picks.has(oi)) st.picks.delete(oi); else st.picks.add(oi);
+  renderDoctorBonus();
+}
+function submitBonus(){
+  const s = drState, st = s.bonus; if(st.done) return;
+  st.done = true;
+  const b = st.b;
+  let found = 0, totalReal = 0, wrongPick = 0;
+  b.opts.forEach((o, oi) => {
+    if(o.ok) totalReal++;
+    if(st.picks.has(oi)){ if(o.ok) found++; else wrongPick++; }
+  });
+  s.sess.bonusFound = Math.max(0, found - wrongPick);
+  s.sess.bonusTotal = totalReal;
+  showDoctorResult();
+}
+function showDoctorResult(){
+  const s = drState, sess = s.sess;
+  const perfect = sess.cured;   // số bệnh nhân chữa lành hoàn hảo (0 chẩn sai)
+  const stars = perfect >= 5 && sess.wrong === 0 ? 3 : perfect >= 4 ? 3 : perfect >= 2 ? 2 : 1;
+  let xpNote = "";
+  if(perfect >= 2){
+    if(isStudentLogged()){ awardGameXP(); xpNote = `<div class="detXp">⚡ +${XP_GAME} XP đã cộng vào tiến trình!</div>`; }
+    else { xpNote = `<div class="detXp muted">💡 Đăng nhập để được cộng XP nha!</div>`; }
+  }
+  const title = stars >= 3 ? "Bác sĩ giỏi nhất viện! 🏅" : stars >= 2 ? "Bác sĩ mát tay! 👨‍⚕️" : "Cố lên bác sĩ nhí! 💪";
+  document.getElementById("drBody").innerHTML = `
+    <div class="detResult">
+      <div class="detBadge big drBadge">🏥</div>
+      <h2>Hết ca trực rồi!</h2>
+      <p class="center muted" style="margin-top:2px">${title}</p>
+      <div class="detStars">${"⭐".repeat(stars)}${"▫️".repeat(3 - stars)}</div>
+      <div class="detScoreRow">
+        <div class="detScoreBox good"><b>${DR_PATIENTS}/${DR_PATIENTS}</b><span>đã khám</span></div>
+        <div class="detScoreBox good"><b>${perfect}/${DR_PATIENTS}</b><span>chữa hoàn hảo</span></div>
+        <div class="detScoreBox bad"><b>${sess.wrong}</b><span>chẩn sai</span></div>
+      </div>
+      <div class="detScoreRow">
+        <div class="detScoreBox"><b>${sess.bonusFound}/${sess.bonusTotal}</b><span>ca đặc biệt 🔮</span></div>
+      </div>
+      ${xpNote}
+      <div class="center" style="margin-top:14px">
+        <button class="btn" onclick="startDoctor()">Ca trực mới 🔄</button>
+        <button class="btn light" onclick="closeDoctor()" style="margin-left:8px">Về Bài tập ↩️</button>
+      </div>
+    </div>`;
+  if(stars >= 2){ sfx.win(); burst(26); }
+}
+
+/* =========================================================
    TÔ MÀU CHỮ — canvas tương tác (A, Ă, Â)
    ========================================================= */
 const canvasState = {};

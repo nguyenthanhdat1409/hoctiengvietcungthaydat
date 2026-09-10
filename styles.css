@@ -873,9 +873,9 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
   font-size:11px; font-weight:700; color:#3730A3; background:#EEF2FF; border:1.5px solid #C7D2FE;
   border-radius:999px; padding:2px 9px}
 .detBox{max-width:640px}
-#detBody{overflow-y:auto; overflow-x:hidden; flex:1 1 auto; padding:22px 22px 26px;
+#detBody, #drBody{overflow-y:auto; overflow-x:hidden; flex:1 1 auto; padding:22px 22px 26px;
   scrollbar-width:none; -ms-overflow-style:none}
-#detBody::-webkit-scrollbar{width:0; height:0; display:none}
+#detBody::-webkit-scrollbar, #drBody::-webkit-scrollbar{width:0; height:0; display:none}
 .detHead{display:flex; align-items:center; gap:12px; margin-bottom:14px}
 .detBadge{width:52px; height:52px; border-radius:16px; display:flex; align-items:center; justify-content:center;
   font-size:30px; background:linear-gradient(135deg,#6366F1,#8B5CF6); box-shadow:0 5px 0 rgba(55,48,163,.3)}
@@ -936,6 +936,50 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
   border-radius:12px; padding:8px 12px; margin:6px auto 2px; display:inline-block; font-size:14px}
 .detXp.muted{color:#64748B; background:#F1F5F9; border-color:#E2E8F0}
 .detFixedTitle{font-family:'Baloo 2',cursive; font-weight:800; font-size:14.5px; color:var(--ink); text-align:left; margin:16px 0 8px}
+
+/* ============ TRÒ CHƠI: BÁC SĨ CHỮA DẤU ============ */
+.drCard{border-top-color:#10B981}
+.drTag{color:#065F46; background:#ECFDF5; border-color:#A7F3D0}
+.drBadge{background:linear-gradient(135deg,#10B981,#14B8A6); box-shadow:0 5px 0 rgba(6,95,70,.3)}
+.drChip{color:#065F46; background:#ECFDF5; border-color:#A7F3D0}
+.drProgress{text-align:center; font-size:13px; color:#475569; font-weight:700; margin:2px 0 12px}
+.drProgress b{color:#059669}
+/* Câu bệnh nhân + các ô chữ cần chữa dấu */
+.drPatient{background:#FFFDF7; border:2px dashed #A7F3D0; border-radius:18px; padding:18px 14px;
+  line-height:2.2; font-size:clamp(18px,4.8vw,22px); color:var(--ink); text-align:center; margin-bottom:16px}
+.drSlot{display:inline-block; padding:3px 10px; margin:2px; border-radius:10px; cursor:pointer;
+  border:2px dashed #CBD5E1; color:#94A3B8; font-weight:700; transition:transform .1s, background .12s, border-color .12s}
+.drSlot:hover{transform:translateY(-1px)}
+.drSlot.active{border-style:solid; border-color:#F59E0B; background:#FFFBEB; color:#B45309;
+  box-shadow:0 0 0 3px rgba(245,158,11,.2); animation:drPulse 1.2s ease-in-out infinite}
+.drSlot.done{border-style:solid; border-color:#86EFAC; background:#F0FDF4; color:#166534; cursor:default}
+@keyframes drPulse{0%,100%{box-shadow:0 0 0 3px rgba(245,158,11,.2)}
+  50%{box-shadow:0 0 0 6px rgba(245,158,11,.08)}}
+/* Khay chọn dấu */
+.drTrayLbl{text-align:center; font-size:14.5px; color:#475569; font-weight:600; margin:4px 0 10px}
+.drTrayLbl b{color:#B45309}
+.drTray{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:6px}
+.drOpt{font-family:'Baloo 2',cursive; font-weight:800; font-size:22px; color:var(--ink);
+  background:#fff; border:3px solid #A7F3D0; border-radius:16px; padding:10px 20px; cursor:pointer;
+  box-shadow:0 4px 0 #6EE7B7; transition:transform .08s, background .12s}
+.drOpt:hover{background:#ECFDF5}
+.drOpt:active{transform:translateY(3px)}
+.drOpt.drWrong{border-color:var(--bad); box-shadow:0 4px 0 #DC2626; background:#FEF2F2; animation:shake .3s}
+/* Câu đã chữa lành */
+.drCured{font-family:'Baloo 2',cursive; font-weight:800; font-size:clamp(20px,5vw,26px); color:#166534;
+  background:#F0FDF4; border:2px solid #86EFAC; border-radius:16px; padding:14px 16px; margin:12px auto; text-align:center}
+/* Ca đặc biệt (bonus) */
+.drBonusPrompt{font-size:15px; color:#475569; font-weight:600; text-align:center; margin:14px 0 12px}
+.drBonusPrompt b{color:#B45309}
+.drBonusGrid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:6px}
+.drBonusOpt{font-family:'Be Vietnam Pro',sans-serif; font-weight:700; font-size:15px; color:var(--ink);
+  background:#fff; border:3px solid #E2E8F0; border-radius:14px; padding:12px 10px; cursor:pointer;
+  text-align:center; transition:transform .08s, background .12s, border-color .12s; box-shadow:0 4px 0 #E2E8F0}
+.drBonusOpt:hover{border-color:#A7F3D0}
+.drBonusOpt:active{transform:translateY(3px)}
+.drBonusOpt.sel{border-color:#10B981; background:#ECFDF5; color:#065F46; box-shadow:0 4px 0 #6EE7B7}
+@media(max-width:380px){.drBonusGrid{grid-template-columns:1fr}}
+
 .grade{display:grid; grid-template-columns:1fr; gap:10px}
 .gbtn{font-weight:700; font-size:16px; border-radius:16px; padding:14px; cursor:pointer;
   border:3px solid; background:#fff; box-shadow:0 5px 0; transition:transform .08s;

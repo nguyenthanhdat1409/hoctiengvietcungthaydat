@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=57">
+<link rel="stylesheet" href="styles.css?v=58">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -129,6 +129,12 @@
       <p class="muted">Mỗi lượt <b>5 màn</b> (rút ngẫu nhiên từ 20 vụ án)! Bé làm <b>“cảnh sát chính tả”</b> bấm bắt hết từ sai trong mỗi đoạn văn trước khi hết giờ. Bắt đúng được thưởng, buộc tội oan bị trừ giờ nha! ⏱️</p>
       <div class="center"><button class="btn detStartBtn" onclick="startDetective()">🚔 Vào ca trực!</button></div>
     </div>
+
+    <div class="card practiceCard gameCard drCard">
+      <h3 class="blockTitle">🩺 Bác sĩ chữa dấu <span class="gameTag drTag">Trò chơi · Rèn dấu thanh</span></h3>
+      <p class="muted">Câu bị <b>“bệnh mất dấu”</b> (vd: <i>“me toi di cho mua ca”</i>)! Bé làm <b>bác sĩ</b> chọn đúng dấu cho từng chữ để chữa lành. Mỗi lượt <b>5 bệnh nhân</b> + một <b>“ca đặc biệt”</b> khám phá: cùng một chữ, thêm dấu ra nhiều nghĩa! 🔮</p>
+      <div class="center"><button class="btn drStartBtn" onclick="startDoctor()">🩺 Khám bệnh thôi!</button></div>
+    </div>
   </section>
 
   <!-- ---------- KIỂM TRA (màn giới thiệu) ---------- -->
@@ -241,6 +247,13 @@
 </div>
 
 <!-- ===================== MODAL TRÒ CHƠI: TRUY TÌM TỪ SAI ===================== -->
+<div id="drModal" class="modal hidden" onclick="closeDoctor(event)">
+  <div class="modalBox detBox" onclick="event.stopPropagation()">
+    <button class="modalClose" onclick="closeDoctor()" aria-label="Đóng">✕</button>
+    <div id="drBody"></div>
+  </div>
+</div>
+
 <div id="detModal" class="modal hidden" onclick="closeDetective(event)">
   <div class="modalBox detBox" onclick="event.stopPropagation()">
     <button class="modalClose" onclick="closeDetective()" aria-label="Đóng">✕</button>
@@ -341,6 +354,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=57"></script>
+<script src="app.js?v=58"></script>
 </body>
 </html>
