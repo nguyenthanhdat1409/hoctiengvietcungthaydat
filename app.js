@@ -4530,7 +4530,7 @@ function synthFallback(txt){
     if(!('speechSynthesis' in window)){ console.warn("[TTS] Trình duyệt không hỗ trợ speechSynthesis."); return; }
     const u = new SpeechSynthesisUtterance(txt);
     const v = pickChosenVoice();
-    if(v){ u.voice = v; u.lang = v.lang; console.log("[TTS] giọng máy:", v.name, "(" + v.lang + ")"); }
+    if(v){ u.voice = v; u.lang = v.lang; }
     else { u.lang = 'vi-VN'; console.warn("[TTS] Máy KHÔNG có giọng tiếng Việt → có thể nghe như giọng nước ngoài. Vào 🔊 chọn 'Giọng nữ người Việt (online)'."); }
     u.rate = 0.85; u.pitch = 1;
     window.speechSynthesis.cancel();
@@ -4571,7 +4571,6 @@ function googleTTS(txt, onFail){
     if(failed || gen !== _ttsGen || i >= chunks.length) return;
     const q = chunks[i++];
     const url = "/.netlify/functions/tts?tl=vi&q=" + encodeURIComponent(q);
-    console.log("[TTS] online (qua proxy Netlify) đọc:", JSON.stringify(q));
     const a = new Audio();
     _ttsAudio = a;
     a.onplaying = () => { started = true; };   // online đã ra tiếng → khoá fallback
@@ -4592,7 +4591,6 @@ function googleTTS(txt, onFail){
    không có thì dùng TTS Việt online → online lỗi mới rơi về giọng máy. */
 function speakVNAuto(txt){
   const mode = getVoicePref().mode || "auto";
-  console.log("[TTS] đọc:", JSON.stringify(txt), "| chế độ:", mode, "| máy có giọng Việt:", hasVNVoice());
   if(mode === "online"){ googleTTS(txt, () => synthFallback(txt)); return; }
   if(mode === "device"){ synthFallback(txt); return; }   // dùng giọng máy đã chọn
   // auto: ưu tiên giọng Việt cài sẵn → không có thì online
