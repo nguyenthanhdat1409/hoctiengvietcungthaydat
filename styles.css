@@ -883,8 +883,8 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
   box-shadow:0 8px 20px rgba(0,0,0,.28), inset 0 2px 4px rgba(255,255,255,.5)}
 .drCard .gameCardBadge{background:linear-gradient(145deg,#34D399,#0D9488)}
 .gameCardBadgeIc{font-size:31px; z-index:2; filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
-.gameCardBadgeRing{position:absolute; inset:-4px; border-radius:50%; border:2.5px dashed rgba(255,255,255,.8)}
-.gameCard:hover .gameCardBadgeRing{animation:detSpin 9s linear infinite}
+.gameCardBadgeRing{position:absolute; inset:-4px; border-radius:50%; border:2.5px dashed rgba(255,255,255,.8);
+  animation:detSpin 9s linear infinite}
 .gameCardTitleWrap{flex:1 1 auto; min-width:0}
 .gameTag{display:inline-block; font-family:'Be Vietnam Pro',sans-serif; font-size:11px; font-weight:700;
   color:#fff; background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.35);
@@ -895,15 +895,34 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .gameCardDesc b{color:#fff}
 .gameCardDesc i{color:#FDE68A; font-style:italic}
 .drCard .gameCardDesc i{color:#A7F3D0}
-.gameCardFeats{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; position:relative}
-.gameFeat{font-size:12px; font-weight:700; color:#fff; background:rgba(255,255,255,.14);
-  border:1px solid rgba(255,255,255,.25); border-radius:10px; padding:5px 11px}
+.gameCardFeats{display:flex; flex-wrap:wrap; gap:9px; margin-bottom:18px; position:relative}
+.gameFeat{display:inline-flex; align-items:center; gap:5px; font-size:14.5px; font-weight:700; color:#fff;
+  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.28); border-radius:12px; padding:8px 14px; cursor:default;
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1), background .16s, box-shadow .16s, border-color .16s}
+.gameFeatIc{font-size:1.35em; line-height:1}
+.gameFeat:hover{transform:translateY(-3px) scale(1.06); background:rgba(255,255,255,.3);
+  border-color:rgba(255,255,255,.6); box-shadow:0 8px 18px rgba(0,0,0,.22)}
+.gameFeat:hover .gameFeatIc{animation:detPop .42s cubic-bezier(.34,1.56,.64,1)}
 .gameCardBtn{position:relative; width:100%; font-family:'Baloo 2',cursive; font-weight:800; font-size:18px; color:#312E81;
   background:linear-gradient(135deg,#FDE68A,#FBBF24); border:none; border-radius:16px; padding:15px; cursor:pointer;
   box-shadow:0 6px 0 rgba(0,0,0,.22); transition:transform .1s, box-shadow .1s}
 .gameCardBtn:hover{transform:translateY(-2px); box-shadow:0 8px 0 rgba(0,0,0,.22)}
 .gameCardBtn:active{transform:translateY(3px); box-shadow:0 2px 0 rgba(0,0,0,.22)}
 .drCard .gameCardBtn{color:#064E3B; background:linear-gradient(135deg,#A7F3D0,#34D399)}
+
+/* ---- Thẻ công cụ luyện tập (Thẻ từ vựng / Trắc nghiệm) — cùng "gia đình" với thẻ trò chơi ---- */
+.toolCard{border-top:4px solid var(--a2); background:linear-gradient(150deg, var(--abg) 0%, #FFFFFF 62%)}
+.toolCardHead{display:flex; align-items:center; gap:14px; margin-bottom:8px}
+.toolBadge{width:56px; height:56px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+  font-size:28px; background:linear-gradient(145deg, var(--a1), var(--a2));
+  box-shadow:0 6px 16px var(--ashadow), inset 0 2px 4px rgba(255,255,255,.5)}
+.toolTitleWrap{flex:1 1 auto; min-width:0}
+.toolTag{display:inline-block; font-family:'Be Vietnam Pro',sans-serif; font-size:11px; font-weight:700; border-radius:999px;
+  padding:3px 10px; margin-bottom:4px; color:var(--atext); background:#fff; border:1px solid var(--aborder)}
+.toolTitle{font-family:'Baloo 2',cursive; font-size:22px; font-weight:800; color:var(--ink); line-height:1.05}
+.toolDesc{color:#64748B; font-size:14px; line-height:1.55; margin:0 0 8px}
+.fcToolCard{--a1:#FB7185; --a2:#F97316; --ashadow:rgba(249,115,22,.35); --atext:#9A3412; --abg:#FFF7ED; --aborder:#FED7AA}
+.quizToolCard{--a1:#22D3EE; --a2:#3B82F6; --ashadow:rgba(59,130,246,.35); --atext:#1E40AF; --abg:#EFF6FF; --aborder:#BFDBFE}
 
 /* --- Modal kính mờ (glassmorphism) — nền là ảnh vụ án phía sau lớp kính --- */
 .detModalPremium{

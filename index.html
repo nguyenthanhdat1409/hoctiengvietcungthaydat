@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=62">
+<link rel="stylesheet" href="styles.css?v=63">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -102,9 +102,15 @@
       <p class="sectionSub">Luyện tập nhẹ nhàng — không tính điểm sao, sai lại làm tiếp, càng chơi càng nhớ!</p>
     </div>
 
-    <div class="card practiceCard">
-      <h3 class="blockTitle">🃏 Thẻ từ vựng</h3>
-      <p class="muted">Bấm vào thẻ để lật xem đáp án. Dùng nút để chuyển thẻ nha!</p>
+    <div class="card practiceCard toolCard fcToolCard">
+      <div class="toolCardHead">
+        <div class="toolBadge">🃏</div>
+        <div class="toolTitleWrap">
+          <span class="toolTag">📖 Luyện tập · Từ vựng</span>
+          <h3 class="toolTitle">Thẻ từ vựng</h3>
+        </div>
+      </div>
+      <p class="toolDesc">Bấm vào thẻ để lật xem đáp án. Dùng nút để chuyển thẻ nha!</p>
       <div class="flashcard" id="flashcard" onclick="flipCard()">
         <div class="fcInner" id="fcInner">
           <div class="fcFront" id="fcFront">🐱</div>
@@ -118,9 +124,15 @@
       </div>
     </div>
 
-    <div class="card practiceCard">
-      <h3 class="blockTitle">🎮 Luyện trắc nghiệm nhanh</h3>
-      <p class="muted">Chọn một chủ đề để làm 10 câu luyện tập (trộn đủ mức độ). Có sửa đáp án ngay!</p>
+    <div class="card practiceCard toolCard quizToolCard">
+      <div class="toolCardHead">
+        <div class="toolBadge">🎯</div>
+        <div class="toolTitleWrap">
+          <span class="toolTag">✏️ Luyện tập · Trắc nghiệm</span>
+          <h3 class="toolTitle">Luyện trắc nghiệm nhanh</h3>
+        </div>
+      </div>
+      <p class="toolDesc">Chọn một chủ đề để làm 10 câu luyện tập (trộn đủ mức độ). Có sửa đáp án ngay!</p>
       <div class="topicChips" id="topicChips"></div>
     </div>
 
@@ -133,7 +145,7 @@
         </div>
       </div>
       <p class="gameCardDesc">Mỗi lượt <b>5 màn</b> (rút ngẫu nhiên từ 20 vụ án)! Bé làm <b>“cảnh sát chính tả”</b> bấm bắt hết từ sai trong mỗi đoạn văn trước khi hết giờ. Bắt đúng được thưởng, buộc tội oan bị trừ giờ nha!</p>
-      <div class="gameCardFeats"><span class="gameFeat">⏱️ Tính giờ</span><span class="gameFeat">🚔 Bắt từ sai</span><span class="gameFeat">⚡ +1 XP mỗi lần đúng</span></div>
+      <div class="gameCardFeats"><span class="gameFeat"><span class="gameFeatIc">⏱️</span> Tính giờ</span><span class="gameFeat"><span class="gameFeatIc">🚔</span> Bắt từ sai</span><span class="gameFeat"><span class="gameFeatIc">⚡</span> +1 XP mỗi lần đúng</span></div>
       <button class="gameCardBtn" onclick="startDetective()">🚔 Vào ca trực! →</button>
     </div>
 
@@ -146,7 +158,7 @@
         </div>
       </div>
       <p class="gameCardDesc">Câu bị <b>“bệnh mất dấu”</b> (vd: <i>“me toi di cho mua ca”</i>)! Bé làm <b>bác sĩ</b> chọn đúng dấu cho từng chữ để chữa lành. Mỗi lượt <b>5 bệnh nhân</b> + một <b>“ca đặc biệt”</b>: cùng một chữ, thêm dấu ra nhiều nghĩa!</p>
-      <div class="gameCardFeats"><span class="gameFeat">💊 Chữa dấu</span><span class="gameFeat">🔮 Ca đặc biệt</span><span class="gameFeat">⚡ +1 XP mỗi lần đúng</span></div>
+      <div class="gameCardFeats"><span class="gameFeat"><span class="gameFeatIc">💊</span> Chữa dấu</span><span class="gameFeat"><span class="gameFeatIc">🔮</span> Ca đặc biệt</span><span class="gameFeat"><span class="gameFeatIc">⚡</span> +1 XP mỗi lần đúng</span></div>
       <button class="gameCardBtn" onclick="startDoctor()">🩺 Khám bệnh thôi! →</button>
     </div>
   </section>
