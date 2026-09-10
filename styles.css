@@ -952,9 +952,9 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .fcToolCard{--a1:#FB7185; --a2:#F97316; --ashadow:rgba(249,115,22,.35); --atext:#9A3412; --abg:#FFF7ED; --aborder:#FED7AA}
 .quizToolCard{--a1:#22D3EE; --a2:#3B82F6; --ashadow:rgba(59,130,246,.35); --atext:#1E40AF; --abg:#EFF6FF; --aborder:#BFDBFE}
 
-/* --- Modal kính mờ (glassmorphism) — nền là ảnh vụ án phía sau lớp kính --- */
+/* --- Modal kính mờ (glassmorphism) — nền là ảnh vụ án phía sau lớp kính, phủ tông xanh nước --- */
 .detModalPremium{
-  background:linear-gradient(rgba(20,18,50,.60), rgba(30,27,75,.74)),
+  background:linear-gradient(rgba(8,47,73,.58), rgba(14,116,144,.72)),
     url("images/baitap/troChoiTruyTimTuSai.jpg") center/cover no-repeat;
 }
 .detBox{max-width:720px}
