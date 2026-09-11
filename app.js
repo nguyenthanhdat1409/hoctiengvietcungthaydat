@@ -3355,6 +3355,294 @@ function wbResult(){
   if(win){ sfx.win(); burst(16); }
 }
 
+/* =========================================================
+   GAME: CẢNH SÁT TIA CHỚP (Đúng/Sai chính tả — tính giờ)
+   Dùng lại các cặp lỗi trong 40 vụ án (Truy tìm từ sai).
+   ========================================================= */
+let _spellPairs = null;
+function getSpellPairs(){
+  if(_spellPairs) return _spellPairs;
+  const seen = new Set(), out = [];
+  DETECTIVE_CASES.forEach(c => c.words.forEach(w => {
+    if(typeof w === "object"){
+      const ok = (w.o || "").replace(/\.$/, ""), bad = (w.b || "").replace(/\.$/, "");
+      const k = ok.toLowerCase();
+      if(k && !seen.has(k)){ seen.add(k); out.push({ ok, bad }); }
+    }
+  }));
+  _spellPairs = out; return out;
+}
+let fsSt = null;
+function initFlash(){
+  const host = document.getElementById("fsGame"); if(!host) return;
+  if(fsSt && fsSt.timer) clearInterval(fsSt.timer);
+  host.innerHTML = `
+    <div class="miniIntro">
+      <div class="miniIntroIco">⚡</div>
+      <p class="muted">Hiện một từ — bấm <b>Đúng</b> nếu viết đúng chính tả, <b>Sai</b> nếu viết sai. Càng nhanh càng nhiều điểm! Có <b>40 giây</b>.</p>
+      <div class="center"><button class="btn" onclick="fsStart()">⚡ Bắt đầu!</button></div>
+    </div>`;
+}
+function fsStart(){
+  fsSt = { time:40, score:0, streak:0, timer:null, done:false, cur:null };
+  fsNext();
+  clearInterval(fsSt.timer);
+  fsSt.timer = setInterval(fsTick, 1000);
+}
+function fsNext(){
+  const p = rand(getSpellPairs());
+  const showCorrect = Math.random() < 0.5;
+  fsSt.cur = { word: showCorrect ? p.ok : p.bad, isCorrect: showCorrect };
+  fsRender();
+}
+function fsRender(){
+  const s = fsSt;
+  document.getElementById("fsGame").innerHTML = `
+    <div class="wbBar">
+      <span class="wbChip"><b id="fsTime">${s.time}</b>s ⏱️</span>
+      <span class="wbChip good">⭐ <b>${s.score}</b></span>
+      <span class="wbChip fire">🔥 <b>${s.streak}</b></span>
+    </div>
+    <div class="fsWordBox"><span class="fsWord" id="fsWord">${s.cur.word}</span></div>
+    <p class="detHint">Từ này viết <b>đúng</b> hay <b>sai</b> chính tả?</p>
+    <div class="fsBtns">
+      <button class="fsBtn ok" onclick="fsAnswer(true)">✅ Đúng</button>
+      <button class="fsBtn no" onclick="fsAnswer(false)">❌ Sai</button>
+    </div>`;
+}
+function fsAnswer(said){
+  const s = fsSt; if(!s || s.done) return;
+  const wordEl = document.getElementById("fsWord");
+  if(said === s.cur.isCorrect){
+    s.score++; s.streak++;
+    sfx.correct(); addXP(1);
+    if(wordEl){ try{ detSparkle(wordEl); detFloat(wordEl, "+1 XP", "good"); }catch(e){} }
+    if(s.streak >= 5) burst(6);
+  } else {
+    s.streak = 0; sfx.wrong();
+    if(wordEl) detFloat(wordEl, s.cur.isCorrect ? "Đúng chính tả mà!" : "Từ này SAI!", "bad");
+  }
+  fsNext();
+}
+function fsTick(){
+  const s = fsSt; if(!s || s.done) return;
+  s.time--;
+  const t = document.getElementById("fsTime"); if(t) t.textContent = s.time;
+  if(s.time <= 0){ s.done = true; clearInterval(s.timer); fsResult(); }
+}
+function fsResult(){
+  const s = fsSt;
+  document.getElementById("fsGame").innerHTML = `
+    <div class="wbResult">
+      <div class="wbResultIco">${s.score >= 15 ? "🏆" : "⚡"}</div>
+      <h3>Bắt đúng: ${s.score} từ</h3>
+      <p class="muted">${s.score >= 15 ? "Mắt thần chính tả! 🌟" : "Luyện thêm cho nhanh tay nha!"}</p>
+      ${isStudentLogged() ? `<div class="detXp">⚡ +${s.score} XP đã cộng!</div>` : `<div class="detXp muted">💡 Đăng nhập để mỗi từ đúng +1 XP nha!</div>`}
+      <div class="center"><button class="btn" onclick="fsStart()">Chơi lại 🔄</button></div>
+    </div>`;
+  if(s.score >= 10) burst(14);
+}
+
+/* =========================================================
+   GAME: GHÉP VẦN THẦN TỐC (âm đầu + vần + dấu → tiếng đúng)
+   Chọn đúng 3 thành phần cho hình. Mỗi lượt 8 tiếng.
+   ========================================================= */
+const DAU_ALL = ["ngang","sắc","huyền","hỏi","ngã","nặng"];
+const VAN_WORDS = [
+  {emoji:"🐟", ok:"cá",   am:"c",  amOpts:["c","k","q"],   van:"a",   vanOpts:["a","o","e"],    dau:"sắc"},
+  {emoji:"🐈", ok:"mèo",  am:"m",  amOpts:["m","n","l"],   van:"eo",  vanOpts:["eo","eu","ao"], dau:"huyền"},
+  {emoji:"🐶", ok:"chó",  am:"ch", amOpts:["ch","tr","c"], van:"o",   vanOpts:["o","ô","ơ"],    dau:"sắc"},
+  {emoji:"🐔", ok:"gà",   am:"g",  amOpts:["g","gh","c"],  van:"a",   vanOpts:["a","e","o"],    dau:"huyền"},
+  {emoji:"🌸", ok:"hoa",  am:"h",  amOpts:["h","kh","th"], van:"oa",  vanOpts:["oa","oe","ua"], dau:"ngang"},
+  {emoji:"🐍", ok:"rắn",  am:"r",  amOpts:["r","d","gi"],  van:"ăn",  vanOpts:["ăn","an","ân"], dau:"sắc"},
+  {emoji:"⭐", ok:"sao",  am:"s",  amOpts:["s","x","tr"],  van:"ao",  vanOpts:["ao","au","oa"], dau:"ngang"},
+  {emoji:"🌙", ok:"trăng",am:"tr", amOpts:["tr","ch","t"], van:"ăng", vanOpts:["ăng","ang","âng"], dau:"ngang"},
+  {emoji:"🍚", ok:"cơm",  am:"c",  amOpts:["c","k","g"],   van:"ơm",  vanOpts:["ơm","om","âm"], dau:"ngang"},
+  {emoji:"🐘", ok:"voi",  am:"v",  amOpts:["v","d","b"],   van:"oi",  vanOpts:["oi","ôi","ơi"], dau:"ngang"},
+  {emoji:"🦋", ok:"bướm", am:"b",  amOpts:["b","v","m"],   van:"ươm", vanOpts:["ươm","ươn","uôm"], dau:"sắc"},
+  {emoji:"🍎", ok:"táo",  am:"t",  amOpts:["t","th","đ"],  van:"ao",  vanOpts:["ao","au","eo"], dau:"sắc"},
+  {emoji:"🚗", ok:"xe",   am:"x",  amOpts:["x","s","gi"],  van:"e",   vanOpts:["e","ê","a"],    dau:"ngang"},
+  {emoji:"🐢", ok:"rùa",  am:"r",  amOpts:["r","d","l"],   van:"ua",  vanOpts:["ua","ưa","uô"], dau:"huyền"},
+  {emoji:"🐷", ok:"lợn",  am:"l",  amOpts:["l","n","đ"],   van:"ơn",  vanOpts:["ơn","on","ân"], dau:"nặng"},
+  {emoji:"🌈", ok:"cầu",  am:"c",  amOpts:["c","k","q"],   van:"âu",  vanOpts:["âu","au","ây"], dau:"huyền"},
+];
+let gvSt = null;
+function initVan(){
+  const host = document.getElementById("gvGame"); if(!host) return;
+  host.innerHTML = `
+    <div class="miniIntro">
+      <div class="miniIntroIco">🧩</div>
+      <p class="muted">Nhìn hình, chọn đúng <b>âm đầu + vần + dấu thanh</b> để ghép thành tiếng. Mỗi lượt <b>8 tiếng</b>.</p>
+      <div class="center"><button class="btn" onclick="gvStart()">🧩 Bắt đầu!</button></div>
+    </div>`;
+}
+function gvStart(){
+  gvSt = { deck: shuffle(VAN_WORDS.slice()), idx:0, total:8, score:0, streak:0, locked:false };
+  gvNext();
+}
+function gvNext(){
+  const s = gvSt;
+  if(s.idx >= s.total){ gvResult(); return; }
+  const w = s.deck[s.idx % s.deck.length];
+  s.w = w; s.pick = { am:null, van:null, dau:null }; s.locked = false;
+  s.amOrder = shuffle(w.amOpts.slice());
+  s.vanOrder = shuffle(w.vanOpts.slice());
+  gvRender();
+}
+function gvRender(){
+  const s = gvSt, w = s.w, p = s.pick;
+  const row = (arr, kind) => arr.map(o =>
+    `<button class="gvOpt${p[kind] === o ? " sel" : ""}" onclick="gvPick('${kind}','${o}')">${o}</button>`).join("");
+  document.getElementById("gvGame").innerHTML = `
+    <div class="wbBar">
+      <span class="wbChip">Tiếng <b>${s.idx+1}</b>/${s.total}</span>
+      <span class="wbChip good">⭐ <b>${s.score}</b></span>
+      <span class="wbChip fire">🔥 <b>${s.streak}</b></span>
+    </div>
+    <div class="wbHint">${w.emoji}</div>
+    <div class="gvRowLbl">Âm đầu</div><div class="gvRow" data-k="am">${row(s.amOrder,"am")}</div>
+    <div class="gvRowLbl">Vần</div><div class="gvRow" data-k="van">${row(s.vanOrder,"van")}</div>
+    <div class="gvRowLbl">Dấu thanh</div><div class="gvRow" data-k="dau">${DAU_ALL.map(o => `<button class="gvOpt dau${p.dau===o?" sel":""}" onclick="gvPick('dau','${o}')">${o}</button>`).join("")}</div>`;
+}
+function gvPick(kind, val){
+  const s = gvSt; if(!s || s.locked) return;
+  s.pick[kind] = val;
+  if(s.pick.am != null && s.pick.van != null && s.pick.dau != null){ gvCheck(); }
+  else gvRender();
+}
+function gvCheck(){
+  const s = gvSt, w = s.w, p = s.pick;
+  const ok = p.am === w.am && p.van === w.van && p.dau === w.dau;
+  if(ok){
+    s.locked = true; s.score++; s.streak++;
+    sfx.correct(); addXP(1);
+    if(s.streak >= 3) burst(6);
+    document.getElementById("gvGame").innerHTML = `
+      <div class="wbBar">
+        <span class="wbChip">Tiếng <b>${s.idx+1}</b>/${s.total}</span>
+        <span class="wbChip good">⭐ <b>${s.score}</b></span>
+        <span class="wbChip fire">🔥 <b>${s.streak}</b></span>
+      </div>
+      <div class="wbHint">${w.emoji}</div>
+      <div class="gvWin">${w.ok} <span class="detWordBadge">✓</span> <span class="gvXp">+1 XP</span></div>`;
+    s.idx++;
+    setTimeout(gvNext, 900);
+  } else {
+    s.streak = 0; sfx.wrong();
+    const g = document.getElementById("gvGame");
+    if(g){ g.classList.add("shakeX"); setTimeout(() => { g.classList.remove("shakeX"); s.pick = { am:null, van:null, dau:null }; gvRender(); }, 480); }
+  }
+}
+function gvResult(){
+  const s = gvSt;
+  const win = s.score >= 6;
+  document.getElementById("gvGame").innerHTML = `
+    <div class="wbResult">
+      <div class="wbResultIco">${win ? "🏆" : "💪"}</div>
+      <h3>Ghép đúng: ${s.score}/${s.total}</h3>
+      <p class="muted">${win ? "Ghép vần siêu giỏi! 🌟" : "Luyện thêm chút nữa nha!"}</p>
+      ${isStudentLogged() ? `<div class="detXp">⚡ +${s.score} XP đã cộng!</div>` : `<div class="detXp muted">💡 Đăng nhập để mỗi tiếng đúng +1 XP nha!</div>`}
+      <div class="center"><button class="btn" onclick="gvStart()">Chơi lại 🔄</button></div>
+    </div>`;
+  if(win){ sfx.win(); burst(16); }
+}
+
+/* =========================================================
+   GAME: XẾP CÂU ĐÚNG (sắp xếp các từ thành câu có nghĩa)
+   Dùng lại ngân hàng câu "xếp câu" (type order) sẵn có.
+   ========================================================= */
+let _orderBank = null;
+function getOrderBank(){
+  if(_orderBank) return _orderBank;
+  const out = [];
+  [1,2,3].forEach(lv => (BANK[lv] || []).forEach(q => {
+    if(q.type === "order" && q.words && q.words.length >= 3) out.push(q.words.slice());
+  }));
+  _orderBank = out; return out;
+}
+let scSt = null;
+function initSentence(){
+  const host = document.getElementById("scGame"); if(!host) return;
+  host.innerHTML = `
+    <div class="miniIntro">
+      <div class="miniIntroIco">📝</div>
+      <p class="muted">Các từ bị xáo trộn! Bấm lần lượt để xếp lại thành <b>câu đúng</b>. Mỗi lượt <b>10 câu</b>.</p>
+      <div class="center"><button class="btn" onclick="scStart()">📝 Bắt đầu!</button></div>
+    </div>`;
+}
+function scStart(){
+  scSt = { deck: shuffle(getOrderBank()), idx:0, total:10, score:0, streak:0, locked:false };
+  scNext();
+}
+function scNext(){
+  const s = scSt;
+  if(s.idx >= s.total){ scResult(); return; }
+  const words = s.deck[s.idx % s.deck.length];
+  s.target = words.join(" ");
+  let order;
+  do { order = shuffle(words.map((_, i) => i)); }
+  while(words.length > 1 && order.map(i => words[i]).join(" ") === s.target);
+  s.pool = words; s.order = order; s.ans = []; s.locked = false;
+  scRender();
+}
+function scRender(){
+  const s = scSt;
+  const ansHtml = s.ans.length
+    ? s.ans.map((oi, j) => `<button class="scChip inans" onclick="scUntap(${j})">${s.pool[oi]}</button>`).join("")
+    : `<span class="scEmpty">👇 Bấm các từ bên dưới để xếp thành câu</span>`;
+  const poolHtml = s.order.map(oi =>
+    s.ans.includes(oi)
+      ? `<button class="scChip ghost">${s.pool[oi]}</button>`
+      : `<button class="scChip" onclick="scTap(${oi})">${s.pool[oi]}</button>`).join("");
+  document.getElementById("scGame").innerHTML = `
+    <div class="wbBar">
+      <span class="wbChip">Câu <b>${s.idx+1}</b>/${s.total}</span>
+      <span class="wbChip good">⭐ <b>${s.score}</b></span>
+      <span class="wbChip fire">🔥 <b>${s.streak}</b></span>
+    </div>
+    <div class="scAns" id="scAns">${ansHtml}</div>
+    <div class="scPool">${poolHtml}</div>
+    <div class="wbActions"><button class="wbBtn" onclick="scClear()">Xoá hết ↺</button><button class="wbBtn" onclick="scSkip()">Bỏ qua ⏭</button></div>`;
+}
+function scTap(oi){
+  const s = scSt; if(!s || s.locked || s.ans.includes(oi)) return;
+  s.ans.push(oi);
+  if(s.ans.length === s.pool.length){ scRender(); scCheck(); }
+  else scRender();
+}
+function scUntap(j){ const s = scSt; if(!s || s.locked) return; s.ans.splice(j, 1); scRender(); }
+function scClear(){ const s = scSt; if(!s || s.locked) return; s.ans = []; scRender(); }
+function scSkip(){ const s = scSt; if(!s || s.locked) return; s.streak = 0; s.idx++; scNext(); }
+function scCheck(){
+  const s = scSt;
+  const built = s.ans.map(oi => s.pool[oi]).join(" ");
+  const el = document.getElementById("scAns");
+  if(built === s.target){
+    s.locked = true; s.score++; s.streak++;
+    sfx.correct(); addXP(1);
+    if(el){ el.classList.add("ok"); try{ detFloat(el, "✓ +1 XP", "good"); }catch(e){} }
+    if(s.streak >= 3) burst(6);
+    s.idx++;
+    setTimeout(scNext, 800);
+  } else {
+    s.streak = 0; sfx.wrong();
+    if(el){ el.classList.add("wrong"); setTimeout(() => { el.classList.remove("wrong"); scClear(); }, 550); }
+  }
+}
+function scResult(){
+  const s = scSt;
+  const win = s.score >= 7;
+  document.getElementById("scGame").innerHTML = `
+    <div class="wbResult">
+      <div class="wbResultIco">${win ? "🏆" : "💪"}</div>
+      <h3>Xếp đúng: ${s.score}/${s.total}</h3>
+      <p class="muted">${win ? "Xếp câu siêu chuẩn! 🌟" : "Cố thêm chút nữa nha!"}</p>
+      ${isStudentLogged() ? `<div class="detXp">⚡ +${s.score} XP đã cộng!</div>` : `<div class="detXp muted">💡 Đăng nhập để mỗi câu đúng +1 XP nha!</div>`}
+      <div class="center"><button class="btn" onclick="scStart()">Chơi lại 🔄</button></div>
+    </div>`;
+  if(win){ sfx.win(); burst(16); }
+}
+
 const PRACTICE_CATS = ["all","docdai","tuvung","dientu","chinhta","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
 function renderTopicChips(){
   document.getElementById("topicChips").innerHTML = PRACTICE_CATS.map(k => {
@@ -7731,6 +8019,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTopicChips();
   renderContact();
   initWordBuild();
+  initFlash();
+  initVan();
+  initSentence();
   renderAuthState();
   initAuth();
   go((location.hash || "#home").slice(1));

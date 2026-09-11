@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=70">
+<link rel="stylesheet" href="styles.css?v=71">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -124,6 +124,42 @@
       </div>
       <p class="toolDesc">Chọn một chủ đề để làm 20 câu luyện tập (thiên về câu khó, ít lặp lại). Có sửa đáp án ngay!</p>
       <div class="topicChips" id="topicChips"></div>
+    </div>
+
+    <div class="card practiceCard toolCard fsToolCard">
+      <div class="toolCardHead">
+        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">⚡</span></div>
+        <div class="toolTitleWrap">
+          <span class="toolTag">🕵️ Luyện tập · Chính tả tốc độ</span>
+          <h3 class="toolTitle">Cảnh sát tia chớp</h3>
+        </div>
+      </div>
+      <p class="toolDesc">Từ này viết <b>ĐÚNG</b> hay <b>SAI</b>? Bấm thật nhanh trong 40 giây nha!</p>
+      <div id="fsGame"></div>
+    </div>
+
+    <div class="card practiceCard toolCard gvToolCard">
+      <div class="toolCardHead">
+        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">🧩</span></div>
+        <div class="toolTitleWrap">
+          <span class="toolTag">🔤 Luyện tập · Ghép vần</span>
+          <h3 class="toolTitle">Ghép vần thần tốc</h3>
+        </div>
+      </div>
+      <p class="toolDesc">Chọn <b>âm đầu + vần + dấu</b> để ghép thành tiếng đúng theo hình!</p>
+      <div id="gvGame"></div>
+    </div>
+
+    <div class="card practiceCard toolCard scToolCard">
+      <div class="toolCardHead">
+        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">📝</span></div>
+        <div class="toolTitleWrap">
+          <span class="toolTag">✍️ Luyện tập · Ngữ pháp</span>
+          <h3 class="toolTitle">Xếp câu đúng</h3>
+        </div>
+      </div>
+      <p class="toolDesc">Các từ bị xáo trộn — bấm để xếp lại thành <b>câu có nghĩa</b> nha!</p>
+      <div id="scGame"></div>
     </div>
 
     <div class="card practiceCard gameCard detGameCard">
@@ -370,6 +406,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=74"></script>
+<script src="app.js?v=75"></script>
 </body>
 </html>
