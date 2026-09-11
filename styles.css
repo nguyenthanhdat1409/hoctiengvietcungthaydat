@@ -895,8 +895,8 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 /* ============ TRÒ CHƠI: TRUY TÌM TỪ SAI (bản cao cấp) ============ */
 /* ---- Thẻ trò chơi cao cấp (trang Bài tập) ---- */
 .gameCard{position:relative; overflow:hidden; border-top:none; color:#fff;
-  background:linear-gradient(140deg,#312E81 0%,#4F46E5 55%,#7C3AED 100%);
-  box-shadow:0 12px 0 rgba(30,27,75,.32), 0 22px 55px rgba(49,46,129,.4)}
+  background:linear-gradient(140deg,#0C4A6E 0%,#2563EB 55%,#22D3EE 100%);
+  box-shadow:0 12px 0 rgba(8,47,73,.32), 0 22px 55px rgba(37,99,235,.4)}
 .gameCard::before{content:""; position:absolute; top:-70px; right:-50px; width:220px; height:220px; border-radius:50%;
   background:radial-gradient(circle, rgba(255,255,255,.16), transparent 70%); pointer-events:none}
 .drCard{background:linear-gradient(140deg,#065F46 0%,#0D9488 55%,#10B981 100%);

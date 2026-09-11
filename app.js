@@ -5922,8 +5922,8 @@ function startDetective(){
 }
 function startDetRound(){
   const s = tnState, c = s.queue[s.round];
-  s.r = { c, total: c.words.filter(w => typeof w === "object").length, caught:0, wrong:0,
-          time: c.time || 70, timer:null, done:false, found:new Set(), accused:new Set() };
+  s.r = { c, total: c.words.filter(w => typeof w === "object").length, caught:0, wrong:0, roundXp:0,
+          time: 40, timer:null, done:false, found:new Set(), accused:new Set() };
   renderDetective();
   clearInterval(s.r.timer);
   s.r.timer = setInterval(detTick, 1000);
@@ -5960,12 +5960,9 @@ function renderDetective(){
       <div class="detRing" id="detRing"><span class="detRingNum" id="detTimerNum">${r.time}</span></div>
       <div class="detCountLbl">Giây còn lại</div>
     </div>
-    <p class="detHint">${r.time <= 0
-      ? "⏰ <b>Hết giờ rồi!</b> Bấm <b>Nộp hồ sơ</b> để xem kết quả nha."
-      : "🔎 Đọc kỹ rồi bấm vào những <b>từ viết sai</b> để bắt nhé! Bắt hết manh mối là phá án ngay 🚔"}</p>
+    <p class="detHint">🔎 Đọc kỹ rồi bấm vào những <b>từ viết sai</b> để bắt nhé! Bắt hết <b>7 manh mối</b> là phá án ngay 🚔 (hết giờ là thua màn đó!)</p>
     <div class="detPassage" id="detPassage">${words}</div>
     <div class="center">
-      ${r.time <= 0 ? `<button class="btn detSubmitBtn" onclick="endDetective(false)">📋 Nộp hồ sơ</button>` : ``}
       <button class="btn light detExitBtn" onclick="closeDetective()">Thoát ↩️</button>
     </div>`;
   updateDetTimer();
@@ -5974,8 +5971,8 @@ function updateDetTimer(){
   const r = tnState && tnState.r; if(!r) return;
   const ring = document.getElementById("detRing");
   const num = document.getElementById("detTimerNum");
-  const pct = Math.max(0, r.time / (r.c.time || 70) * 100);
-  const low = r.time <= 15;
+  const pct = Math.max(0, r.time / 40 * 100);
+  const low = r.time <= 10;
   if(ring){ ring.style.setProperty("--pct", pct); ring.classList.toggle("low", low); }
   if(num){ num.textContent = r.time; num.classList.toggle("low", low); }
 }
@@ -6009,10 +6006,11 @@ function detTick(){
   const r = tnState && tnState.r; if(!r || r.done) return;
   r.time--;
   updateDetTimer();
-  if(r.time <= 0){                     // hết giờ: dừng đồng hồ & hiện nút "Nộp hồ sơ" (không tự nộp)
+  if(r.time <= 0){                     // hết giờ = thua màn → tự sang kết quả ngay
     r.time = 0;
     clearInterval(r.timer);
-    renderDetective();
+    updateDetTimer();
+    endDetective(false);
   }
 }
 function tapWord(i){
@@ -6028,7 +6026,7 @@ function tapWord(i){
     el.innerHTML = w.o + `<span class="detWordBadge">✓</span>`;
     detSparkle(el);
     detFloat(el, "🚔 +1 XP", "good");
-    detBumpXp(1);                       // mỗi lần bắt đúng +1 XP
+    detBumpXp(1); r.roundXp++;          // mỗi lần bắt đúng +1 XP (ghi nhận theo màn để thu hồi nếu thua)
     sfx.correct();
     const clue = document.getElementById("detClueNum");
     if(clue) clue.textContent = r.caught;
@@ -6075,6 +6073,7 @@ function endDetective(win){   // kết thúc 1 MÀN → cộng vào tổng, hi�
   r.done = true;
   clearInterval(r.timer);
   const solved = r.caught === r.total;
+  if(!solved){ s.sess.xp = Math.max(0, s.sess.xp - (r.roundXp || 0)); }   // hết giờ/chưa xong: không cộng XP màn này
   const stars = solved && r.wrong === 0 ? 3 : solved ? 2 : r.caught >= Math.ceil(r.total / 2) ? 1 : 0;
   s.sess.caught += r.caught; s.sess.errs += r.total; s.sess.wrong += r.wrong;
   s.sess.stars += stars; if(solved) s.sess.solved++;
@@ -6186,13 +6185,32 @@ function startDoctor(){
 }
 function closeDoctor(e){
   if(e && e.target && e.target.id !== "drModal" && e.type === "click" && e.currentTarget.id === "drModal") return;
+  if(drState && drState.p && drState.p.timer) clearInterval(drState.p.timer);
   document.getElementById("drModal").classList.add("hidden");
   document.body.style.overflow = "";
 }
+const DR_TIME = 50;   // mỗi bệnh nhân 50 giây (khó hơn nên cho nhiều giờ hơn Truy tìm từ sai)
 function startPatient(){
   const s = drState;
-  s.p = { c: s.queue[s.round], filled:new Set(), active:0, wrong:0, done:false };
+  s.p = { c: s.queue[s.round], filled:new Set(), active:0, wrong:0, done:false, time:DR_TIME, timer:null, roundXp:0 };
   renderDoctor();
+  clearInterval(s.p.timer);
+  s.p.timer = setInterval(drTick, 1000);
+}
+function drTick(){
+  const p = drState && drState.p; if(!p || p.done) return;
+  p.time--;
+  updateDrTimer();
+  if(p.time <= 0){ p.time = 0; clearInterval(p.timer); updateDrTimer(); doctorTimeout(); }
+}
+function updateDrTimer(){
+  const p = drState && drState.p; if(!p) return;
+  const ring = document.getElementById("drRing");
+  const num = document.getElementById("drTimerNum");
+  const pct = Math.max(0, p.time / DR_TIME * 100);
+  const low = p.time <= 10;
+  if(ring){ ring.style.setProperty("--pct", pct); ring.classList.toggle("low", low); }
+  if(num){ num.textContent = p.time; num.classList.toggle("low", low); }
 }
 function renderDoctor(){
   const s = drState, p = s.p, words = p.c.words;
@@ -6224,10 +6242,15 @@ function renderDoctor(){
       <div class="detReward cure"><span class="detRewardIc">💊</span><b><span id="drCureNum">${p.filled.size}</span>/${total}</b><span class="detRewardLbl">Đã chữa</span></div>
       <div class="detReward bad"><span class="detRewardIc">🩹</span><b id="drWrongNum">${p.wrong}</b><span class="detRewardLbl">Chẩn sai</span></div>
     </div>
-    <p class="detHint">🩺 Câu này bị “mất dấu”! Chọn đúng dấu cho từng chữ để chữa lành.</p>
+    <div class="detCountdown">
+      <div class="detRing" id="drRing"><span class="detRingNum" id="drTimerNum">${p.time}</span></div>
+      <div class="detCountLbl">Giây còn lại</div>
+    </div>
+    <p class="detHint">🩺 Câu này bị “mất dấu”! Chọn đúng dấu cho từng chữ để chữa lành trước khi hết giờ nha!</p>
     <div class="drPatient" id="drPatient">${sentence}</div>
     <div id="drTrayWrap">${tray}</div>
     <div class="center" style="margin-top:14px"><button class="btn light detExitBtn" onclick="closeDoctor()">Thoát ↩️</button></div>`;
+  updateDrTimer();
 }
 function pickSlot(i){
   const p = drState && drState.p; if(!p || p.done) return;
@@ -6237,6 +6260,7 @@ function pickSlot(i){
 }
 function pickTone(oi){
   const s = drState, p = s.p; if(!p || p.done) return;
+  if(p.time <= 0) return;              // hết giờ thì không chữa thêm được nữa
   const w = p.c.words[p.active];
   if(w.opts[oi] === w.ok){
     const idx = p.active;
@@ -6248,7 +6272,7 @@ function pickTone(oi){
     p.active = nxt;
     const finished = (p.filled.size === p.c.words.length);
     renderDoctor();
-    drBumpXp(1);                        // +1 XP mỗi lần chọn đúng dấu
+    drBumpXp(1); p.roundXp++;           // +1 XP mỗi lần chọn đúng (ghi nhận theo màn để thu hồi nếu hết giờ)
     const doneEl = document.getElementById("drs" + idx);
     if(doneEl){
       doneEl.classList.add("spring");
@@ -6283,6 +6307,7 @@ function patientCured(){
   const s = drState, p = s.p;
   if(p.done) return;
   p.done = true;
+  clearInterval(p.timer);
   if(p.wrong === 0) s.sess.cured++;   // "chữa lành hoàn hảo" khi không chẩn sai
   sfx.solved(); burst(16);
   const box = document.querySelector("#drModal .detBox");
@@ -6311,6 +6336,32 @@ function showPatientCured(){
       <div class="detCaseChip drCaseChip center-chip">BỆNH NHÂN ${s.round+1}/${DR_PATIENTS}</div>
       <div class="drCured">${cured}</div>
       <p class="center muted">${p.wrong === 0 ? "Tuyệt vời, không chẩn sai lần nào! 🌟" : "Chẩn sai " + p.wrong + " lần — lần sau cẩn thận hơn nha!"}</p>
+      <div class="center" style="margin-top:12px">${nextBtn}
+        <button class="btn light" onclick="closeDoctor()" style="margin-left:8px">Thoát ↩️</button>
+      </div>
+    </div>`;
+}
+function doctorTimeout(){
+  const s = drState, p = s.p;
+  if(p.done) return;
+  p.done = true;
+  clearInterval(p.timer);
+  s.sess.xp = Math.max(0, s.sess.xp - (p.roundXp || 0));   // hết giờ chưa chữa xong → không cộng XP màn này
+  sfx.wrong();
+  const cured = p.c.words.map(w => w.ok).join(" ");
+  const isLast = s.round >= DR_PATIENTS - 1;
+  const nextBtn = isLast
+    ? `<button class="btn" onclick="startDoctorBonus()">Ca đặc biệt 🔮</button>`
+    : `<button class="btn" onclick="nextPatient()">Bệnh nhân tiếp ▶</button>`;
+  document.getElementById("drBody").innerHTML = `
+    <div class="detGlow"></div>
+    <div class="detResult">
+      <div class="detBadge big drBadge">⏰</div>
+      <h2>Hết giờ rồi!</h2>
+      <div class="detCaseChip drCaseChip center-chip">BỆNH NHÂN ${s.round+1}/${DR_PATIENTS}</div>
+      <p class="center muted" style="margin-top:2px">Chưa chữa kịp bệnh nhân này — câu đúng là:</p>
+      <div class="drCured">${cured}</div>
+      <p class="center muted">Lần sau nhanh tay hơn nha! 💪</p>
       <div class="center" style="margin-top:12px">${nextBtn}
         <button class="btn light" onclick="closeDoctor()" style="margin-left:8px">Thoát ↩️</button>
       </div>
