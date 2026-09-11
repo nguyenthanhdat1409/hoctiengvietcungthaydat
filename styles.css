@@ -922,10 +922,10 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .gameCardDesc i{color:#FDE68A; font-style:italic}
 .drCard .gameCardDesc i{color:#A7F3D0}
 .gameCardFeats{display:flex; flex-wrap:wrap; gap:9px; margin-bottom:18px; position:relative}
-.gameFeat{display:inline-flex; align-items:center; gap:5px; font-size:14.5px; font-weight:700; color:#fff;
+.gameFeat{display:inline-flex; align-items:center; gap:5px; white-space:nowrap; font-size:14.5px; font-weight:700; color:#fff;
   background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.28); border-radius:12px; padding:8px 14px; cursor:default;
   transition:transform .16s cubic-bezier(.34,1.56,.64,1), background .16s, box-shadow .16s, border-color .16s}
-.gameFeatIc{font-size:1.35em; line-height:1}
+.gameFeatIc{font-size:1.35em; line-height:1; flex-shrink:0}
 .gameFeat:hover{transform:translateY(-3px) scale(1.06); background:rgba(255,255,255,.3);
   border-color:rgba(255,255,255,.6); box-shadow:0 8px 18px rgba(0,0,0,.22)}
 .gameFeat:hover .gameFeatIc{animation:detPop .42s cubic-bezier(.34,1.56,.64,1)}
