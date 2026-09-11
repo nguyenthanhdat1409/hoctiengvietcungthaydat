@@ -7901,6 +7901,16 @@ function todayStr(){
   const d = new Date();
   return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
 }
+function daysAgoStr(n){
+  const d = new Date(); d.setDate(d.getDate() - n);
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+function dashPreset(n){
+  const f = document.getElementById("dashFrom"), t = document.getElementById("dashTo");
+  if(f) f.value = daysAgoStr(n);
+  if(t) t.value = todayStr();
+  loadDashboard();
+}
 function csMsg(t, err){
   const el = document.getElementById("csMsg"); if(!el) return;
   el.textContent = t || "";
@@ -7918,8 +7928,9 @@ function renderDashboard(){
   }
   guard.innerHTML = "";
   main.classList.remove("hidden");
-  const dd = document.getElementById("dashDate");
-  if(dd && !dd.value) dd.value = todayStr();
+  const f = document.getElementById("dashFrom"), t = document.getElementById("dashTo");
+  if(f && !f.value) f.value = daysAgoStr(6);   // mặc định xem 7 ngày gần nhất
+  if(t && !t.value) t.value = todayStr();
   loadDashboard();
 }
 async function createStudent(e){
@@ -7956,12 +7967,14 @@ async function loadDashboard(){
   const u = getAuthUser(); const c = getSB();
   if(!el) return;
   if(!u || u.role !== "teacher" || !c){ el.innerHTML = '<p class="muted">Không có quyền.</p>'; return; }
-  const day = (document.getElementById("dashDate").value) || todayStr();
+  let from = (document.getElementById("dashFrom").value) || daysAgoStr(6);
+  let to   = (document.getElementById("dashTo").value)   || todayStr();
+  if(from > to){ const tmp = from; from = to; to = tmp; }   // đổi chỗ nếu chọn ngược
   el.innerHTML = '<p class="muted">Đang tải…</p>';
   try{
     const [st, ss, sp] = await Promise.all([
       c.from("profiles").select("id,display_name,username,class_code").eq("role","student"),
-      c.from("study_sessions").select("student_id,duration_sec").eq("day", day),
+      c.from("study_sessions").select("student_id,duration_sec").gte("day", from).lte("day", to),
       c.from("student_progress").select("student_id,data"),
     ]);
     const students = st.data || [];
@@ -7974,10 +7987,14 @@ async function loadDashboard(){
     const rows = Object.values(agg).sort((x,y) => (y.xp - x.xp) || (y.logins - x.logins));
     const active = rows.filter(r => r.logins > 0).length;
     const totLogin = rows.reduce((s,r) => s + r.logins, 0);
+    const totMin = rows.reduce((s,r) => s + r.min, 0);
+    const totXp = rows.reduce((s,r) => s + r.xp, 0);
     const kpi = [
       { ic:"🧑‍🎓", n:students.length, l:"học sinh", c:"#6366F1" },
-      { ic:"✅", n:active, l:"vào hôm đó", c:"#22C55E" },
+      { ic:"✅", n:active, l:"có vào học", c:"#22C55E" },
       { ic:"🚪", n:totLogin, l:"lượt vào", c:"#F59E0B" },
+      { ic:"⏱️", n:totMin, l:"phút học", c:"#06B6D4" },
+      { ic:"⚡", n:totXp, l:"tổng XP lớp", c:"#EC4899" },
     ];
     let html = `<div class="dashKpi">` + kpi.map(k =>
       `<div class="kpiCard" style="--kc:${k.c}"><div class="kpiIc">${k.ic}</div><b>${k.n}</b><span>${k.l}</span></div>`).join("") + `</div>`;
@@ -7998,8 +8015,9 @@ async function loadDashboard(){
         `<td>${num(r.lessons)}</td><td>${num(r.quizzes)}</td>`+
         `<td>${score}</td><td>${xp}</td><td>${badges}</td></tr>`;
     });
+    const rangeTxt = (from === to) ? ("ngày " + from) : (from + " → " + to);
     html += "</tbody></table></div>"+
-      "<p class=\"muted\" style=\"margin:10px 2px 0;font-size:12.5px\">👆 Bấm vào một học sinh để xem chi tiết. · <b>Lần vào / Phút</b> = theo ngày đã chọn; <b>Bài học / Kiểm tra / Điểm / XP / 🏅</b> = tổng tích luỹ (khớp trang chủ của bé).</p>";
+      "<p class=\"muted\" style=\"margin:10px 2px 0;font-size:12.5px\">👆 Bấm vào một học sinh để xem chi tiết. · <b>Lần vào / Phút</b> = trong khoảng <b>"+rangeTxt+"</b>; <b>Bài học / Kiểm tra / Điểm / XP / 🏅</b> = tổng tích luỹ hiện tại (khớp trang chủ của bé).</p>";
     el.innerHTML = html;
   }catch(err){ el.innerHTML = '<p class="muted">Lỗi tải dữ liệu: ' + (err && err.message) + '</p>'; }
 }

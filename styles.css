@@ -606,8 +606,13 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .dashCtrl{display:flex; align-items:center; gap:8px}
 .dashCtrl input[type=date]{font-family:inherit; font-size:14px; padding:9px 12px; border:2px solid #E2E8F0; border-radius:12px; outline:none; background:#F8FAFC}
 .dashCtrl input[type=date]:focus{border-color:var(--vio)}
+.dateLbl{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:#475569}
+.dashPresets{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px}
+.dashPreset{font-family:'Be Vietnam Pro',sans-serif; font-size:13px; font-weight:700; color:#0E7490; cursor:pointer;
+  background:#ECFEFF; border:1.5px solid #A5F3FC; border-radius:999px; padding:6px 14px; transition:transform .1s, background .12s}
+.dashPreset:hover{background:#CFFAFE; transform:translateY(-1px)}
 
-.dashKpi{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:16px 0}
+.dashKpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:12px; margin:16px 0}
 .kpiCard{position:relative; background:#fff; border:2px solid #EEF2FF; border-radius:18px; padding:16px 12px 14px; text-align:center;
   box-shadow:0 6px 0 rgba(30,27,75,.06); overflow:hidden; transition:transform .15s}
 .kpiCard::before{content:""; position:absolute; inset:0 0 auto 0; height:5px; background:var(--kc)}

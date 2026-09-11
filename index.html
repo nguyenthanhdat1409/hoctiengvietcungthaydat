@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=74">
+<link rel="stylesheet" href="styles.css?v=75">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -261,13 +261,19 @@
 
       <div class="card">
         <div class="dashTop">
-          <div class="cardHead"><span class="cardHeadIco cardHeadIco--cyan">📅</span><h3 class="blockTitle">Hoạt động theo ngày</h3></div>
+          <div class="cardHead"><span class="cardHeadIco cardHeadIco--cyan">📅</span><h3 class="blockTitle">Hoạt động theo khoảng ngày</h3></div>
           <div class="dashCtrl">
-            <input type="date" id="dashDate" onchange="loadDashboard()">
+            <label class="dateLbl">Từ <input type="date" id="dashFrom" onchange="loadDashboard()"></label>
+            <label class="dateLbl">Đến <input type="date" id="dashTo" onchange="loadDashboard()"></label>
             <button class="btn small ghost" onclick="loadDashboard()">↻ Tải lại</button>
           </div>
         </div>
-        <div id="dashTable"><p class="muted">Chọn ngày để xem.</p></div>
+        <div class="dashPresets">
+          <button class="dashPreset" onclick="dashPreset(0)">Hôm nay</button>
+          <button class="dashPreset" onclick="dashPreset(6)">7 ngày</button>
+          <button class="dashPreset" onclick="dashPreset(29)">30 ngày</button>
+        </div>
+        <div id="dashTable"><p class="muted">Chọn khoảng ngày để xem.</p></div>
       </div>
     </div>
   </section>
@@ -429,6 +435,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=76"></script>
+<script src="app.js?v=77"></script>
 </body>
 </html>
