@@ -3405,9 +3405,9 @@ function fsHead(){
       <div class="detHeadTxt"><h2>CẢNH SÁT TIA CHỚP</h2><p>Đúng hay sai chính tả?</p></div>
       <div class="detCaseChip fsCaseChip">TUẦN TRA</div>
     </div>
-    <div class="detRewardRow">
-      <div class="detReward xp"><span class="detRewardIc">⚡</span><b>${s.score}</b><span class="detRewardLbl">Bắt đúng</span></div>
-      <div class="detReward streak"><span class="detRewardIc">🔥</span><b>${s.streak}</b><span class="detRewardLbl">Chuỗi</span></div>
+    <div class="fsStatBar">
+      <span class="fsStat"><span class="fsStatIc">⭐</span> Bắt đúng <b>${s.score}</b></span>
+      <span class="fsStat fire"><span class="fsStatIc">🔥</span> Chuỗi <b>${s.streak}</b></span>
     </div>
     <div class="detCountdown">
       <div class="detRing fsRing" id="fsRing"><span class="detRingNum" id="fsTime">${s.time}</span></div>
