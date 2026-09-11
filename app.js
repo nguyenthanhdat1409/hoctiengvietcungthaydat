@@ -3323,8 +3323,9 @@ function wbCheck(){
   if(built === s.word){
     s.locked = true; s.score++; s.streak++;
     sfx.correct();
+    addXP(1);                          // ghép đúng 1 từ = +1 XP (tự bỏ qua nếu chưa đăng nhập)
     const el = document.getElementById("wbSlots");
-    if(el){ el.classList.add("ok"); try{ detSparkle(el); }catch(e){} }
+    if(el){ el.classList.add("ok"); try{ detSparkle(el); detFloat(el, "✓ +1 XP", "good"); }catch(e){} }
     if(s.streak >= 3) burst(6);
     s.idx++;
     setTimeout(wbNextWord, 750);
@@ -3339,9 +3340,9 @@ function wbResult(){
   const s = wbState;
   const win = s.score >= 7;
   let xpNote = "";
-  if(win){
-    if(isStudentLogged()){ awardGameXP(); xpNote = `<div class="detXp">⚡ +${XP_GAME} XP đã cộng vào tiến trình!</div>`; }
-    else { xpNote = `<div class="detXp muted">💡 Đăng nhập để được cộng XP nha!</div>`; }
+  if(s.score > 0){
+    if(isStudentLogged()){ xpNote = `<div class="detXp">⚡ +${s.score} XP đã cộng vào tiến trình!</div>`; }   // đã cộng dần mỗi từ đúng
+    else { xpNote = `<div class="detXp muted">💡 Đăng nhập để mỗi từ đúng được +1 XP nha!</div>`; }
   }
   document.getElementById("wbGame").innerHTML = `
     <div class="wbResult">
