@@ -952,12 +952,42 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .fcToolCard{--a1:#FB7185; --a2:#F97316; --ashadow:rgba(249,115,22,.35); --atext:#9A3412; --abg:#FFF7ED; --aborder:#FED7AA}
 .quizToolCard{--a1:#22D3EE; --a2:#3B82F6; --ashadow:rgba(59,130,246,.35); --atext:#1E40AF; --abg:#EFF6FF; --aborder:#BFDBFE}
 
+/* --- Game: Ghép chữ thành từ --- */
+#wbGame{margin-top:6px}
+.wbBar{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:8px}
+.wbChip{font-family:'Be Vietnam Pro',sans-serif; font-size:12.5px; font-weight:700; color:#475569;
+  background:#fff; border:1.5px solid #E2E8F0; border-radius:999px; padding:4px 12px}
+.wbChip b{color:#F97316}
+.wbChip.good b{color:#16A34A}
+.wbChip.fire b{color:#EA580C}
+.wbHint{font-size:64px; text-align:center; line-height:1; margin:6px 0 14px; filter:drop-shadow(0 6px 10px rgba(0,0,0,.12))}
+.wbSlots{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; margin-bottom:16px; min-height:52px}
+.wbSlot{width:44px; height:52px; border-radius:12px; border:2.5px dashed #CBD5E1; background:rgba(255,255,255,.7);
+  font-family:'Baloo 2',cursive; font-weight:800; font-size:26px; color:#1E293B; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; transition:transform .1s, border-color .15s, background .15s}
+.wbSlot.filled{border-style:solid; border-color:#FBBF24; background:#FFFBEB}
+.wbSlot.filled:active{transform:translateY(2px)}
+.wbGap{width:16px}
+.wbSlots.ok .wbSlot{border-style:solid; border-color:#4ADE80; background:linear-gradient(135deg,#DCFCE7,#BBF7D0); color:#15803D; animation:wbPop .4s cubic-bezier(.34,1.56,.64,1)}
+.wbSlots.wrong .wbSlot{border-color:#EF4444; background:#FEE2E2; color:#B91C1C; animation:detShake .42s}
+@keyframes wbPop{0%{transform:scale(1)}45%{transform:scale(1.15)}100%{transform:scale(1)}}
+.wbTiles{display:flex; flex-wrap:wrap; gap:9px; justify-content:center; margin-bottom:14px}
+.wbTile{width:46px; height:52px; border-radius:12px; border:none; cursor:pointer;
+  font-family:'Baloo 2',cursive; font-weight:800; font-size:26px; color:#7C2D12;
+  background:linear-gradient(135deg,#FED7AA,#FDBA74); box-shadow:0 5px 0 #F97316; transition:transform .08s}
+.wbTile:active{transform:translateY(3px); box-shadow:0 2px 0 #F97316}
+.wbTile.used{visibility:hidden}
+.wbActions{display:flex; gap:10px; justify-content:center}
+.wbResult{text-align:center; padding:12px 0}
+.wbResultIco{font-size:56px; margin-bottom:4px}
+.wbResult h3{font-family:'Baloo 2',cursive; font-size:22px; color:#1E293B; margin:0 0 4px}
+
 /* --- Modal kính mờ (glassmorphism) — nền là ảnh vụ án phía sau lớp kính, phủ tông xanh nước --- */
 .detModalPremium{
   background:linear-gradient(rgba(8,47,73,.58), rgba(14,116,144,.72)),
     url("images/baitap/troChoiTruyTimTuSai.jpg") center/cover no-repeat;
 }
-.detBox{max-width:720px}
+.detBox{max-width:720px; min-height:min(88vh,660px)}   /* đồng đều chiều cao giữa các popup game */
 .detGlass{background:linear-gradient(160deg, rgba(255,255,255,.80), rgba(238,242,255,.60));
   backdrop-filter:blur(24px) saturate(165%); -webkit-backdrop-filter:blur(24px) saturate(165%);
   border:1.5px solid rgba(255,255,255,.75);

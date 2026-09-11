@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=68">
+<link rel="stylesheet" href="styles.css?v=69">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -104,24 +104,14 @@
 
     <div class="card practiceCard toolCard fcToolCard">
       <div class="toolCardHead">
-        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">🃏</span></div>
+        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">🔤</span></div>
         <div class="toolTitleWrap">
-          <span class="toolTag">📖 Luyện tập · Từ vựng</span>
-          <h3 class="toolTitle">Thẻ từ vựng</h3>
+          <span class="toolTag">📖 Luyện tập · Từ vựng &amp; chính tả</span>
+          <h3 class="toolTitle">Ghép chữ thành từ</h3>
         </div>
       </div>
-      <p class="toolDesc">Bấm vào thẻ để lật xem đáp án. Dùng nút để chuyển thẻ nha!</p>
-      <div class="flashcard" id="flashcard" onclick="flipCard()">
-        <div class="fcInner" id="fcInner">
-          <div class="fcFront" id="fcFront">🐱</div>
-          <div class="fcBack" id="fcBack">Con mèo</div>
-        </div>
-      </div>
-      <div class="fcCtrl">
-        <button class="btn small" onclick="prevCard()">◀ Trước</button>
-        <span class="fcCount" id="fcCount">1 / 1</span>
-        <button class="btn small next" onclick="nextCard()">Sau ▶</button>
-      </div>
+      <p class="toolDesc">Nhìn hình, xếp các chữ cái lộn xộn thành từ đúng nha! Mỗi lượt 10 từ.</p>
+      <div id="wbGame"></div>
     </div>
 
     <div class="card practiceCard toolCard quizToolCard">
@@ -380,6 +370,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=71"></script>
+<script src="app.js?v=72"></script>
 </body>
 </html>

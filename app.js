@@ -3242,17 +3242,117 @@ const DECK = [
   ["🔴","Màu đỏ"],["🔵","Màu xanh"],["🟡","Màu vàng"],["🟢","Màu lá"],["🟣","Màu tím"],
   ["✋","Bàn tay"],["🦶","Bàn chân"],["👁️","Con mắt"],["👂","Cái tai"],["👃","Cái mũi"],
 ];
-let fcIndex = 0;
-function renderFlashcard(){
-  const [e, w] = DECK[fcIndex];
-  document.getElementById("flashcard").classList.remove("flipped");
-  document.getElementById("fcFront").textContent = e;
-  document.getElementById("fcBack").textContent = w;
-  document.getElementById("fcCount").textContent = (fcIndex+1) + " / " + DECK.length;
+/* =========================================================
+   GAME: GHÉP CHỮ THÀNH TỪ (nhìn hình, xếp chữ cái lộn xộn)
+   Rèn từ vựng + chính tả. Mỗi lượt 10 từ, có điểm & chuỗi đúng.
+   ========================================================= */
+let wbState = null;
+function initWordBuild(){
+  if(!document.getElementById("wbGame")) return;
+  wbState = { deck: shuffle(DECK.slice()), idx:0, total:10, score:0, streak:0, locked:false };
+  wbNextWord();
 }
-function flipCard(){ document.getElementById("flashcard").classList.toggle("flipped"); }
-function nextCard(){ fcIndex = (fcIndex+1) % DECK.length; renderFlashcard(); }
-function prevCard(){ fcIndex = (fcIndex-1+DECK.length) % DECK.length; renderFlashcard(); }
+function wbNextWord(){
+  const s = wbState; if(!s) return;
+  if(s.idx >= s.total){ wbResult(); return; }
+  const [emoji, word] = s.deck[s.idx % s.deck.length];
+  s.emoji = emoji; s.word = word; s.locked = false;
+  s.slots = [];
+  for(const ch of word){ s.slots.push(ch === " " ? {gap:true} : {ch, tile:null}); }
+  const letters = word.split("").filter(c => c !== " ");
+  let tiles;
+  do { tiles = shuffle(letters.slice()); }
+  while(letters.length > 1 && tiles.join("") === letters.join(""));   // tránh xáo ra y hệt
+  s.tiles = tiles.map((ch, i) => ({ id:i, ch, used:false }));
+  wbRenderGame();
+}
+function wbRenderGame(){
+  const s = wbState;
+  const slotsHtml = s.slots.map((sl, j) => {
+    if(sl.gap) return `<span class="wbGap"></span>`;
+    const t = sl.tile != null ? s.tiles.find(x => x.id === sl.tile) : null;
+    return `<button class="wbSlot${t ? " filled" : ""}" onclick="wbUnplace(${j})">${t ? t.ch : ""}</button>`;
+  }).join("");
+  const tilesHtml = s.tiles.map(t =>
+    `<button class="wbTile${t.used ? " used" : ""}" ${t.used ? "disabled" : ""} onclick="wbPlace(${t.id})">${t.ch}</button>`
+  ).join("");
+  document.getElementById("wbGame").innerHTML = `
+    <div class="wbBar">
+      <span class="wbChip">Từ <b>${s.idx+1}</b>/${s.total}</span>
+      <span class="wbChip good">⭐ <b>${s.score}</b></span>
+      <span class="wbChip fire">🔥 <b>${s.streak}</b></span>
+    </div>
+    <div class="wbHint">${s.emoji}</div>
+    <div class="wbSlots" id="wbSlots">${slotsHtml}</div>
+    <div class="wbTiles">${tilesHtml}</div>
+    <div class="wbActions">
+      <button class="btn small light" onclick="wbClear()">Xoá hết ↺</button>
+      <button class="btn small light" onclick="wbSkip()">Bỏ qua ⏭</button>
+    </div>`;
+}
+function wbPlace(id){
+  const s = wbState; if(!s || s.locked) return;
+  const t = s.tiles.find(x => x.id === id); if(!t || t.used) return;
+  const slot = s.slots.find(sl => !sl.gap && sl.tile == null); if(!slot) return;
+  slot.tile = id; t.used = true;
+  const full = s.slots.every(sl => sl.gap || sl.tile != null);
+  wbRenderGame();
+  if(full) wbCheck();
+}
+function wbUnplace(j){
+  const s = wbState; if(!s || s.locked) return;
+  const sl = s.slots[j]; if(!sl || sl.gap || sl.tile == null) return;
+  const t = s.tiles.find(x => x.id === sl.tile); if(t) t.used = false;
+  sl.tile = null;
+  wbRenderGame();
+}
+function wbClear(){
+  const s = wbState; if(!s || s.locked) return;
+  s.slots.forEach(sl => { if(!sl.gap) sl.tile = null; });
+  s.tiles.forEach(t => t.used = false);
+  wbRenderGame();
+}
+function wbSkip(){
+  const s = wbState; if(!s || s.locked) return;
+  s.streak = 0; s.idx++;
+  wbNextWord();
+}
+function wbCheck(){
+  const s = wbState;
+  const built = s.slots.map(sl => sl.gap ? " " : s.tiles.find(x => x.id === sl.tile).ch).join("");
+  if(built === s.word){
+    s.locked = true; s.score++; s.streak++;
+    sfx.correct();
+    const el = document.getElementById("wbSlots");
+    if(el){ el.classList.add("ok"); try{ detSparkle(el); }catch(e){} }
+    if(s.streak >= 3) burst(6);
+    s.idx++;
+    setTimeout(wbNextWord, 750);
+  } else {
+    s.streak = 0;
+    sfx.wrong();
+    const el = document.getElementById("wbSlots");
+    if(el){ el.classList.add("wrong"); setTimeout(() => { el.classList.remove("wrong"); wbClear(); }, 600); }
+  }
+}
+function wbResult(){
+  const s = wbState;
+  const win = s.score >= 7;
+  let xpNote = "";
+  if(win){
+    if(isStudentLogged()){ awardGameXP(); xpNote = `<div class="detXp">⚡ +${XP_GAME} XP đã cộng vào tiến trình!</div>`; }
+    else { xpNote = `<div class="detXp muted">💡 Đăng nhập để được cộng XP nha!</div>`; }
+  }
+  document.getElementById("wbGame").innerHTML = `
+    <div class="wbResult">
+      <div class="wbResultIco">${win ? "🏆" : "💪"}</div>
+      <h3>Kết quả: ${s.score}/${s.total}</h3>
+      <p class="muted">${win ? "Giỏi quá, xếp chữ siêu nhanh!" : "Cố thêm chút nữa là giỏi liền nha!"}</p>
+      ${xpNote}
+      <div class="center"><button class="btn" onclick="initWordBuild()">Chơi lại 🔄</button></div>
+    </div>`;
+  if(win){ sfx.win(); burst(16); }
+}
 
 const PRACTICE_CATS = ["all","docdai","tuvung","dientu","chinhta","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
 function renderTopicChips(){
@@ -7629,7 +7729,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderLessons();
   renderTopicChips();
   renderContact();
-  renderFlashcard();
+  initWordBuild();
   renderAuthState();
   initAuth();
   go((location.hash || "#home").slice(1));
