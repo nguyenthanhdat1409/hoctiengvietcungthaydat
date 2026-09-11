@@ -3356,8 +3356,7 @@ function wbResult(){
 }
 
 /* =========================================================
-   GAME: CẢNH SÁT TIA CHỚP (Đúng/Sai chính tả — tính giờ)
-   Dùng lại các cặp lỗi trong 40 vụ án (Truy tìm từ sai).
+   GAME: CẢNH SÁT TIA CHỚP (Đúng/Sai chính tả — modal, tính giờ)
    ========================================================= */
 let _spellPairs = null;
 function getSpellPairs(){
@@ -3373,15 +3372,16 @@ function getSpellPairs(){
   _spellPairs = out; return out;
 }
 let fsSt = null;
-function initFlash(){
-  const host = document.getElementById("fsGame"); if(!host) return;
+function openFlash(){
+  document.getElementById("fsModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  fsStart();
+}
+function closeFlash(e){
+  if(e && e.target && e.target.id !== "fsModal" && e.type === "click" && e.currentTarget.id === "fsModal") return;
   if(fsSt && fsSt.timer) clearInterval(fsSt.timer);
-  host.innerHTML = `
-    <div class="miniIntro">
-      <div class="miniIntroIco">⚡</div>
-      <p class="muted">Hiện một từ — bấm <b>Đúng</b> nếu viết đúng chính tả, <b>Sai</b> nếu viết sai. Càng nhanh càng nhiều điểm! Có <b>40 giây</b>.</p>
-      <div class="center"><button class="btn" onclick="fsStart()">⚡ Bắt đầu!</button></div>
-    </div>`;
+  document.getElementById("fsModal").classList.add("hidden");
+  document.body.style.overflow = "";
 }
 function fsStart(){
   fsSt = { time:40, score:0, streak:0, timer:null, done:false, cur:null };
@@ -3392,60 +3392,131 @@ function fsStart(){
 function fsNext(){
   const p = rand(getSpellPairs());
   const showCorrect = Math.random() < 0.5;
-  fsSt.cur = { word: showCorrect ? p.ok : p.bad, isCorrect: showCorrect };
+  fsSt.cur = { word: showCorrect ? p.ok : p.bad, isCorrect: showCorrect, ok:p.ok, bad:p.bad };
+  fsSt.paused = false;
   fsRender();
+}
+function fsHead(){
+  const s = fsSt;
+  return `
+    <div class="detGlow"></div>
+    <div class="detHead">
+      <div class="detBadge detBadgePro fsBadgePro"><span class="detBadgeRing"></span><span class="detBadgeIcon">⚡</span></div>
+      <div class="detHeadTxt"><h2>CẢNH SÁT TIA CHỚP</h2><p>Đúng hay sai chính tả?</p></div>
+      <div class="detCaseChip fsCaseChip">TUẦN TRA</div>
+    </div>
+    <div class="detRewardRow">
+      <div class="detReward xp"><span class="detRewardIc">⚡</span><b>${s.score}</b><span class="detRewardLbl">Bắt đúng</span></div>
+      <div class="detReward streak"><span class="detRewardIc">🔥</span><b>${s.streak}</b><span class="detRewardLbl">Chuỗi</span></div>
+    </div>
+    <div class="detCountdown">
+      <div class="detRing fsRing" id="fsRing"><span class="detRingNum" id="fsTime">${s.time}</span></div>
+      <div class="detCountLbl">Giây còn lại</div>
+    </div>`;
 }
 function fsRender(){
   const s = fsSt;
-  document.getElementById("fsGame").innerHTML = `
-    <div class="wbBar">
-      <span class="wbChip"><b id="fsTime">${s.time}</b>s ⏱️</span>
-      <span class="wbChip good">⭐ <b>${s.score}</b></span>
-      <span class="wbChip fire">🔥 <b>${s.streak}</b></span>
-    </div>
+  document.getElementById("fsBody").innerHTML = fsHead() + `
+    <p class="detHint">Từ này viết <b>đúng</b> hay <b>sai</b> chính tả? Bấm thật nhanh!</p>
     <div class="fsWordBox"><span class="fsWord" id="fsWord">${s.cur.word}</span></div>
-    <p class="detHint">Từ này viết <b>đúng</b> hay <b>sai</b> chính tả?</p>
     <div class="fsBtns">
       <button class="fsBtn ok" onclick="fsAnswer(true)">✅ Đúng</button>
       <button class="fsBtn no" onclick="fsAnswer(false)">❌ Sai</button>
+    </div>
+    <div class="center" style="margin-top:12px"><button class="btn light detExitBtn" onclick="closeFlash()">Thoát ↩️</button></div>`;
+  fsUpdateRing();
+}
+// Giải thích ngắn vì sao từ sai (dựa trên khác biệt âm đầu / âm cuối / dấu)
+function spellReason(ok, bad){
+  const o = (ok||"").toLowerCase(), b = (bad||"").toLowerCase();
+  const starts = [["s","x"],["x","s"],["ch","tr"],["tr","ch"],["r","d"],["d","r"],["gi","d"],["d","gi"],["r","gi"],["gi","r"],["l","n"],["n","l"],["ngh","ng"],["g","gh"],["gh","g"]];
+  for(const [a,c] of starts){ if(o.startsWith(a) && b.startsWith(c)) return `chú ý âm đầu <b>${a}</b> chứ không phải <b>${c}</b>`; }
+  const ends = [["ng","n"],["n","ng"],["c","t"],["t","c"],["nh","n"],["ch","c"]];
+  for(const [a,c] of ends){ if(o.endsWith(a) && b.endsWith(c) && o.slice(0,-a.length)===b.slice(0,-c.length)) return `chú ý âm cuối <b>${a}</b> chứ không phải <b>${c}</b>`; }
+  return `chú ý viết đúng <b>mặt chữ và dấu thanh</b>`;
+}
+function fsFeedback(){
+  const s = fsSt, c = s.cur;
+  s.paused = true;
+  clearInterval(s.timer);            // dừng đồng hồ khi đang xem gợi ý
+  let panel;
+  if(c.isCorrect){
+    panel = `<div class="fsFbWord">Từ “<b>${c.word}</b>” viết <b>ĐÚNG</b> chính tả rồi! 👍</div>
+      <div class="fsFbReason">💡 Lần sau cứ tự tin bấm <b>✅ Đúng</b> nha.</div>`;
+  } else {
+    panel = `<div class="fsFbWord">Đúng phải là “<b>${c.ok}</b>”</div>
+      <div class="fsFbWrong">✗ Không viết là “<s>${c.bad}</s>”</div>
+      <div class="fsFbReason">💡 ${spellReason(c.ok, c.bad)}. Ví dụ: <i>${c.ok}</i>.</div>`;
+  }
+  document.getElementById("fsBody").innerHTML = fsHead() + `
+    <div class="fsFeedback">
+      <div class="fsFbTitle">${c.isCorrect ? "🙌 Suýt nữa!" : "❌ Chưa đúng!"}</div>
+      ${panel}
+      <div class="center" style="margin-top:14px">
+        <button class="btn" onclick="fsResume()">Tiếp tục ▶</button>
+        <button class="btn light detExitBtn" onclick="closeFlash()">Thoát ↩️</button>
+      </div>
     </div>`;
+  fsUpdateRing();
+}
+function fsResume(){
+  const s = fsSt; if(!s || s.done) return;
+  s.paused = false;
+  clearInterval(s.timer);
+  s.timer = setInterval(fsTick, 1000);
+  fsNext();
+}
+function fsUpdateRing(){
+  const s = fsSt; if(!s) return;
+  const ring = document.getElementById("fsRing"), num = document.getElementById("fsTime");
+  const pct = Math.max(0, s.time / 40 * 100), low = s.time <= 10;
+  if(ring){ ring.style.setProperty("--pct", pct); ring.classList.toggle("low", low); }
+  if(num){ num.textContent = s.time; num.classList.toggle("low", low); }
 }
 function fsAnswer(said){
-  const s = fsSt; if(!s || s.done) return;
-  const wordEl = document.getElementById("fsWord");
+  const s = fsSt; if(!s || s.done || s.paused) return;
   if(said === s.cur.isCorrect){
     s.score++; s.streak++;
     sfx.correct(); addXP(1);
+    const wordEl = document.getElementById("fsWord");
     if(wordEl){ try{ detSparkle(wordEl); detFloat(wordEl, "+1 XP", "good"); }catch(e){} }
     if(s.streak >= 5) burst(6);
+    fsNext();
   } else {
     s.streak = 0; sfx.wrong();
-    if(wordEl) detFloat(wordEl, s.cur.isCorrect ? "Đúng chính tả mà!" : "Từ này SAI!", "bad");
+    fsFeedback();                     // sai → hiện từ đúng + lý do, dừng lại cho bé đọc
   }
-  fsNext();
 }
 function fsTick(){
-  const s = fsSt; if(!s || s.done) return;
+  const s = fsSt; if(!s || s.done || s.paused) return;
   s.time--;
-  const t = document.getElementById("fsTime"); if(t) t.textContent = s.time;
+  fsUpdateRing();
   if(s.time <= 0){ s.done = true; clearInterval(s.timer); fsResult(); }
 }
 function fsResult(){
   const s = fsSt;
-  document.getElementById("fsGame").innerHTML = `
-    <div class="wbResult">
-      <div class="wbResultIco">${s.score >= 15 ? "🏆" : "⚡"}</div>
-      <h3>Bắt đúng: ${s.score} từ</h3>
-      <p class="muted">${s.score >= 15 ? "Mắt thần chính tả! 🌟" : "Luyện thêm cho nhanh tay nha!"}</p>
-      ${isStudentLogged() ? `<div class="detXp">⚡ +${s.score} XP đã cộng!</div>` : `<div class="detXp muted">💡 Đăng nhập để mỗi từ đúng +1 XP nha!</div>`}
-      <div class="center"><button class="btn" onclick="fsStart()">Chơi lại 🔄</button></div>
+  const win = s.score >= 15;
+  document.getElementById("fsBody").innerHTML = `
+    <div class="detGlow"></div>
+    <div class="detResult">
+      <div class="detBadge big fsBadge">${win ? "🏆" : "⚡"}</div>
+      <h2>Hết ca tuần tra!</h2>
+      <p class="center muted" style="margin-top:2px">${win ? "Mắt thần chính tả! 🌟" : "Luyện thêm cho nhanh tay nha!"}</p>
+      <div class="detScoreRow">
+        <div class="detScoreBox good"><b>${s.score}</b><span>bắt đúng</span></div>
+        ${isStudentLogged() ? `<div class="detScoreBox good"><b>+${s.score}</b><span>điểm XP ⚡</span></div>` : ``}
+      </div>
+      ${isStudentLogged() ? `` : `<div class="detXp muted">💡 Đăng nhập để mỗi từ đúng +1 XP nha!</div>`}
+      <div class="center" style="margin-top:14px">
+        <button class="btn" onclick="fsStart()">Tuần tra tiếp 🔄</button>
+        <button class="btn light" onclick="closeFlash()" style="margin-left:8px">Về Bài tập ↩️</button>
+      </div>
     </div>`;
-  if(s.score >= 10) burst(14);
+  if(s.score >= 10){ sfx.win(); burst(16); }
 }
 
 /* =========================================================
-   GAME: GHÉP VẦN THẦN TỐC (âm đầu + vần + dấu → tiếng đúng)
-   Chọn đúng 3 thành phần cho hình. Mỗi lượt 8 tiếng.
+   GAME: GHÉP VẦN THẦN TỐC (âm đầu + vần + dấu — modal)
    ========================================================= */
 const DAU_ALL = ["ngang","sắc","huyền","hỏi","ngã","nặng"];
 const VAN_WORDS = [
@@ -3467,14 +3538,15 @@ const VAN_WORDS = [
   {emoji:"🌈", ok:"cầu",  am:"c",  amOpts:["c","k","q"],   van:"âu",  vanOpts:["âu","au","ây"], dau:"huyền"},
 ];
 let gvSt = null;
-function initVan(){
-  const host = document.getElementById("gvGame"); if(!host) return;
-  host.innerHTML = `
-    <div class="miniIntro">
-      <div class="miniIntroIco">🧩</div>
-      <p class="muted">Nhìn hình, chọn đúng <b>âm đầu + vần + dấu thanh</b> để ghép thành tiếng. Mỗi lượt <b>8 tiếng</b>.</p>
-      <div class="center"><button class="btn" onclick="gvStart()">🧩 Bắt đầu!</button></div>
-    </div>`;
+function openVan(){
+  document.getElementById("gvModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  gvStart();
+}
+function closeVan(e){
+  if(e && e.target && e.target.id !== "gvModal" && e.type === "click" && e.currentTarget.id === "gvModal") return;
+  document.getElementById("gvModal").classList.add("hidden");
+  document.body.style.overflow = "";
 }
 function gvStart(){
   gvSt = { deck: shuffle(VAN_WORDS.slice()), idx:0, total:8, score:0, streak:0, locked:false };
@@ -3489,20 +3561,30 @@ function gvNext(){
   s.vanOrder = shuffle(w.vanOpts.slice());
   gvRender();
 }
+function gvHead(){
+  const s = gvSt;
+  return `
+    <div class="detGlow"></div>
+    <div class="detHead">
+      <div class="detBadge detBadgePro gvBadgePro"><span class="detBadgeRing"></span><span class="detBadgeIcon">🧩</span></div>
+      <div class="detHeadTxt"><h2>GHÉP VẦN THẦN TỐC</h2><p>Âm đầu + vần + dấu</p></div>
+      <div class="detCaseChip gvCaseChip">TIẾNG ${s.idx+1}/${s.total}</div>
+    </div>
+    <div class="detRewardRow">
+      <div class="detReward xp"><span class="detRewardIc">⚡</span><b>${s.score}</b><span class="detRewardLbl">Đúng</span></div>
+      <div class="detReward streak"><span class="detRewardIc">🔥</span><b>${s.streak}</b><span class="detRewardLbl">Chuỗi</span></div>
+    </div>`;
+}
 function gvRender(){
   const s = gvSt, w = s.w, p = s.pick;
   const row = (arr, kind) => arr.map(o =>
     `<button class="gvOpt${p[kind] === o ? " sel" : ""}" onclick="gvPick('${kind}','${o}')">${o}</button>`).join("");
-  document.getElementById("gvGame").innerHTML = `
-    <div class="wbBar">
-      <span class="wbChip">Tiếng <b>${s.idx+1}</b>/${s.total}</span>
-      <span class="wbChip good">⭐ <b>${s.score}</b></span>
-      <span class="wbChip fire">🔥 <b>${s.streak}</b></span>
-    </div>
+  document.getElementById("gvBody").innerHTML = gvHead() + `
     <div class="wbHint">${w.emoji}</div>
-    <div class="gvRowLbl">Âm đầu</div><div class="gvRow" data-k="am">${row(s.amOrder,"am")}</div>
-    <div class="gvRowLbl">Vần</div><div class="gvRow" data-k="van">${row(s.vanOrder,"van")}</div>
-    <div class="gvRowLbl">Dấu thanh</div><div class="gvRow" data-k="dau">${DAU_ALL.map(o => `<button class="gvOpt dau${p.dau===o?" sel":""}" onclick="gvPick('dau','${o}')">${o}</button>`).join("")}</div>`;
+    <div class="gvRowLbl">Âm đầu</div><div class="gvRow">${row(s.amOrder,"am")}</div>
+    <div class="gvRowLbl">Vần</div><div class="gvRow">${row(s.vanOrder,"van")}</div>
+    <div class="gvRowLbl">Dấu thanh</div><div class="gvRow">${DAU_ALL.map(o => `<button class="gvOpt dau${p.dau===o?" sel":""}" onclick="gvPick('dau','${o}')">${o}</button>`).join("")}</div>
+    <div class="center" style="margin-top:14px"><button class="btn light detExitBtn" onclick="closeVan()">Thoát ↩️</button></div>`;
 }
 function gvPick(kind, val){
   const s = gvSt; if(!s || s.locked) return;
@@ -3512,44 +3594,44 @@ function gvPick(kind, val){
 }
 function gvCheck(){
   const s = gvSt, w = s.w, p = s.pick;
-  const ok = p.am === w.am && p.van === w.van && p.dau === w.dau;
-  if(ok){
+  if(p.am === w.am && p.van === w.van && p.dau === w.dau){
     s.locked = true; s.score++; s.streak++;
     sfx.correct(); addXP(1);
     if(s.streak >= 3) burst(6);
-    document.getElementById("gvGame").innerHTML = `
-      <div class="wbBar">
-        <span class="wbChip">Tiếng <b>${s.idx+1}</b>/${s.total}</span>
-        <span class="wbChip good">⭐ <b>${s.score}</b></span>
-        <span class="wbChip fire">🔥 <b>${s.streak}</b></span>
-      </div>
+    document.getElementById("gvBody").innerHTML = gvHead() + `
       <div class="wbHint">${w.emoji}</div>
       <div class="gvWin">${w.ok} <span class="detWordBadge">✓</span> <span class="gvXp">+1 XP</span></div>`;
     s.idx++;
     setTimeout(gvNext, 900);
   } else {
     s.streak = 0; sfx.wrong();
-    const g = document.getElementById("gvGame");
+    const g = document.getElementById("gvBody");
     if(g){ g.classList.add("shakeX"); setTimeout(() => { g.classList.remove("shakeX"); s.pick = { am:null, van:null, dau:null }; gvRender(); }, 480); }
   }
 }
 function gvResult(){
-  const s = gvSt;
-  const win = s.score >= 6;
-  document.getElementById("gvGame").innerHTML = `
-    <div class="wbResult">
-      <div class="wbResultIco">${win ? "🏆" : "💪"}</div>
-      <h3>Ghép đúng: ${s.score}/${s.total}</h3>
-      <p class="muted">${win ? "Ghép vần siêu giỏi! 🌟" : "Luyện thêm chút nữa nha!"}</p>
-      ${isStudentLogged() ? `<div class="detXp">⚡ +${s.score} XP đã cộng!</div>` : `<div class="detXp muted">💡 Đăng nhập để mỗi tiếng đúng +1 XP nha!</div>`}
-      <div class="center"><button class="btn" onclick="gvStart()">Chơi lại 🔄</button></div>
+  const s = gvSt, win = s.score >= 6;
+  document.getElementById("gvBody").innerHTML = `
+    <div class="detGlow"></div>
+    <div class="detResult">
+      <div class="detBadge big gvBadge">${win ? "🏆" : "💪"}</div>
+      <h2>Xong 8 tiếng rồi!</h2>
+      <p class="center muted" style="margin-top:2px">${win ? "Ghép vần siêu giỏi! 🌟" : "Luyện thêm chút nữa nha!"}</p>
+      <div class="detScoreRow">
+        <div class="detScoreBox good"><b>${s.score}/${s.total}</b><span>ghép đúng</span></div>
+        ${isStudentLogged() ? `<div class="detScoreBox good"><b>+${s.score}</b><span>điểm XP ⚡</span></div>` : ``}
+      </div>
+      ${isStudentLogged() ? `` : `<div class="detXp muted">💡 Đăng nhập để mỗi tiếng đúng +1 XP nha!</div>`}
+      <div class="center" style="margin-top:14px">
+        <button class="btn" onclick="gvStart()">Chơi lại 🔄</button>
+        <button class="btn light" onclick="closeVan()" style="margin-left:8px">Về Bài tập ↩️</button>
+      </div>
     </div>`;
   if(win){ sfx.win(); burst(16); }
 }
 
 /* =========================================================
-   GAME: XẾP CÂU ĐÚNG (sắp xếp các từ thành câu có nghĩa)
-   Dùng lại ngân hàng câu "xếp câu" (type order) sẵn có.
+   GAME: XẾP CÂU ĐÚNG (sắp xếp từ thành câu — modal)
    ========================================================= */
 let _orderBank = null;
 function getOrderBank(){
@@ -3561,14 +3643,15 @@ function getOrderBank(){
   _orderBank = out; return out;
 }
 let scSt = null;
-function initSentence(){
-  const host = document.getElementById("scGame"); if(!host) return;
-  host.innerHTML = `
-    <div class="miniIntro">
-      <div class="miniIntroIco">📝</div>
-      <p class="muted">Các từ bị xáo trộn! Bấm lần lượt để xếp lại thành <b>câu đúng</b>. Mỗi lượt <b>10 câu</b>.</p>
-      <div class="center"><button class="btn" onclick="scStart()">📝 Bắt đầu!</button></div>
-    </div>`;
+function openSentence(){
+  document.getElementById("scModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  scStart();
+}
+function closeSentence(e){
+  if(e && e.target && e.target.id !== "scModal" && e.type === "click" && e.currentTarget.id === "scModal") return;
+  document.getElementById("scModal").classList.add("hidden");
+  document.body.style.overflow = "";
 }
 function scStart(){
   scSt = { deck: shuffle(getOrderBank()), idx:0, total:10, score:0, streak:0, locked:false };
@@ -3594,15 +3677,25 @@ function scRender(){
     s.ans.includes(oi)
       ? `<button class="scChip ghost">${s.pool[oi]}</button>`
       : `<button class="scChip" onclick="scTap(${oi})">${s.pool[oi]}</button>`).join("");
-  document.getElementById("scGame").innerHTML = `
-    <div class="wbBar">
-      <span class="wbChip">Câu <b>${s.idx+1}</b>/${s.total}</span>
-      <span class="wbChip good">⭐ <b>${s.score}</b></span>
-      <span class="wbChip fire">🔥 <b>${s.streak}</b></span>
+  document.getElementById("scBody").innerHTML = `
+    <div class="detGlow"></div>
+    <div class="detHead">
+      <div class="detBadge detBadgePro scBadgePro"><span class="detBadgeRing"></span><span class="detBadgeIcon">📝</span></div>
+      <div class="detHeadTxt"><h2>XẾP CÂU ĐÚNG</h2><p>Sắp từ thành câu có nghĩa</p></div>
+      <div class="detCaseChip scCaseChip">CÂU ${s.idx+1}/${s.total}</div>
     </div>
+    <div class="detRewardRow">
+      <div class="detReward xp"><span class="detRewardIc">⚡</span><b>${s.score}</b><span class="detRewardLbl">Đúng</span></div>
+      <div class="detReward streak"><span class="detRewardIc">🔥</span><b>${s.streak}</b><span class="detRewardLbl">Chuỗi</span></div>
+    </div>
+    <p class="detHint">✍️ Bấm lần lượt các từ để xếp thành câu đúng nha!</p>
     <div class="scAns" id="scAns">${ansHtml}</div>
     <div class="scPool">${poolHtml}</div>
-    <div class="wbActions"><button class="wbBtn" onclick="scClear()">Xoá hết ↺</button><button class="wbBtn" onclick="scSkip()">Bỏ qua ⏭</button></div>`;
+    <div class="wbActions">
+      <button class="wbBtn" onclick="scClear()">Xoá hết ↺</button>
+      <button class="wbBtn" onclick="scSkip()">Bỏ qua ⏭</button>
+      <button class="wbBtn" onclick="closeSentence()">Thoát ↩️</button>
+    </div>`;
 }
 function scTap(oi){
   const s = scSt; if(!s || s.locked || s.ans.includes(oi)) return;
@@ -3630,15 +3723,22 @@ function scCheck(){
   }
 }
 function scResult(){
-  const s = scSt;
-  const win = s.score >= 7;
-  document.getElementById("scGame").innerHTML = `
-    <div class="wbResult">
-      <div class="wbResultIco">${win ? "🏆" : "💪"}</div>
-      <h3>Xếp đúng: ${s.score}/${s.total}</h3>
-      <p class="muted">${win ? "Xếp câu siêu chuẩn! 🌟" : "Cố thêm chút nữa nha!"}</p>
-      ${isStudentLogged() ? `<div class="detXp">⚡ +${s.score} XP đã cộng!</div>` : `<div class="detXp muted">💡 Đăng nhập để mỗi câu đúng +1 XP nha!</div>`}
-      <div class="center"><button class="btn" onclick="scStart()">Chơi lại 🔄</button></div>
+  const s = scSt, win = s.score >= 7;
+  document.getElementById("scBody").innerHTML = `
+    <div class="detGlow"></div>
+    <div class="detResult">
+      <div class="detBadge big scBadge">${win ? "🏆" : "💪"}</div>
+      <h2>Hoàn thành 10 câu!</h2>
+      <p class="center muted" style="margin-top:2px">${win ? "Xếp câu siêu chuẩn! 🌟" : "Cố thêm chút nữa nha!"}</p>
+      <div class="detScoreRow">
+        <div class="detScoreBox good"><b>${s.score}/${s.total}</b><span>xếp đúng</span></div>
+        ${isStudentLogged() ? `<div class="detScoreBox good"><b>+${s.score}</b><span>điểm XP ⚡</span></div>` : ``}
+      </div>
+      ${isStudentLogged() ? `` : `<div class="detXp muted">💡 Đăng nhập để mỗi câu đúng +1 XP nha!</div>`}
+      <div class="center" style="margin-top:14px">
+        <button class="btn" onclick="scStart()">Chơi lại 🔄</button>
+        <button class="btn light" onclick="closeSentence()" style="margin-left:8px">Về Bài tập ↩️</button>
+      </div>
     </div>`;
   if(win){ sfx.win(); burst(16); }
 }
@@ -8019,9 +8119,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTopicChips();
   renderContact();
   initWordBuild();
-  initFlash();
-  initVan();
-  initSentence();
   renderAuthState();
   initAuth();
   go((location.hash || "#home").slice(1));

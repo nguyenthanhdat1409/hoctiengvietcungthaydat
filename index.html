@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=71">
+<link rel="stylesheet" href="styles.css?v=72">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -126,40 +126,43 @@
       <div class="topicChips" id="topicChips"></div>
     </div>
 
-    <div class="card practiceCard toolCard fsToolCard">
-      <div class="toolCardHead">
-        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">⚡</span></div>
-        <div class="toolTitleWrap">
-          <span class="toolTag">🕵️ Luyện tập · Chính tả tốc độ</span>
-          <h3 class="toolTitle">Cảnh sát tia chớp</h3>
+    <div class="card practiceCard gameCard fsCard">
+      <div class="gameCardHead">
+        <div class="gameCardBadge"><span class="gameCardBadgeRing"></span><span class="gameCardBadgeIc">⚡</span></div>
+        <div class="gameCardTitleWrap">
+          <span class="gameTag">🎮 Trò chơi · Chính tả tốc độ</span>
+          <h3 class="gameCardTitle">Cảnh sát tia chớp</h3>
         </div>
       </div>
-      <p class="toolDesc">Từ này viết <b>ĐÚNG</b> hay <b>SAI</b>? Bấm thật nhanh trong 40 giây nha!</p>
-      <div id="fsGame"></div>
+      <p class="gameCardDesc">Hiện một từ — bấm <b>Đúng</b> hay <b>Sai</b> chính tả thật nhanh trong <b>40 giây</b>! Bấm sai sẽ được gợi ý từ đúng kèm lý do.</p>
+      <div class="gameCardFeats"><span class="gameFeat"><span class="gameFeatIc">⏱️</span> 40 giây</span><span class="gameFeat"><span class="gameFeatIc">🔥</span> Chuỗi combo</span><span class="gameFeat"><span class="gameFeatIc">⚡</span> +1 XP mỗi từ đúng</span></div>
+      <button class="gameCardBtn" onclick="openFlash()">⚡ Vào ca tuần tra! →</button>
     </div>
 
-    <div class="card practiceCard toolCard gvToolCard">
-      <div class="toolCardHead">
-        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">🧩</span></div>
-        <div class="toolTitleWrap">
-          <span class="toolTag">🔤 Luyện tập · Ghép vần</span>
-          <h3 class="toolTitle">Ghép vần thần tốc</h3>
+    <div class="card practiceCard gameCard gvCard">
+      <div class="gameCardHead">
+        <div class="gameCardBadge"><span class="gameCardBadgeRing"></span><span class="gameCardBadgeIc">🧩</span></div>
+        <div class="gameCardTitleWrap">
+          <span class="gameTag">🎮 Trò chơi · Ghép vần</span>
+          <h3 class="gameCardTitle">Ghép vần thần tốc</h3>
         </div>
       </div>
-      <p class="toolDesc">Chọn <b>âm đầu + vần + dấu</b> để ghép thành tiếng đúng theo hình!</p>
-      <div id="gvGame"></div>
+      <p class="gameCardDesc">Nhìn hình, chọn đúng <b>âm đầu + vần + dấu thanh</b> để ghép thành tiếng. Mỗi lượt <b>8 tiếng</b>.</p>
+      <div class="gameCardFeats"><span class="gameFeat"><span class="gameFeatIc">🔤</span> Ghép vần</span><span class="gameFeat"><span class="gameFeatIc">🎵</span> Dấu thanh</span><span class="gameFeat"><span class="gameFeatIc">⚡</span> +1 XP mỗi tiếng</span></div>
+      <button class="gameCardBtn" onclick="openVan()">🧩 Bắt đầu ghép! →</button>
     </div>
 
-    <div class="card practiceCard toolCard scToolCard">
-      <div class="toolCardHead">
-        <div class="toolBadge"><span class="toolBadgeRing"></span><span class="toolBadgeIc">📝</span></div>
-        <div class="toolTitleWrap">
-          <span class="toolTag">✍️ Luyện tập · Ngữ pháp</span>
-          <h3 class="toolTitle">Xếp câu đúng</h3>
+    <div class="card practiceCard gameCard scCard">
+      <div class="gameCardHead">
+        <div class="gameCardBadge"><span class="gameCardBadgeRing"></span><span class="gameCardBadgeIc">📝</span></div>
+        <div class="gameCardTitleWrap">
+          <span class="gameTag">🎮 Trò chơi · Ngữ pháp</span>
+          <h3 class="gameCardTitle">Xếp câu đúng</h3>
         </div>
       </div>
-      <p class="toolDesc">Các từ bị xáo trộn — bấm để xếp lại thành <b>câu có nghĩa</b> nha!</p>
-      <div id="scGame"></div>
+      <p class="gameCardDesc">Các từ bị xáo trộn — bấm để xếp lại thành <b>câu có nghĩa</b>. Mỗi lượt <b>10 câu</b>.</p>
+      <div class="gameCardFeats"><span class="gameFeat"><span class="gameFeatIc">✍️</span> Ngữ pháp</span><span class="gameFeat"><span class="gameFeatIc">🧠</span> Trật tự từ</span><span class="gameFeat"><span class="gameFeatIc">⚡</span> +1 XP mỗi câu</span></div>
+      <button class="gameCardBtn" onclick="openSentence()">📝 Xếp câu thôi! →</button>
     </div>
 
     <div class="card practiceCard gameCard detGameCard">
@@ -313,6 +316,27 @@
   </div>
 </div>
 
+<div id="fsModal" class="modal hidden fsModalPremium" onclick="closeFlash(event)">
+  <div class="modalBox detBox detGlass" onclick="event.stopPropagation()">
+    <button class="modalClose" onclick="closeFlash()" aria-label="Đóng">✕</button>
+    <div id="fsBody"></div>
+  </div>
+</div>
+
+<div id="gvModal" class="modal hidden gvModalPremium" onclick="closeVan(event)">
+  <div class="modalBox detBox detGlass" onclick="event.stopPropagation()">
+    <button class="modalClose" onclick="closeVan()" aria-label="Đóng">✕</button>
+    <div id="gvBody"></div>
+  </div>
+</div>
+
+<div id="scModal" class="modal hidden scModalPremium" onclick="closeSentence(event)">
+  <div class="modalBox detBox detGlass" onclick="event.stopPropagation()">
+    <button class="modalClose" onclick="closeSentence()" aria-label="Đóng">✕</button>
+    <div id="scBody"></div>
+  </div>
+</div>
+
 <!-- ===================== MODAL ĐĂNG NHẬP / ĐĂNG KÝ ===================== -->
 <div id="authModal" class="modal hidden" onclick="closeAuth(event)">
   <div class="authBox" onclick="event.stopPropagation()">
@@ -406,6 +430,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=75"></script>
+<script src="app.js?v=76"></script>
 </body>
 </html>
