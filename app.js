@@ -3286,8 +3286,8 @@ function wbRenderGame(){
     <div class="wbSlots" id="wbSlots">${slotsHtml}</div>
     <div class="wbTiles">${tilesHtml}</div>
     <div class="wbActions">
-      <button class="btn small light" onclick="wbClear()">Xoá hết ↺</button>
-      <button class="btn small light" onclick="wbSkip()">Bỏ qua ⏭</button>
+      <button class="wbBtn" onclick="wbClear()">Xoá hết ↺</button>
+      <button class="wbBtn" onclick="wbSkip()">Bỏ qua ⏭</button>
     </div>`;
 }
 function wbPlace(id){
