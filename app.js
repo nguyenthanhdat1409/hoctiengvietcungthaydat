@@ -7638,20 +7638,29 @@ async function loadCloudProgress(){
   try{ if(progress.voice) localStorage.setItem(VOICE_KEY, JSON.stringify(progress.voice)); }catch(e){}
   try{ renderHome(); }catch(e){}       // cập nhật số ở trang chủ
 }
-let _spTimer = null;
+let _spTimer = null, _spDirty = false;
 function scheduleCloudProgress(){
   const u = getAuthUser();
   if(!u || u.role !== "student") return;
+  _spDirty = true;
   clearTimeout(_spTimer);
   _spTimer = setTimeout(pushCloudProgress, 1500);
 }
 function pushCloudProgress(){
   const c = getSB(); const u = getAuthUser();
   if(!c || !u || u.role !== "student") return;
+  clearTimeout(_spTimer); _spDirty = false;
   try{
-    c.from("student_progress").upsert({ student_id: u.id, data: progress, updated_at: new Date().toISOString() });
+    c.from("student_progress").upsert(
+      { student_id: u.id, data: progress, updated_at: new Date().toISOString() },
+      { onConflict: "student_id" }
+    );
   }catch(e){}
 }
+// Đẩy XP lên cloud NGAY khi rời trang/đổi tab (tránh mất XP chưa kịp sync sau 1.5s)
+function flushCloudProgress(){ if(_spDirty) pushCloudProgress(); }
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "hidden") flushCloudProgress(); });
+window.addEventListener("pagehide", flushCloudProgress);
 
 /* Hiệu ứng "+XP" bay lên như tia chớp ⚡ */
 function xpFly(amount){
