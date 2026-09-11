@@ -3934,68 +3934,1982 @@ function burst(n){
    Bé bấm bắt từ sai; buộc tội oan từ đúng bị trừ 5 giây.
    ========================================================= */
 const DETECTIVE_CASES = [
-  { title:"Vụ án buổi sáng chăm chỉ", time:70, words:[
-    "Mỗi", {b:"xáng",o:"sáng"}, "em", "dậy", {b:"xớm",o:"sớm"}, "rồi", {b:"dửa",o:"rửa"}, "mặt", "cho",
-    {b:"xạch",o:"sạch"}, {b:"xẽ",o:"sẽ"}, "rồi", "đi", "học." ] },
-  { title:"Vụ án chú mèo lười", time:70, words:[
-    "Nhà", "em", {b:"nui",o:"nuôi"}, "một", "chú", "mèo", {b:"nhõ",o:"nhỏ"}, "nó", "rất",
-    {b:"dể",o:"dễ"}, {b:"thươn",o:"thương"}, "và", "hay", {b:"nằn",o:"nằm"}, "ngủ", "trên", "chiếc", "ghế", "mềm." ] },
-  { title:"Vụ án khu vườn mùa xuân", time:70, words:[
-    "Trong", "vườn", "có", "rất", {b:"nhìu",o:"nhiều"}, "loài", {b:"hua",o:"hoa"}, "đẹp", "buổi",
-    {b:"xáng",o:"sáng"}, "ong", {b:"bướn",o:"bướm"}, "bay", "đến", "hút", {b:"mậc",o:"mật"}, "thật", "vui." ] },
-  { title:"Vụ án đường đến trường", time:70, words:[
-    "Sáng", "nay", {b:"chời",o:"trời"}, "nắng", "đẹp", "em", "đi", "bộ", "đến", {b:"chường",o:"trường"},
-    "cùng", "bạn", "trên", {b:"đườn",o:"đường"}, "chúng", "em", "trò", {b:"chuiện",o:"chuyện"}, "thật",
-    {b:"zui",o:"vui"}, "vẻ." ] },
-  { title:"Vụ án bạn Lan gương mẫu", time:70, words:[
-    "Bạn", "Lan", "rất", "chăm", {b:"chĩ",o:"chỉ"}, "luôn", {b:"giử",o:"giữ"}, "gìn", "sách", "vở",
-    {b:"xạch",o:"sạch"}, {b:"xẽ",o:"sẽ"}, "và", "giúp", {b:"đở",o:"đỡ"}, "bạn", "bè." ] },
-  { title:"Vụ án giờ ra chơi", time:70, words:[
-    "Giờ", "ra", {b:"trơi",o:"chơi"}, "các", "bạn", "chạy", {b:"nhãy",o:"nhảy"}, "trên",
-    {b:"xân",o:"sân"}, {b:"chường",o:"trường"}, "thật", {b:"zui",o:"vui"}, "nhộn." ] },
-  { title:"Vụ án khu vườn của bà", time:70, words:[
-    {b:"Mổi",o:"Mỗi"}, "buổi", {b:"chìu",o:"chiều"}, "em", "thường", "ra", "vườn", {b:"tưi",o:"tưới"},
-    "cây", "và", {b:"nhỗ",o:"nhổ"}, "cỏ", {b:"zúp",o:"giúp"}, "bà." ] },
-  { title:"Vụ án chú chim buổi sớm", time:70, words:[
-    "Con", "chim", {b:"nhõ",o:"nhỏ"}, "hót", {b:"lứu",o:"líu"}, "lo", {b:"chên",o:"trên"}, "cành",
-    {b:"câi",o:"cây"}, "vào", "buổi", {b:"xáng",o:"sáng"}, "sớm." ] },
-  { title:"Vụ án lớp học chăm ngoan", time:70, words:[
-    "Bạn", "Nam", "rất", "chăm", {b:"chĩ",o:"chỉ"}, {b:"nêm",o:"nên"}, "luôn", "được", "cô",
-    {b:"záo",o:"giáo"}, {b:"khem",o:"khen"}, {b:"ngơi",o:"ngợi"}, "trước", "cả", "lớp." ] },
-  { title:"Vụ án kỳ nghỉ mùa hè", time:70, words:[
-    "Vào", "mùa", "hè", "em", {b:"đươc",o:"được"}, "bố", "mẹ", "cho", "đi", {b:"tắn",o:"tắm"},
-    {b:"biễn",o:"biển"}, "và", {b:"xâi",o:"xây"}, {b:"lâo",o:"lâu"}, "đài", "cát." ] },
-  { title:"Vụ án chú gà trống", time:70, words:[
-    "Chú", "gà", "trống", "gáy", "thật", "to", {b:"đắnh",o:"đánh"}, {b:"thứt",o:"thức"}, "mọi",
-    {b:"ngừơi",o:"người"}, {b:"dẫy",o:"dậy"}, "đi", {b:"nàm",o:"làm"}, "việc." ] },
-  { title:"Vụ án cuốn truyện tranh", time:70, words:[
-    "Em", "rất", {b:"thít",o:"thích"}, "đọc", {b:"truiện",o:"truyện"}, "tranh", "vì", "có",
-    {b:"nhìu",o:"nhiều"}, "hình", {b:"vẻ",o:"vẽ"}, {b:"đẹt",o:"đẹp"}, "và", "màu", "sắc." ] },
-  { title:"Vụ án lời hay ý đẹp", time:70, words:[
-    "Mẹ", "dạy", "em", {b:"phãi",o:"phải"}, {b:"biếc",o:"biết"}, "nói", "lời", {b:"cãm",o:"cảm"},
-    "ơn", "và", {b:"sin",o:"xin"}, {b:"lổi",o:"lỗi"}, "mọi", "người." ] },
-  { title:"Vụ án bầu trời đêm", time:70, words:[
-    "Trên", "bầu", {b:"chời",o:"trời"}, "đêm", "có", "rất", {b:"nhìu",o:"nhiều"}, "ngôi", "sao",
-    {b:"láp",o:"lấp"}, "lánh", {b:"xáng",o:"sáng"}, {b:"lunh",o:"lung"}, "linh." ] },
-  { title:"Vụ án về quê thăm bà", time:70, words:[
-    {b:"Chũ",o:"Chủ"}, "nhật", "em", {b:"cùnh",o:"cùng"}, {b:"za",o:"gia"}, "đình", "về", "quê",
-    {b:"thăn",o:"thăm"}, "ông", "bà", "nội", {b:"ỡ",o:"ở"}, "vùng", "nông", "thôn." ] },
-  { title:"Vụ án cô bạn tóc dài", time:70, words:[
-    "Bạn", "Hoa", "có", "mái", {b:"tót",o:"tóc"}, "dài", "đen", {b:"nháng",o:"nhánh"}, "và",
-    {b:"nũ",o:"nụ"}, {b:"cừơi",o:"cười"}, "rất", {b:"tưoi",o:"tươi"}, "tắn." ] },
-  { title:"Vụ án cánh đồng lúa chín", time:70, words:[
-    "Sáng", {b:"xớm",o:"sớm"}, "bà", "đã", "ra", "đồng", {b:"gặc",o:"gặt"}, "lúa", {b:"chíng",o:"chín"},
-    "vàng", {b:"trỉu",o:"trĩu"}, "bông", {b:"thơn",o:"thơm"}, "ngát." ] },
-  { title:"Vụ án dòng sông quê", time:70, words:[
-    "Chiếc", {b:"thuiền",o:"thuyền"}, {b:"nhõ",o:"nhỏ"}, {b:"chôi",o:"trôi"}, {b:"nhẽ",o:"nhẹ"}, "trên",
-    {b:"giòng",o:"dòng"}, "sông", "quê", "hương", "yên", "bình." ] },
-  { title:"Vụ án lòng biết ơn", time:70, words:[
-    "Em", "yêu", {b:"quí",o:"quý"}, {b:"thầi",o:"thầy"}, "cô", "và", {b:"nuôn",o:"luôn"}, "cố",
-    {b:"gắnh",o:"gắng"}, "học", {b:"tậb",o:"tập"}, "thật", "chăm", "chỉ." ] },
-  { title:"Vụ án cây phượng sân trường", time:70, words:[
-    "Ngoài", {b:"xân",o:"sân"}, {b:"chường",o:"trường"}, "có", "một", "cây", {b:"phựơng",o:"phượng"},
-    "già", {b:"nỡ",o:"nở"}, {b:"hua",o:"hoa"}, "đỏ", "rực", "mỗi", "khi", "hè", "về." ] },
+  {
+    "title": "Vụ án buổi sáng chăm chỉ",
+    "time": 80,
+    "words": [
+      "Mỗi",
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      "em",
+      "thức",
+      {
+        "b": "dẫy",
+        "o": "dậy"
+      },
+      "thật",
+      {
+        "b": "xớm",
+        "o": "sớm"
+      },
+      "rồi",
+      {
+        "b": "dửa",
+        "o": "rửa"
+      },
+      "mặt",
+      "cho",
+      {
+        "b": "xạch",
+        "o": "sạch"
+      },
+      "trước",
+      "khi",
+      "đến",
+      {
+        "b": "chường",
+        "o": "trường"
+      },
+      "học",
+      "bài",
+      "thật",
+      "chăm",
+      {
+        "b": "chĩ.",
+        "o": "chỉ."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án chú mèo nhỏ",
+    "time": 80,
+    "words": [
+      "Nhà",
+      "em",
+      {
+        "b": "nui",
+        "o": "nuôi"
+      },
+      "một",
+      "chú",
+      "mèo",
+      {
+        "b": "nhõ",
+        "o": "nhỏ"
+      },
+      "rất",
+      {
+        "b": "dể",
+        "o": "dễ"
+      },
+      {
+        "b": "thươn",
+        "o": "thương"
+      },
+      "nó",
+      "hay",
+      {
+        "b": "nằn",
+        "o": "nằm"
+      },
+      {
+        "b": "ngũ",
+        "o": "ngủ"
+      },
+      "trên",
+      "chiếc",
+      "ghế",
+      "rồi",
+      "liếm",
+      "lông",
+      {
+        "b": "xạch",
+        "o": "sạch"
+      },
+      "sẽ."
+    ]
+  },
+  {
+    "title": "Vụ án khu vườn mùa xuân",
+    "time": 80,
+    "words": [
+      "Trong",
+      "vườn",
+      "có",
+      "rất",
+      {
+        "b": "nhìu",
+        "o": "nhiều"
+      },
+      "loài",
+      {
+        "b": "hua",
+        "o": "hoa"
+      },
+      {
+        "b": "tưoi",
+        "o": "tươi"
+      },
+      "đẹp",
+      "buổi",
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      "đàn",
+      "ong",
+      "bay",
+      "đến",
+      "hút",
+      {
+        "b": "mậc",
+        "o": "mật"
+      },
+      {
+        "b": "thơn",
+        "o": "thơm"
+      },
+      "ngọt",
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "nhau."
+    ]
+  },
+  {
+    "title": "Vụ án đường đến trường",
+    "time": 80,
+    "words": [
+      "Sáng",
+      "nay",
+      {
+        "b": "chời",
+        "o": "trời"
+      },
+      "nắng",
+      "đẹp",
+      "em",
+      "đi",
+      "bộ",
+      "đến",
+      {
+        "b": "chường",
+        "o": "trường"
+      },
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "các",
+      "bạn",
+      "trên",
+      {
+        "b": "đườn",
+        "o": "đường"
+      },
+      "trò",
+      {
+        "b": "chuiện",
+        "o": "chuyện"
+      },
+      "rồi",
+      {
+        "b": "cừơi",
+        "o": "cười"
+      },
+      "thật",
+      {
+        "b": "zui",
+        "o": "vui"
+      },
+      "vẻ."
+    ]
+  },
+  {
+    "title": "Vụ án bạn Lan gương mẫu",
+    "time": 80,
+    "words": [
+      "Bạn",
+      "Lan",
+      "rất",
+      "chăm",
+      {
+        "b": "chĩ",
+        "o": "chỉ"
+      },
+      {
+        "b": "nuôn",
+        "o": "luôn"
+      },
+      {
+        "b": "giử",
+        "o": "giữ"
+      },
+      "gìn",
+      "sách",
+      "vở",
+      {
+        "b": "xạch",
+        "o": "sạch"
+      },
+      "sẽ",
+      "lại",
+      {
+        "b": "biếc",
+        "o": "biết"
+      },
+      {
+        "b": "zúp",
+        "o": "giúp"
+      },
+      {
+        "b": "đở",
+        "o": "đỡ"
+      },
+      "bạn",
+      "bè."
+    ]
+  },
+  {
+    "title": "Vụ án giờ ra chơi",
+    "time": 80,
+    "words": [
+      "Giờ",
+      "ra",
+      {
+        "b": "trơi",
+        "o": "chơi"
+      },
+      "các",
+      "bạn",
+      "chạy",
+      {
+        "b": "nhãy",
+        "o": "nhảy"
+      },
+      "trên",
+      {
+        "b": "xân",
+        "o": "sân"
+      },
+      {
+        "b": "chường",
+        "o": "trường"
+      },
+      "thật",
+      {
+        "b": "zui",
+        "o": "vui"
+      },
+      "nhộn",
+      "ai",
+      {
+        "b": "củng",
+        "o": "cũng"
+      },
+      {
+        "b": "cừơi",
+        "o": "cười"
+      },
+      "vang."
+    ]
+  },
+  {
+    "title": "Vụ án khu vườn của bà",
+    "time": 80,
+    "words": [
+      {
+        "b": "Mổi",
+        "o": "Mỗi"
+      },
+      "buổi",
+      {
+        "b": "chìu",
+        "o": "chiều"
+      },
+      "em",
+      "thường",
+      "ra",
+      "vườn",
+      {
+        "b": "tưi",
+        "o": "tưới"
+      },
+      "cây",
+      "và",
+      {
+        "b": "nhỗ",
+        "o": "nhổ"
+      },
+      "cỏ",
+      {
+        "b": "zúp",
+        "o": "giúp"
+      },
+      "bà",
+      "cho",
+      "vườn",
+      "thêm",
+      {
+        "b": "tưoi",
+        "o": "tươi"
+      },
+      {
+        "b": "tốc.",
+        "o": "tốt."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án chú chim buổi sớm",
+    "time": 80,
+    "words": [
+      "Con",
+      "chim",
+      {
+        "b": "nhõ",
+        "o": "nhỏ"
+      },
+      "hót",
+      {
+        "b": "lứu",
+        "o": "líu"
+      },
+      "lo",
+      {
+        "b": "chên",
+        "o": "trên"
+      },
+      "cành",
+      {
+        "b": "câi",
+        "o": "cây"
+      },
+      {
+        "b": "chong",
+        "o": "trong"
+      },
+      "vườn",
+      "vào",
+      "buổi",
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      {
+        "b": "xớm.",
+        "o": "sớm."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án lớp học chăm ngoan",
+    "time": 80,
+    "words": [
+      "Bạn",
+      "Nam",
+      "rất",
+      "chăm",
+      {
+        "b": "chĩ",
+        "o": "chỉ"
+      },
+      {
+        "b": "nêm",
+        "o": "nên"
+      },
+      {
+        "b": "nuôn",
+        "o": "luôn"
+      },
+      "được",
+      "cô",
+      {
+        "b": "záo",
+        "o": "giáo"
+      },
+      {
+        "b": "khem",
+        "o": "khen"
+      },
+      {
+        "b": "ngơi",
+        "o": "ngợi"
+      },
+      "trước",
+      "cả",
+      "lớp",
+      "ai",
+      "cũng",
+      {
+        "b": "quí.",
+        "o": "quý."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án kỳ nghỉ mùa hè",
+    "time": 80,
+    "words": [
+      "Vào",
+      "mùa",
+      "hè",
+      "em",
+      {
+        "b": "đươc",
+        "o": "được"
+      },
+      "bố",
+      "mẹ",
+      "cho",
+      "đi",
+      {
+        "b": "tắn",
+        "o": "tắm"
+      },
+      {
+        "b": "biễn",
+        "o": "biển"
+      },
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "xây",
+      {
+        "b": "lâo",
+        "o": "lâu"
+      },
+      "đài",
+      "cát",
+      "thật",
+      {
+        "b": "thít",
+        "o": "thích"
+      },
+      {
+        "b": "zui.",
+        "o": "vui."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án chú gà trống",
+    "time": 80,
+    "words": [
+      "Chú",
+      "gà",
+      "trống",
+      "gáy",
+      "thật",
+      "to",
+      {
+        "b": "đắnh",
+        "o": "đánh"
+      },
+      {
+        "b": "thứt",
+        "o": "thức"
+      },
+      "mọi",
+      {
+        "b": "ngừơi",
+        "o": "người"
+      },
+      {
+        "b": "dẫy",
+        "o": "dậy"
+      },
+      "đi",
+      {
+        "b": "nàm",
+        "o": "làm"
+      },
+      "việc",
+      "khi",
+      "trời",
+      "vừa",
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      {
+        "b": "xớm.",
+        "o": "sớm."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án cuốn truyện tranh",
+    "time": 80,
+    "words": [
+      "Em",
+      "rất",
+      {
+        "b": "thít",
+        "o": "thích"
+      },
+      "đọc",
+      {
+        "b": "truiện",
+        "o": "truyện"
+      },
+      "tranh",
+      "vì",
+      "có",
+      {
+        "b": "nhìu",
+        "o": "nhiều"
+      },
+      "hình",
+      {
+        "b": "vẻ",
+        "o": "vẽ"
+      },
+      {
+        "b": "đẹt",
+        "o": "đẹp"
+      },
+      "và",
+      "màu",
+      "sắc",
+      {
+        "b": "tưoi",
+        "o": "tươi"
+      },
+      {
+        "b": "xáng.",
+        "o": "sáng."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án lời hay ý đẹp",
+    "time": 80,
+    "words": [
+      "Mẹ",
+      "dạy",
+      "em",
+      {
+        "b": "nuôn",
+        "o": "luôn"
+      },
+      {
+        "b": "phãi",
+        "o": "phải"
+      },
+      {
+        "b": "biếc",
+        "o": "biết"
+      },
+      "nói",
+      "lời",
+      {
+        "b": "cãm",
+        "o": "cảm"
+      },
+      "ơn",
+      "và",
+      {
+        "b": "sin",
+        "o": "xin"
+      },
+      {
+        "b": "lổi",
+        "o": "lỗi"
+      },
+      "với",
+      "mọi",
+      {
+        "b": "ngừơi.",
+        "o": "người."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án bầu trời đêm",
+    "time": 80,
+    "words": [
+      "Trên",
+      "bầu",
+      {
+        "b": "chời",
+        "o": "trời"
+      },
+      "đêm",
+      {
+        "b": "nhìu",
+        "o": "nhiều"
+      },
+      "ngôi",
+      "sao",
+      {
+        "b": "nhõ",
+        "o": "nhỏ"
+      },
+      "lấp",
+      "lánh",
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      {
+        "b": "lunh",
+        "o": "lung"
+      },
+      "linh",
+      {
+        "b": "giửa",
+        "o": "giữa"
+      },
+      "màn",
+      "đêm",
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "ánh",
+      "trăng."
+    ]
+  },
+  {
+    "title": "Vụ án về quê thăm bà",
+    "time": 80,
+    "words": [
+      {
+        "b": "Chũ",
+        "o": "Chủ"
+      },
+      "nhật",
+      "em",
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      {
+        "b": "za",
+        "o": "gia"
+      },
+      "đình",
+      "về",
+      "quê",
+      {
+        "b": "thăn",
+        "o": "thăm"
+      },
+      "ông",
+      "bà",
+      "nội",
+      "rồi",
+      {
+        "b": "zúp",
+        "o": "giúp"
+      },
+      "bà",
+      {
+        "b": "nhỗ",
+        "o": "nhổ"
+      },
+      "cỏ",
+      {
+        "b": "ỡ",
+        "o": "ở"
+      },
+      "vườn."
+    ]
+  },
+  {
+    "title": "Vụ án cô bạn tóc dài",
+    "time": 80,
+    "words": [
+      "Bạn",
+      "Hoa",
+      "có",
+      "mái",
+      {
+        "b": "tót",
+        "o": "tóc"
+      },
+      "dài",
+      "đen",
+      {
+        "b": "nháng",
+        "o": "nhánh"
+      },
+      {
+        "b": "nũ",
+        "o": "nụ"
+      },
+      {
+        "b": "cừơi",
+        "o": "cười"
+      },
+      "rất",
+      {
+        "b": "tưoi",
+        "o": "tươi"
+      },
+      "tắn",
+      "ai",
+      "gặp",
+      {
+        "b": "củng",
+        "o": "cũng"
+      },
+      {
+        "b": "quí.",
+        "o": "quý."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án cánh đồng lúa chín",
+    "time": 80,
+    "words": [
+      {
+        "b": "Xáng",
+        "o": "Sáng"
+      },
+      {
+        "b": "xớm",
+        "o": "sớm"
+      },
+      "bà",
+      "đã",
+      "ra",
+      "đồng",
+      {
+        "b": "gặc",
+        "o": "gặt"
+      },
+      "lúa",
+      {
+        "b": "chíng",
+        "o": "chín"
+      },
+      {
+        "b": "vàn",
+        "o": "vàng"
+      },
+      {
+        "b": "trỉu",
+        "o": "trĩu"
+      },
+      "bông",
+      {
+        "b": "thơn",
+        "o": "thơm"
+      },
+      "ngát."
+    ]
+  },
+  {
+    "title": "Vụ án dòng sông quê",
+    "time": 80,
+    "words": [
+      "Chiếc",
+      {
+        "b": "thuiền",
+        "o": "thuyền"
+      },
+      {
+        "b": "nhõ",
+        "o": "nhỏ"
+      },
+      {
+        "b": "chôi",
+        "o": "trôi"
+      },
+      {
+        "b": "nhẽ",
+        "o": "nhẹ"
+      },
+      {
+        "b": "chên",
+        "o": "trên"
+      },
+      {
+        "b": "giòng",
+        "o": "dòng"
+      },
+      "sông",
+      "quê",
+      "hương",
+      "yên",
+      "bình",
+      "dưới",
+      "nắng",
+      {
+        "b": "chìu.",
+        "o": "chiều."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án lòng biết ơn",
+    "time": 80,
+    "words": [
+      "Em",
+      {
+        "b": "biếc",
+        "o": "biết"
+      },
+      "yêu",
+      {
+        "b": "quí",
+        "o": "quý"
+      },
+      {
+        "b": "thầi",
+        "o": "thầy"
+      },
+      "cô",
+      {
+        "b": "nuôn",
+        "o": "luôn"
+      },
+      "cố",
+      {
+        "b": "gắnh",
+        "o": "gắng"
+      },
+      "học",
+      "tập",
+      "chăm",
+      {
+        "b": "chĩ",
+        "o": "chỉ"
+      },
+      "để",
+      "học",
+      {
+        "b": "giõi.",
+        "o": "giỏi."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án cây phượng sân trường",
+    "time": 80,
+    "words": [
+      "Ngoài",
+      {
+        "b": "xân",
+        "o": "sân"
+      },
+      {
+        "b": "chường",
+        "o": "trường"
+      },
+      "có",
+      "một",
+      {
+        "b": "câi",
+        "o": "cây"
+      },
+      {
+        "b": "phựơng",
+        "o": "phượng"
+      },
+      "già",
+      {
+        "b": "nỡ",
+        "o": "nở"
+      },
+      {
+        "b": "hua",
+        "o": "hoa"
+      },
+      "đỏ",
+      "rực",
+      {
+        "b": "mổi",
+        "o": "mỗi"
+      },
+      "khi",
+      "hè",
+      "về."
+    ]
+  },
+  {
+    "title": "Vụ án ngày khai trường",
+    "time": 80,
+    "words": [
+      "Hôm",
+      "nay",
+      "là",
+      "ngày",
+      "khai",
+      {
+        "b": "chường",
+        "o": "trường"
+      },
+      "em",
+      {
+        "b": "dẫy",
+        "o": "dậy"
+      },
+      "thật",
+      {
+        "b": "xớm",
+        "o": "sớm"
+      },
+      "mặc",
+      "áo",
+      {
+        "b": "chắng",
+        "o": "trắng"
+      },
+      "tinh",
+      "rồi",
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "mẹ",
+      "đến",
+      "lớp",
+      "gặp",
+      {
+        "b": "thầi",
+        "o": "thầy"
+      },
+      "cô",
+      "thật",
+      {
+        "b": "zui.",
+        "o": "vui."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án giúp mẹ việc nhà",
+    "time": 80,
+    "words": [
+      "Sau",
+      "giờ",
+      "học",
+      "em",
+      {
+        "b": "biếc",
+        "o": "biết"
+      },
+      {
+        "b": "zúp",
+        "o": "giúp"
+      },
+      "mẹ",
+      "quét",
+      "nhà",
+      {
+        "b": "dửa",
+        "o": "rửa"
+      },
+      "bát",
+      {
+        "b": "tưi",
+        "o": "tưới"
+      },
+      "cây",
+      "cho",
+      "nhà",
+      {
+        "b": "cữa",
+        "o": "cửa"
+      },
+      {
+        "b": "nuôn",
+        "o": "luôn"
+      },
+      {
+        "b": "xạch",
+        "o": "sạch"
+      },
+      "sẽ."
+    ]
+  },
+  {
+    "title": "Vụ án chú trâu cần mẫn",
+    "time": 80,
+    "words": [
+      "Chú",
+      {
+        "b": "châu",
+        "o": "trâu"
+      },
+      "đen",
+      "chăm",
+      {
+        "b": "chĩ",
+        "o": "chỉ"
+      },
+      "kéo",
+      "cày",
+      "từ",
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      {
+        "b": "xớm",
+        "o": "sớm"
+      },
+      {
+        "b": "chên",
+        "o": "trên"
+      },
+      "cánh",
+      "đồng",
+      {
+        "b": "zúp",
+        "o": "giúp"
+      },
+      "bác",
+      "nông",
+      "dân",
+      "được",
+      "mùa",
+      {
+        "b": "màn",
+        "o": "màng"
+      },
+      "bội",
+      "thu."
+    ]
+  },
+  {
+    "title": "Vụ án buổi tối gia đình",
+    "time": 80,
+    "words": [
+      "Buổi",
+      "tối",
+      "cả",
+      {
+        "b": "za",
+        "o": "gia"
+      },
+      "đình",
+      "ngồi",
+      {
+        "b": "giửa",
+        "o": "giữa"
+      },
+      "nhà",
+      "mẹ",
+      "kể",
+      {
+        "b": "chuiện",
+        "o": "chuyện"
+      },
+      "cổ",
+      "tích",
+      "em",
+      {
+        "b": "củng",
+        "o": "cũng"
+      },
+      "lắng",
+      "nghe",
+      "rồi",
+      {
+        "b": "cừơi",
+        "o": "cười"
+      },
+      "thật",
+      {
+        "b": "zui",
+        "o": "vui"
+      },
+      "vẻ",
+      "và",
+      {
+        "b": "biếc",
+        "o": "biết"
+      },
+      "ơn."
+    ]
+  },
+  {
+    "title": "Vụ án con đường làng",
+    "time": 80,
+    "words": [
+      "Con",
+      {
+        "b": "đườn",
+        "o": "đường"
+      },
+      "làng",
+      "quanh",
+      "co",
+      "dẫn",
+      "về",
+      "nhà",
+      "hai",
+      "bên",
+      {
+        "b": "chồng",
+        "o": "trồng"
+      },
+      {
+        "b": "nhìu",
+        "o": "nhiều"
+      },
+      "cây",
+      "xanh",
+      "mát",
+      "buổi",
+      {
+        "b": "chìu",
+        "o": "chiều"
+      },
+      "em",
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "bạn",
+      "đạp",
+      "xe",
+      "rong",
+      {
+        "b": "trơi",
+        "o": "chơi"
+      },
+      "thật",
+      {
+        "b": "zui.",
+        "o": "vui."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án vườn rau của mẹ",
+    "time": 80,
+    "words": [
+      "Mẹ",
+      {
+        "b": "chồng",
+        "o": "trồng"
+      },
+      "vườn",
+      "rau",
+      "xanh",
+      {
+        "b": "tốc",
+        "o": "tốt"
+      },
+      {
+        "b": "mổi",
+        "o": "mỗi"
+      },
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      "em",
+      {
+        "b": "zúp",
+        "o": "giúp"
+      },
+      "mẹ",
+      {
+        "b": "tưi",
+        "o": "tưới"
+      },
+      "nước",
+      "cho",
+      "rau",
+      "thêm",
+      {
+        "b": "tưoi",
+        "o": "tươi"
+      },
+      "non."
+    ]
+  },
+  {
+    "title": "Vụ án chiếc khăn của bà",
+    "time": 80,
+    "words": [
+      "Đôi",
+      "bàn",
+      "tay",
+      "khéo",
+      "léo",
+      "của",
+      "bà",
+      "đan",
+      "nên",
+      "chiếc",
+      "khăn",
+      "len",
+      {
+        "b": "đẹt",
+        "o": "đẹp"
+      },
+      "và",
+      "ấm",
+      {
+        "b": "zúp",
+        "o": "giúp"
+      },
+      "em",
+      "khỏi",
+      "lạnh",
+      {
+        "b": "mổi",
+        "o": "mỗi"
+      },
+      "khi",
+      {
+        "b": "chời",
+        "o": "trời"
+      },
+      "đông",
+      {
+        "b": "san",
+        "o": "sang"
+      },
+      "em",
+      {
+        "b": "biếc",
+        "o": "biết"
+      },
+      "ơn",
+      "bà",
+      {
+        "b": "nhìu.",
+        "o": "nhiều."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án trận mưa rào",
+    "time": 80,
+    "words": [
+      "Buổi",
+      {
+        "b": "chìu",
+        "o": "chiều"
+      },
+      {
+        "b": "chời",
+        "o": "trời"
+      },
+      "bỗng",
+      "đổ",
+      "trận",
+      "mưa",
+      "rào",
+      "to",
+      "cây",
+      "cối",
+      "được",
+      "tắm",
+      {
+        "b": "xạch",
+        "o": "sạch"
+      },
+      "không",
+      "khí",
+      "trở",
+      "nên",
+      {
+        "b": "chong",
+        "o": "trong"
+      },
+      "lành",
+      "mát",
+      {
+        "b": "mẽ",
+        "o": "mẻ"
+      },
+      "em",
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "bạn",
+      "ngắm",
+      "mưa",
+      {
+        "b": "zui.",
+        "o": "vui."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án chú cún trung thành",
+    "time": 80,
+    "words": [
+      "Nhà",
+      "em",
+      "có",
+      "một",
+      "chú",
+      "cún",
+      {
+        "b": "nhõ",
+        "o": "nhỏ"
+      },
+      "rất",
+      "trung",
+      "thành",
+      {
+        "b": "mổi",
+        "o": "mỗi"
+      },
+      "khi",
+      "em",
+      "đi",
+      "học",
+      "về",
+      "nó",
+      "chạy",
+      "ra",
+      "vẫy",
+      "đuôi",
+      "mừng",
+      {
+        "b": "rở",
+        "o": "rỡ"
+      },
+      "thật",
+      {
+        "b": "zui",
+        "o": "vui"
+      },
+      "rồi",
+      "quấn",
+      {
+        "b": "quít",
+        "o": "quýt"
+      },
+      {
+        "b": "dể",
+        "o": "dễ"
+      },
+      {
+        "b": "thươn.",
+        "o": "thương."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án sách là người bạn",
+    "time": 80,
+    "words": [
+      "Sách",
+      "là",
+      "người",
+      "bạn",
+      {
+        "b": "quí",
+        "o": "quý"
+      },
+      "của",
+      "em",
+      {
+        "b": "mổi",
+        "o": "mỗi"
+      },
+      "ngày",
+      "em",
+      "đọc",
+      "sách",
+      "để",
+      {
+        "b": "hỉu",
+        "o": "hiểu"
+      },
+      {
+        "b": "biếc",
+        "o": "biết"
+      },
+      {
+        "b": "nhìu",
+        "o": "nhiều"
+      },
+      "điều",
+      "hay",
+      "sách",
+      "còn",
+      {
+        "b": "zúp",
+        "o": "giúp"
+      },
+      "em",
+      "học",
+      {
+        "b": "giõi",
+        "o": "giỏi"
+      },
+      "hơn."
+    ]
+  },
+  {
+    "title": "Vụ án đêm trung thu",
+    "time": 80,
+    "words": [
+      "Đêm",
+      "trung",
+      "thu",
+      "trăng",
+      "tròn",
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      "tỏ",
+      "chúng",
+      "em",
+      "rước",
+      "đèn",
+      "ông",
+      "sao",
+      {
+        "b": "nhõ",
+        "o": "nhỏ"
+      },
+      "đi",
+      "quanh",
+      "xóm",
+      "vừa",
+      "đi",
+      "vừa",
+      {
+        "b": "hác",
+        "o": "hát"
+      },
+      "thật",
+      {
+        "b": "zui",
+        "o": "vui"
+      },
+      "rồi",
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "nhau",
+      "phá",
+      "cỗ",
+      {
+        "b": "giửa",
+        "o": "giữa"
+      },
+      "sân",
+      "trông",
+      {
+        "b": "đẹt.",
+        "o": "đẹp."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án ngày Tết quê em",
+    "time": 80,
+    "words": [
+      "Ngày",
+      "Tết",
+      "quê",
+      "em",
+      "thật",
+      {
+        "b": "zui",
+        "o": "vui"
+      },
+      "nhà",
+      "cửa",
+      {
+        "b": "xạch",
+        "o": "sạch"
+      },
+      "sẽ",
+      "cây",
+      "mai",
+      {
+        "b": "vàn",
+        "o": "vàng"
+      },
+      "rực",
+      {
+        "b": "rở",
+        "o": "rỡ"
+      },
+      "trẻ",
+      "con",
+      "mặc",
+      "áo",
+      "mới",
+      "nhận",
+      "lì",
+      "xì",
+      "ai",
+      {
+        "b": "củng",
+        "o": "cũng"
+      },
+      {
+        "b": "cừơi",
+        "o": "cười"
+      },
+      "thật",
+      {
+        "b": "tưoi.",
+        "o": "tươi."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án bác đưa thư",
+    "time": 80,
+    "words": [
+      {
+        "b": "Mổi",
+        "o": "Mỗi"
+      },
+      "buổi",
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      "bác",
+      "đưa",
+      "thư",
+      "đạp",
+      "xe",
+      "đi",
+      "khắp",
+      "phố",
+      {
+        "b": "phườn",
+        "o": "phường"
+      },
+      "mang",
+      "những",
+      "lá",
+      "thư",
+      "đến",
+      "tận",
+      "nhà",
+      "cho",
+      "mọi",
+      {
+        "b": "ngừơi",
+        "o": "người"
+      },
+      "thật",
+      {
+        "b": "zui",
+        "o": "vui"
+      },
+      "vẻ",
+      "ai",
+      {
+        "b": "củng",
+        "o": "cũng"
+      },
+      {
+        "b": "quí",
+        "o": "quý"
+      },
+      "mến."
+    ]
+  },
+  {
+    "title": "Vụ án vườn cây ăn quả",
+    "time": 80,
+    "words": [
+      "Sau",
+      "nhà",
+      "em",
+      "có",
+      "vườn",
+      {
+        "b": "câi",
+        "o": "cây"
+      },
+      "ăn",
+      {
+        "b": "quã",
+        "o": "quả"
+      },
+      "nào",
+      "là",
+      "ổi",
+      "na",
+      "xoài",
+      "nhãn",
+      "những",
+      {
+        "b": "chái",
+        "o": "trái"
+      },
+      {
+        "b": "chíng",
+        "o": "chín"
+      },
+      {
+        "b": "thơn",
+        "o": "thơm"
+      },
+      "ngọt",
+      {
+        "b": "trỉu",
+        "o": "trĩu"
+      },
+      "trên",
+      "cành",
+      "trông",
+      "thật",
+      {
+        "b": "thít",
+        "o": "thích"
+      },
+      "mắt."
+    ]
+  },
+  {
+    "title": "Vụ án chiếc cầu vồng",
+    "time": 80,
+    "words": [
+      "Sau",
+      "cơn",
+      "mưa",
+      "rào",
+      {
+        "b": "chên",
+        "o": "trên"
+      },
+      "bầu",
+      {
+        "b": "chời",
+        "o": "trời"
+      },
+      "hiện",
+      "ra",
+      "chiếc",
+      "cầu",
+      "vồng",
+      "bảy",
+      "sắc",
+      "rực",
+      {
+        "b": "rở",
+        "o": "rỡ"
+      },
+      "thật",
+      {
+        "b": "đẹt",
+        "o": "đẹp"
+      },
+      "chúng",
+      "em",
+      "reo",
+      "hò",
+      {
+        "b": "zui",
+        "o": "vui"
+      },
+      "sướng",
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "nhau",
+      "ngắm",
+      {
+        "b": "mải",
+        "o": "mãi"
+      },
+      "không",
+      "chán."
+    ]
+  },
+  {
+    "title": "Vụ án giờ học vẽ",
+    "time": 80,
+    "words": [
+      "Trong",
+      "giờ",
+      "học",
+      {
+        "b": "vẻ",
+        "o": "vẽ"
+      },
+      "cô",
+      {
+        "b": "záo",
+        "o": "giáo"
+      },
+      "dạy",
+      "em",
+      {
+        "b": "biếc",
+        "o": "biết"
+      },
+      "vẽ",
+      "tranh",
+      "phong",
+      "cảnh",
+      "quê",
+      "hương",
+      "ngôi",
+      "nhà",
+      {
+        "b": "nhõ",
+        "o": "nhỏ"
+      },
+      "bên",
+      {
+        "b": "giòng",
+        "o": "dòng"
+      },
+      "sông",
+      "cánh",
+      "đồng",
+      "lúa",
+      {
+        "b": "vàn",
+        "o": "vàng"
+      },
+      "thật",
+      {
+        "b": "đẹt.",
+        "o": "đẹp."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án buổi cắm trại",
+    "time": 80,
+    "words": [
+      "Cuối",
+      "tuần",
+      "lớp",
+      "em",
+      "đi",
+      "cắm",
+      "trại",
+      {
+        "b": "ỡ",
+        "o": "ở"
+      },
+      "công",
+      "viên",
+      "chúng",
+      "em",
+      {
+        "b": "cùnh",
+        "o": "cùng"
+      },
+      "dựng",
+      "lều",
+      {
+        "b": "trơi",
+        "o": "chơi"
+      },
+      "trò",
+      "chơi",
+      "và",
+      {
+        "b": "hác",
+        "o": "hát"
+      },
+      "ca",
+      {
+        "b": "zui",
+        "o": "vui"
+      },
+      "vẻ",
+      "ai",
+      {
+        "b": "củng",
+        "o": "cũng"
+      },
+      "nhớ",
+      {
+        "b": "mải",
+        "o": "mãi"
+      },
+      "buổi",
+      "đi",
+      "chơi",
+      "này."
+    ]
+  },
+  {
+    "title": "Vụ án đôi mắt sáng",
+    "time": 80,
+    "words": [
+      "Đôi",
+      "mắt",
+      {
+        "b": "xáng",
+        "o": "sáng"
+      },
+      "và",
+      "trong",
+      "veo",
+      "của",
+      "em",
+      "bé",
+      "thật",
+      "đáng",
+      "yêu",
+      {
+        "b": "mổi",
+        "o": "mỗi"
+      },
+      "khi",
+      {
+        "b": "cừơi",
+        "o": "cười"
+      },
+      "đôi",
+      "má",
+      "lúm",
+      "đồng",
+      "tiền",
+      "trông",
+      "thật",
+      {
+        "b": "dể",
+        "o": "dễ"
+      },
+      {
+        "b": "thươn",
+        "o": "thương"
+      },
+      "ai",
+      "nhìn",
+      {
+        "b": "củng",
+        "o": "cũng"
+      },
+      "yêu",
+      {
+        "b": "quí.",
+        "o": "quý."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án cơn gió mùa thu",
+    "time": 80,
+    "words": [
+      "Những",
+      "cơn",
+      "gió",
+      "mùa",
+      "thu",
+      {
+        "b": "nhẽ",
+        "o": "nhẹ"
+      },
+      "nhàng",
+      "thổi",
+      "qua",
+      "làm",
+      "lá",
+      {
+        "b": "vàn",
+        "o": "vàng"
+      },
+      "rơi",
+      "đầy",
+      {
+        "b": "xân",
+        "o": "sân"
+      },
+      {
+        "b": "chường",
+        "o": "trường"
+      },
+      "chúng",
+      "em",
+      "nhặt",
+      "lá",
+      "ép",
+      "vào",
+      "vở",
+      {
+        "b": "giử",
+        "o": "giữ"
+      },
+      "làm",
+      "kỷ",
+      "niệm",
+      "thật",
+      {
+        "b": "đẹt",
+        "o": "đẹp"
+      },
+      "và",
+      {
+        "b": "zui.",
+        "o": "vui."
+      }
+    ]
+  },
+  {
+    "title": "Vụ án lời hứa nhỏ",
+    "time": 80,
+    "words": [
+      "Em",
+      "hứa",
+      "với",
+      "mẹ",
+      {
+        "b": "sẻ",
+        "o": "sẽ"
+      },
+      {
+        "b": "nuôn",
+        "o": "luôn"
+      },
+      "chăm",
+      {
+        "b": "chĩ",
+        "o": "chỉ"
+      },
+      "học",
+      "hành",
+      {
+        "b": "biếc",
+        "o": "biết"
+      },
+      "vâng",
+      "lời",
+      "và",
+      {
+        "b": "zúp",
+        "o": "giúp"
+      },
+      {
+        "b": "đở",
+        "o": "đỡ"
+      },
+      "mọi",
+      "người",
+      "để",
+      "trở",
+      "thành",
+      "con",
+      "ngoan",
+      "trò",
+      {
+        "b": "giõi.",
+        "o": "giỏi."
+      }
+    ]
+  }
 ];
+
 const DET_ROUNDS = 5;   // mỗi lượt chơi gồm 5 màn (5 vụ án ngẫu nhiên)
 let tnState = null;
 
