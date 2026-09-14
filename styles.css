@@ -1059,13 +1059,13 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 /* Ô phần thưởng: chuỗi combo */
 .detReward.streak b{color:#EA580C}
 /* Thẻ poster ở trang Bài tập */
-.fsCard{background:linear-gradient(140deg,#92400E 0%,#F59E0B 55%,#FCD34D 100%); box-shadow:0 12px 0 rgba(120,53,15,.32), 0 22px 55px rgba(245,158,11,.4)}
+.fsGameCard{background:linear-gradient(140deg,#92400E 0%,#F59E0B 55%,#FCD34D 100%); box-shadow:0 12px 0 rgba(120,53,15,.32), 0 22px 55px rgba(245,158,11,.4); text-align:left}
 .gvCard{background:linear-gradient(140deg,#4C1D95 0%,#7C3AED 55%,#A78BFA 100%); box-shadow:0 12px 0 rgba(76,29,149,.32), 0 22px 55px rgba(124,58,237,.4)}
 .scCard{background:linear-gradient(140deg,#831843 0%,#DB2777 55%,#F472B6 100%); box-shadow:0 12px 0 rgba(131,24,67,.32), 0 22px 55px rgba(219,39,119,.4)}
-.fsCard .gameCardBadge{background:linear-gradient(145deg,#FCD34D,#D97706)}
+.fsGameCard .gameCardBadge{background:linear-gradient(145deg,#FCD34D,#D97706)}
 .gvCard .gameCardBadge{background:linear-gradient(145deg,#C4B5FD,#7C3AED)}
 .scCard .gameCardBadge{background:linear-gradient(145deg,#F9A8D4,#DB2777)}
-.fsCard .gameCardBtn{color:#78350F; background:linear-gradient(135deg,#FEF3C7,#FCD34D)}
+.fsGameCard .gameCardBtn{color:#78350F; background:linear-gradient(135deg,#FEF3C7,#FCD34D)}
 .gvCard .gameCardBtn{color:#4C1D95; background:linear-gradient(135deg,#EDE9FE,#C4B5FD)}
 .scCard .gameCardBtn{color:#831843; background:linear-gradient(135deg,#FCE7F3,#F9A8D4)}
 /* Panel gợi ý khi bấm SAI ở Tia chớp */
