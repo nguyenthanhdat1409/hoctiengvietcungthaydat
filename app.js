@@ -3371,6 +3371,53 @@ function getSpellPairs(){
   }));
   _spellPairs = out; return out;
 }
+// Cụm 2 từ có ngữ cảnh — mỗi cụm chỉ sai đúng 1 từ (dễ phân biệt đúng/sai hơn từ đơn)
+const FS_PHRASES = [
+  {ok:"quả sung",    bad:"quả xung"},
+  {ok:"con sóc",     bad:"con xóc"},
+  {ok:"chim sẻ",     bad:"chim xẻ"},
+  {ok:"xe đạp",      bad:"se đạp"},
+  {ok:"cây tre",     bad:"cây che"},
+  {ok:"con trâu",    bad:"con châu"},
+  {ok:"quả chanh",   bad:"quả tranh"},
+  {ok:"trò chơi",    bad:"chò chơi"},
+  {ok:"cá rô",       bad:"cá dô"},
+  {ok:"dòng sông",   bad:"ròng sông"},
+  {ok:"giỏ cá",      bad:"dỏ cá"},
+  {ok:"da trắng",    bad:"ra trắng"},
+  {ok:"nấu cơm",     bad:"lấu cơm"},
+  {ok:"làm bài",     bad:"nàm bài"},
+  {ok:"lúa chín",    bad:"núa chín"},
+  {ok:"nói cười",    bad:"lói cười"},
+  {ok:"nghỉ hè",     bad:"ngỉ hè"},
+  {ok:"củ nghệ",     bad:"củ ngệ"},
+  {ok:"con nghé",    bad:"con ngé"},
+  {ok:"bàn ghế",     bad:"bàn gế"},
+  {ok:"ghi bài",     bad:"gi bài"},
+  {ok:"con ghẹ",     bad:"con gẹ"},
+  {ok:"con vịt",     bad:"con vịc"},
+  {ok:"bút chì",     bad:"búc chì"},
+  {ok:"con chuột",   bad:"con chuộc"},
+  {ok:"rửa mặt",     bad:"rửa mặc"},
+  {ok:"vầng trăng",  bad:"vần trăng"},
+  {ok:"bàn chân",    bad:"bàn châng"},
+  {ok:"hoa sen",     bad:"hoa seng"},
+  {ok:"con kiến",    bad:"con kiếng"},
+  {ok:"suy nghĩ",    bad:"suy nghỉ"},
+  {ok:"dễ thương",   bad:"dể thương"},
+  {ok:"sạch sẽ",     bad:"sạch sẻ"},
+  {ok:"vui vẻ",      bad:"vui vẽ"},
+  {ok:"mạnh mẽ",     bad:"mạnh mẻ"},
+  {ok:"nghỉ ngơi",   bad:"nghĩ ngơi"},
+];
+// Tìm đúng từ khác nhau giữa cụm đúng và cụm sai (để gợi ý trúng chỗ)
+function fsDiffWord(ok, bad){
+  const a = (ok||"").split(/\s+/), b = (bad||"").split(/\s+/);
+  if(a.length === b.length){
+    for(let i = 0; i < a.length; i++){ if(a[i] !== b[i]) return [a[i], b[i]]; }
+  }
+  return [ok, bad];
+}
 let fsSt = null;
 function openFlash(){
   document.getElementById("fsModal").classList.remove("hidden");
@@ -3390,7 +3437,7 @@ function fsStart(){
   fsSt.timer = setInterval(fsTick, 1000);
 }
 function fsNext(){
-  const p = rand(getSpellPairs());
+  const p = rand(FS_PHRASES);
   const showCorrect = Math.random() < 0.5;
   fsSt.cur = { word: showCorrect ? p.ok : p.bad, isCorrect: showCorrect, ok:p.ok, bad:p.bad };
   fsSt.paused = false;
@@ -3417,7 +3464,7 @@ function fsHead(){
 function fsRender(){
   const s = fsSt;
   document.getElementById("fsBody").innerHTML = fsHead() + `
-    <p class="detHint">Từ này viết <b>đúng</b> hay <b>sai</b> chính tả? Bấm thật nhanh!</p>
+    <p class="detHint">Cụm từ này viết <b>đúng</b> hay <b>sai</b> chính tả? Bấm thật nhanh!</p>
     <div class="fsWordBox"><span class="fsWord" id="fsWord">${s.cur.word}</span></div>
     <div class="fsBtns">
       <button class="fsBtn ok" onclick="fsAnswer(true)">✅ Đúng</button>
@@ -3441,12 +3488,13 @@ function fsFeedback(){
   clearInterval(s.timer);            // dừng đồng hồ khi đang xem gợi ý
   let panel;
   if(c.isCorrect){
-    panel = `<div class="fsFbWord">Từ “<b>${c.word}</b>” viết <b>ĐÚNG</b> chính tả rồi! 👍</div>
+    panel = `<div class="fsFbWord">Cụm từ “<b>${c.word}</b>” viết <b>ĐÚNG</b> chính tả rồi! 👍</div>
       <div class="fsFbReason">💡 Lần sau cứ tự tin bấm <b>✅ Đúng</b> nha.</div>`;
   } else {
+    const [wo, wb] = fsDiffWord(c.ok, c.bad);
     panel = `<div class="fsFbWord">Đúng phải là “<b>${c.ok}</b>”</div>
       <div class="fsFbWrong">✗ Không viết là “<s>${c.bad}</s>”</div>
-      <div class="fsFbReason">💡 ${spellReason(c.ok, c.bad)}. Ví dụ: <i>${c.ok}</i>.</div>`;
+      <div class="fsFbReason">💡 Sai ở chữ “<b>${wb}</b>” → đúng là “<b>${wo}</b>”: ${spellReason(wo, wb)}.</div>`;
   }
   document.getElementById("fsBody").innerHTML = fsHead() + `
     <div class="fsFeedback">
