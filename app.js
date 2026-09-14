@@ -1945,7 +1945,7 @@ const LESSONS = [
           <div class="letterExample"><span class="vi">An</span><span class="en">name An</span></div>
           <div class="letterExample"><span class="vi">bạn An</span><span class="en">friend An</span></div>
           <div class="letterExample"><span class="vi">cả nhà</span><span class="en">whole family</span></div>
-          <div class="letterExample"><span class="vi">an tâm</span><span class="en">at ease</span></div>
+          <div class="letterExample"><span class="vi">An Khang</span><span class="en">well-being</span></div>
           <div class="letterExample"><span class="vi">bình an</span><span class="en">peaceful</span></div>
         </div>
       </div>
@@ -1959,7 +1959,6 @@ const LESSONS = [
           <div class="letterExample"><span class="vi">mắt</span><span class="en">eyes</span></div>
           <div class="letterExample"><span class="vi">trắng</span><span class="en">white</span></div>
           <div class="letterExample"><span class="vi">cắt</span><span class="en">cut</span></div>
-          <div class="letterExample"><span class="vi">mất</span><span class="en">lose</span></div>
           <div class="letterExample"><span class="vi">bát</span><span class="en">bowl</span></div>
           <div class="letterExample"><span class="vi">ăn cơm</span><span class="en">eat rice</span></div>
           <div class="letterExample"><span class="vi">chăm ngoan</span><span class="en">good child</span></div>
@@ -1979,6 +1978,7 @@ const LESSONS = [
           <div class="letterExample"><span class="vi">cấp</span><span class="en">supply</span></div>
           <div class="letterExample"><span class="vi">mận</span><span class="en">plum</span></div>
           <div class="letterExample"><span class="vi">tân</span><span class="en">new</span></div>
+          <div class="letterExample"><span class="vi">mất</span><span class="en">lose</span></div>
           <div class="letterExample"><span class="vi">ấm áp</span><span class="en">warm</span></div>
           <div class="letterExample"><span class="vi">sân trường</span><span class="en">schoolyard</span></div>
           <div class="letterExample"><span class="vi">cẩn thận</span><span class="en">careful</span></div>
@@ -3384,7 +3384,7 @@ function closeFlash(e){
   document.body.style.overflow = "";
 }
 function fsStart(){
-  fsSt = { time:40, score:0, streak:0, timer:null, done:false, cur:null };
+  fsSt = { time:40, score:0, streak:0, miss:0, timer:null, done:false, cur:null };
   fsNext();
   clearInterval(fsSt.timer);
   fsSt.timer = setInterval(fsTick, 1000);
@@ -3408,6 +3408,7 @@ function fsHead(){
     <div class="detRewardRow">
       <div class="detReward xp"><span class="detRewardIc">⚡</span><b>${s.score}</b><span class="detRewardLbl">Bắt đúng</span></div>
       <div class="detReward streak"><span class="detRewardIc">🔥</span><b>${s.streak}</b><span class="detRewardLbl">Chuỗi</span></div>
+      <div class="detReward bad"><span class="detRewardIc">🚨</span><b>${s.miss}</b><span class="detRewardLbl">Bắt hụt</span></div>
     </div>
     <div class="detCountdown">
       <div class="detRing fsRing" id="fsRing"><span class="detRingNum" id="fsTime">${s.time}</span></div>
@@ -3483,7 +3484,7 @@ function fsAnswer(said){
     if(s.streak >= 5) burst(6);
     fsNext();
   } else {
-    s.streak = 0; sfx.wrong();
+    s.streak = 0; s.miss++; sfx.wrong();
     fsFeedback();                     // sai → hiện từ đúng + lý do, dừng lại cho bé đọc
   }
 }
@@ -3662,6 +3663,7 @@ function scNext(){
   if(s.idx >= s.total){ scResult(); return; }
   const words = s.deck[s.idx % s.deck.length];
   s.target = words.join(" ");
+  s.hint = words.length >= 7 ? s.target + "." : null;
   let order;
   do { order = shuffle(words.map((_, i) => i)); }
   while(words.length > 1 && order.map(i => words[i]).join(" ") === s.target);
@@ -3688,7 +3690,8 @@ function scRender(){
       <div class="detReward xp"><span class="detRewardIc">⚡</span><b>${s.score}</b><span class="detRewardLbl">Đúng</span></div>
       <div class="detReward streak"><span class="detRewardIc">🔥</span><b>${s.streak}</b><span class="detRewardLbl">Chuỗi</span></div>
     </div>
-    <p class="detHint">✍️ Bấm lần lượt các từ để xếp thành câu đúng nha!</p>
+    <p class="detHint">✍️ Bấm lần lượt các từ để xếp thành câu đúng nha! <button class="scHintBtn" onclick="scHint()">❓ Gợi ý</button></p>
+    <div class="scHintBox hidden" id="scHintBox"></div>
     <div class="scAns" id="scAns">${ansHtml}</div>
     <div class="scPool">${poolHtml}</div>
     <div class="wbActions">
@@ -3706,6 +3709,18 @@ function scTap(oi){
 function scUntap(j){ const s = scSt; if(!s || s.locked) return; s.ans.splice(j, 1); scRender(); }
 function scClear(){ const s = scSt; if(!s || s.locked) return; s.ans = []; scRender(); }
 function scSkip(){ const s = scSt; if(!s || s.locked) return; s.streak = 0; s.idx++; scNext(); }
+function scHint(){
+  const s = scSt;
+  const box = document.getElementById("scHintBox");
+  if(!s || !box) return;
+  if(s.hint){
+    box.textContent = "❓ " + s.hint;
+    box.classList.remove("hidden");
+  } else {
+    box.textContent = "💪 Câu này ngắn thôi, cố lên nhé!";
+    box.classList.remove("hidden");
+  }
+}
 function scCheck(){
   const s = scSt;
   const built = s.ans.map(oi => s.pool[oi]).join(" ");
@@ -6682,6 +6697,7 @@ const DR_TIME = 50;   // mỗi bệnh nhân 50 giây (khó hơn nên cho nhiều
 function startPatient(){
   const s = drState;
   s.p = { c: s.queue[s.round], filled:new Set(), active:0, wrong:0, done:false, time:DR_TIME, timer:null, roundXp:0 };
+  s.p.optsOrder = s.p.c.words.map(w => shuffle(w.opts.slice()));   // xáo trộn đáp án mỗi chữ (từ đúng không còn luôn ở ô đầu)
   renderDoctor();
   clearInterval(s.p.timer);
   s.p.timer = setInterval(drTick, 1000);
@@ -6715,7 +6731,7 @@ function renderDoctor(){
   if(p.active != null && !p.filled.has(p.active)){
     const w = words[p.active];
     tray = `<div class="drTrayLbl">Chọn dấu đúng cho chữ <b>“${w.b}”</b>:</div>
-      <div class="drTray">` + w.opts.map((o, oi) => `<button class="drOpt" onclick="pickTone(${oi})">${o}</button>`).join("") + `</div>`;
+      <div class="drTray">` + p.optsOrder[p.active].map((o, oi) => `<button class="drOpt" onclick="pickTone(${oi})">${o}</button>`).join("") + `</div>`;
   } else {
     tray = `<div class="drTrayLbl">👆 Bấm vào một chữ (màu cam) để chữa dấu nhé!</div>`;
   }
@@ -6751,7 +6767,7 @@ function pickTone(oi){
   const s = drState, p = s.p; if(!p || p.done) return;
   if(p.time <= 0) return;              // hết giờ thì không chữa thêm được nữa
   const w = p.c.words[p.active];
-  if(w.opts[oi] === w.ok){
+  if(p.optsOrder[p.active][oi] === w.ok){
     const idx = p.active;
     p.filled.add(idx);
     sfx.correct();
