@@ -8115,6 +8115,7 @@ async function openStudentDetail(id){
     const sessions = ss.data || [], quizzes = qz.data || [], lessons = ev.data || [];
     const totalMin = Math.round(sessions.reduce((s,r) => s + (r.duration_sec||0), 0) / 60);
     const sum = [
+      { ic:"⚡", n:(info.xp || 0), l:"tổng XP" },
       { ic:"🚪", n:sessions.length, l:"lượt vào" },
       { ic:"⏱️", n:totalMin, l:"phút học" },
       { ic:"📖", n:lessons.length, l:"lần mở bài" },
