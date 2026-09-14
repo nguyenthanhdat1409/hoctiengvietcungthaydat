@@ -1333,6 +1333,9 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .chip.inans{background:#EDE9FE; border-color:var(--vio); box-shadow:0 4px 0 #6D28D9}
 .chip.ghost{opacity:.25; pointer-events:none}
 .chip.locked{pointer-events:none}
+.scHintBtn{font-family:'Be Vietnam Pro',sans-serif; font-weight:800; font-size:13px; padding:6px 12px; border-radius:10px; cursor:pointer; border:2px solid var(--ok); background:#ECFDF5; color:#065F46; box-shadow:0 3px 0 #15803D; transition:transform .08s}
+.scHintBtn:hover{background:#DCFCE7; transform:translateY(-1px)}
+.scHintBox{background:#F0FDF4; border:2px solid var(--ok); border-radius:12px; padding:10px 14px; margin-bottom:10px; font-weight:700; color:#065F46; font-size:15px; text-align:center; animation:scaleIn .25s ease}
 
 .passage{background:#FFFBEB; border:3px solid var(--yel); border-radius:16px; padding:14px 16px;
   font-size:17px; line-height:1.8; font-weight:500; margin:4px 0 14px}
