@@ -3384,7 +3384,7 @@ function closeFlash(e){
   document.body.style.overflow = "";
 }
 function fsStart(){
-  fsSt = { time:40, score:0, streak:0, miss:0, timer:null, done:false, cur:null };
+  fsSt = { time:40, score:0, streak:0, timer:null, done:false, cur:null };
   fsNext();
   clearInterval(fsSt.timer);
   fsSt.timer = setInterval(fsTick, 1000);
@@ -3405,12 +3405,9 @@ function fsHead(){
       <div class="detHeadTxt"><h2>CẢNH SÁT TIA CHỚP</h2><p>Đúng hay sai chính tả?</p></div>
       <div class="detCaseChip fsCaseChip">TUẦN TRA</div>
     </div>
-    <div class="fsStatBar">
-      <span class="fsStat"><span class="fsStatIc">⚡</span><b>${s.score}</b> Bắt đúng</span>
-      <span class="fsStatSep">·</span>
-      <span class="fsStat fire"><span class="fsStatIc">🔥</span><b>${s.streak}</b> Chuỗi</span>
-      <span class="fsStatSep">·</span>
-      <span class="fsStat miss"><span class="fsStatIc">🚨</span><b>${s.miss}</b> Bắt hụt</span>
+    <div class="detRewardRow">
+      <div class="detReward xp"><span class="detRewardIc">⚡</span><b>${s.score}</b><span class="detRewardLbl">Đúng</span></div>
+      <div class="detReward streak"><span class="detRewardIc">🔥</span><b>${s.streak}</b><span class="detRewardLbl">Chuỗi</span></div>
     </div>
     <div class="detCountdown">
       <div class="detRing fsRing" id="fsRing"><span class="detRingNum" id="fsTime">${s.time}</span></div>
@@ -3486,7 +3483,7 @@ function fsAnswer(said){
     if(s.streak >= 5) burst(6);
     fsNext();
   } else {
-    s.streak = 0; s.miss++; sfx.wrong();
+    s.streak = 0; sfx.wrong();
     fsFeedback();                     // sai → hiện từ đúng + lý do, dừng lại cho bé đọc
   }
 }
