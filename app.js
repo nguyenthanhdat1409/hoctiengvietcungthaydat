@@ -3431,7 +3431,7 @@ function closeFlash(e){
   document.body.style.overflow = "";
 }
 function fsStart(){
-  fsSt = { time:40, score:0, streak:0, timer:null, done:false, cur:null };
+  fsSt = { time:40, score:0, streak:0, miss:0, timer:null, done:false, cur:null };
   fsNext();
   clearInterval(fsSt.timer);
   fsSt.timer = setInterval(fsTick, 1000);
@@ -3531,9 +3531,20 @@ function fsAnswer(said){
     if(s.streak >= 5) burst(6);
     fsNext();
   } else {
-    s.streak = 0; sfx.wrong();
+    s.streak = 0; s.miss++; sfx.wrong();
+    fsMissToast(s.miss);              // popup nhỏ: thống kê số lần sai trong ca này
     fsFeedback();                     // sai → hiện từ đúng + lý do, dừng lại cho bé đọc
   }
+}
+// Popup nhỏ thống kê số lần sai trong ca đang chơi (tự biến mất sau ~1.4s)
+function fsMissToast(n){
+  const box = document.querySelector("#fsModal .detBox"); if(!box) return;
+  const old = box.querySelector(".fsMissPop"); if(old) old.remove();
+  const t = document.createElement("div");
+  t.className = "fsMissPop";
+  t.innerHTML = `❌ Ca này đã sai <b>${n}</b> lần`;
+  box.appendChild(t);
+  setTimeout(() => { t.classList.add("out"); setTimeout(() => { if(t.parentNode) t.remove(); }, 300); }, 1400);
 }
 function fsTick(){
   const s = fsSt; if(!s || s.done || s.paused) return;
@@ -3552,6 +3563,7 @@ function fsResult(){
       <p class="center muted" style="margin-top:2px">${win ? "Mắt thần chính tả! 🌟" : "Luyện thêm cho nhanh tay nha!"}</p>
       <div class="detScoreRow">
         <div class="detScoreBox good"><b>${s.score}</b><span>bắt đúng</span></div>
+        <div class="detScoreBox bad"><b>${s.miss}</b><span>lần sai</span></div>
         ${isStudentLogged() ? `<div class="detScoreBox good"><b>+${s.score}</b><span>điểm XP ⚡</span></div>` : ``}
       </div>
       ${isStudentLogged() ? `` : `<div class="detXp muted">💡 Đăng nhập để mỗi từ đúng +1 XP nha!</div>`}
