@@ -3402,7 +3402,7 @@ function fsHead(){
     <div class="detGlow"></div>
     <div class="detHead">
       <div class="detBadge detBadgePro fsBadgePro"><span class="detBadgeRing"></span><span class="detBadgeIcon">⚡</span></div>
-      <div class="detHeadTxt"><h2>CẢNH SÁT TIA CHỚP</h2><p>Đúng hay sai chính tả?</p></div>
+      <div class="detHeadTxt"><h2>CẢNH SÁT TIA CHỚP 2</h2><p>Đúng hay sai chính tả?</p></div>
       <div class="detCaseChip fsCaseChip">TUẦN TRA</div>
     </div>
     <div class="detRewardRow">
