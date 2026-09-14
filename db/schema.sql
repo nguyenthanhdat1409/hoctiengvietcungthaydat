@@ -63,8 +63,11 @@ alter table public.activity_events enable row level security;
 alter table public.quiz_results    enable row level security;
 
 -- Hàm tiện ích: người đang đăng nhập có phải teacher?
+-- QUAN TRỌNG: phải "security definer" để BỎ QUA RLS khi đọc profiles.
+-- Nếu không, policy của profiles lại gọi is_teacher() → đệ quy vô hạn
+-- (lỗi 54001 "stack depth limit exceeded") làm dashboard không đọc được dữ liệu.
 create or replace function public.is_teacher()
-returns boolean language sql stable as $$
+returns boolean language sql stable security definer set search_path = public as $$
   select exists(select 1 from public.profiles p
                 where p.id = auth.uid() and p.role = 'teacher');
 $$;
