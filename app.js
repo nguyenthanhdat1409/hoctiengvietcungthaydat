@@ -3318,13 +3318,102 @@ function renderLessons(){
      </div>`;
   }).join("");
 }
+/* ===== BÀI TẬP MỞ RỘNG (Bài 6→30) — mỗi bài 1 bài tập + nút ❓ đáp án ===== */
+function xEx(sub, body, id, ans, label){
+  return `<div class="secTitle" data-icon="✏️">Bài tập mở rộng — ${sub}</div>${body}
+    <button class="ansBtn" onclick="toggleAns(this,'${id}')">${label || "❓ Xem đáp án"}</button>
+    <div class="ansBox hidden" id="${id}">${ans}</div>`;
+}
+const LESSON_EXTRA = {
+  6: xEx("Đổi dấu, đổi nghĩa",
+    `<div class="dlg">Cùng chữ <b>la</b>, thêm dấu thanh sẽ thành từ mới. Em đọc to và nói nghĩa từng từ:<br><b>la · là · lá · lả · lã · lạ</b></div>`,
+    "ans6", `<b>la</b> (la hét) · <b>là</b> (bàn là / thì là) · <b>lá</b> (lá cây) · <b>lả</b> (mệt lả) · <b>lã</b> (nước lã) · <b>lạ</b> (xa lạ).`),
+  7: xEx("Xếp vào đúng nhóm",
+    `<div class="dlg">Xếp các từ vào đúng nhóm: <b>(mèo, đỏ, cơm, chó, vàng, phở)</b><br>• Con vật: ....................<br>• Màu sắc: ....................<br>• Đồ ăn: ....................</div>`,
+    "ans7", `• Con vật: mèo, chó<br>• Màu sắc: đỏ, vàng<br>• Đồ ăn: cơm, phở`),
+  8: xEx("Điền lời đáp",
+    `<div class="dlg">Điền lời đáp phù hợp:<br>1. — Chào bạn! → — ....................<br>2. — Cảm ơn bạn nhé! → — ....................<br>3. — Bạn tên là gì? → — ....................</div>`,
+    "ans8", `1. — Chào bạn!<br>2. — Không có gì! (Không có chi!)<br>3. — Mình tên là… <i>(tên của em)</i>.`),
+  9: xEx("Ghép thành tiếng",
+    `<div class="dlg">Ghép phụ âm + vần thành tiếng có nghĩa:<br>1. b + àn = ..........<br>2. m + èo = ..........<br>3. tr + ường = ..........<br>4. h + oa = ..........</div>`,
+    "ans9", `1. bàn · 2. mèo · 3. trường · 4. hoa`),
+  10: xEx("Đọc hiểu",
+    `<div class="passage"><b>Giờ ra chơi</b><br>Giờ ra chơi, sân trường thật đông vui. Các bạn nam đá cầu, chơi bóng. Các bạn nữ nhảy dây, đọc truyện. Tiếng cười nói vang khắp sân trường.</div>
+     <div class="dlg"><b>Câu 1.</b> Đoạn văn tả lúc nào?<br>A. Giờ học &nbsp; B. Giờ ra chơi &nbsp; C. Giờ về<br><b>Câu 2.</b> Các bạn nữ thường chơi gì? ....................</div>`,
+    "ans10", `<b>Câu 1:</b> B. Giờ ra chơi.<br><b>Câu 2:</b> Nhảy dây và đọc truyện.`),
+  11: xEx("Viết đoạn văn",
+    `<div class="dlg"><b>Đề:</b> Viết 3–4 câu giới thiệu về gia đình em.<br><b>Gợi ý:</b> Gia đình em có mấy người? Gồm những ai? Em yêu ai nhất?</div>`,
+    "ans11", `Gia đình em có bốn người: bố, mẹ, anh trai và em. Bố em là bác sĩ, mẹ em là cô giáo. Anh trai em học lớp năm. Em yêu quý cả nhà, tối nào nhà em cũng quây quần bên nhau.`, "❓ Xem đoạn văn mẫu"),
+  12: xEx("Làm toán bằng chữ",
+    `<div class="dlg">Điền kết quả (viết bằng chữ):<br>1. hai + ba = ..........<br>2. mười − bốn = ..........<br>3. năm + năm = ..........</div>`,
+    "ans12", `1. năm · 2. sáu · 3. mười`),
+  13: xEx("Điền từ",
+    `<div class="dlg">Điền vào chỗ trống:<br>1. Một tuần có .......... ngày.<br>2. Sau thứ Ba là thứ ..........<br>3. Một năm có .......... tháng.</div>`,
+    "ans13", `1. bảy (7) · 2. thứ Tư · 3. mười hai (12)`),
+  14: xEx("Phép so sánh",
+    `<div class="dlg"><b>Phép so sánh</b> làm câu văn sinh động, dùng từ <b>như / tựa / giống</b>.<br>Điền cho hợp:<br>1. Tóc bà trắng như ..........<br>2. Bạn Nam cao như ..........<br>3. Da em bé trắng như ..........</div>`,
+    "ans14", `Gợi ý (nhiều đáp án đúng):<br>1. …như mây / như cước · 2. …như cây sào · 3. …như trứng gà bóc.`),
+  15: xEx("Điền c / k",
+    `<div class="dlg">Điền <b>c</b> hoặc <b>k</b>:<br>1. …á vàng &nbsp; 2. …em (ice cream) &nbsp; 3. …ính mắt &nbsp; 4. …ơm chiều</div>`,
+    "ans15", `1. c (cá) · 2. k (kem) · 3. k (kính) · 4. c (cơm)`),
+  16: xEx("Điền ch / tr",
+    `<div class="dlg">Điền <b>ch</b> hoặc <b>tr</b>:<br>1. …ường học &nbsp; 2. con …ó &nbsp; 3. …ăng rằm &nbsp; 4. quả …anh</div>`,
+    "ans16", `1. tr (trường) · 2. ch (chó) · 3. tr (trăng) · 4. ch (chanh)`),
+  17: xEx("Điền đúng quy tắc",
+    `<div class="dlg">Nhớ: trước <b>e, ê, i</b> viết <b>k – gh – ngh</b>. Điền:<br>1. cái …ế (g/gh) &nbsp; 2. …on gà (c/k) &nbsp; 3. …e nhạc (ng/ngh) &nbsp; 4. …ính mắt (c/k)</div>`,
+    "ans17", `1. gh (ghế) · 2. c (con) · 3. ngh (nghe) · 4. k (kính)`),
+  18: xEx("Tìm tiếng có vần",
+    `<div class="dlg">Tìm và viết:<br>1. Hai tiếng có vần <b>ăng</b>: ..........<br>2. Hai tiếng có vần <b>ơn</b>: ..........</div>`,
+    "ans18", `Gợi ý:<br>1. ăng: trăng, măng, nắng, vắng…<br>2. ơn: sơn, cơn, đơn, hơn…`),
+  19: xEx("Nối bộ phận – chức năng",
+    `<div class="dlg">Nối cho đúng:<br>1. Mắt &nbsp;&nbsp; a. để nghe<br>2. Tai &nbsp;&nbsp; b. để ngửi<br>3. Mũi &nbsp;&nbsp; c. để nhìn<br>4. Chân &nbsp; d. để đi</div>`,
+    "ans19", `1 – c &nbsp; 2 – a &nbsp; 3 – b &nbsp; 4 – d`),
+  20: xEx("Đặt câu",
+    `<div class="dlg">Đặt một câu với mỗi từ:<br>1. bút chì → ....................<br>2. cặp sách → ....................<br>3. cô giáo → ....................</div>`,
+    "ans20", `Mẫu:<br>1. Em viết bài bằng bút chì.<br>2. Cặp sách của em màu xanh.<br>3. Cô giáo dạy em tập đọc.`, "❓ Xem câu mẫu"),
+  21: xEx("Nối nghề – việc làm",
+    `<div class="dlg">Nối cho đúng:<br>1. Bác sĩ &nbsp;&nbsp; a. dạy học<br>2. Giáo viên &nbsp; b. chữa bệnh<br>3. Nông dân &nbsp; c. lái máy bay<br>4. Phi công &nbsp; d. trồng lúa</div>`,
+    "ans21", `1 – b &nbsp; 2 – a &nbsp; 3 – d &nbsp; 4 – c`),
+  22: xEx("Viết đoạn văn",
+    `<div class="dlg"><b>Đề:</b> Viết 2–3 câu về mùa em thích nhất.<br><b>Gợi ý:</b> Đó là mùa nào? Thời tiết ra sao? Em thích làm gì vào mùa đó?</div>`,
+    "ans22", `Em thích nhất mùa thu. Mùa thu trời mát mẻ, lá vàng rơi đầy sân trường. Vào mùa thu, em được rước đèn và ngắm trăng rằm Trung thu.`, "❓ Xem đoạn văn mẫu"),
+  23: xEx("Chủ ngữ – Vị ngữ",
+    `<div class="dlg">Câu thường có 2 phần: <b>Chủ ngữ</b> (ai / cái gì) và <b>Vị ngữ</b> (làm gì / thế nào).<br>VD: <u>Con mèo</u> // <u>đang ngủ</u>.<br>Tách chủ ngữ – vị ngữ (đặt dấu //):<br>1. Bạn Lan hát rất hay.<br>2. Mặt trời chiếu sáng.</div>`,
+    "ans23", `1. Bạn Lan // hát rất hay. <i>(CN // VN)</i><br>2. Mặt trời // chiếu sáng.`),
+  24: xEx("Đặt câu hỏi",
+    `<div class="dlg">Đặt câu hỏi cho phần in đậm:<br>1. <b>Mẹ</b> đang nấu cơm. → ....................?<br>2. Em đi học <b>lúc 7 giờ</b>. → ....................?<br>3. Nam học <b>ở trường Kim Đồng</b>. → ....................?</div>`,
+    "ans24", `1. Ai đang nấu cơm?<br>2. Em đi học lúc mấy giờ?<br>3. Nam học ở đâu?`),
+  25: xEx("Đọc hiểu",
+    `<div class="passage"><b>Cây bàng trước sân trường</b><br>Trước sân trường em có một cây bàng rất lớn. Mùa xuân, những chiếc lá non xanh mướt rung rinh trong gió. Đến mùa hè, tán cây xòe rộng như một chiếc ô khổng lồ, che mát cả khoảng sân. Khi thu về, lá bàng chuyển sang màu vàng rồi đỏ thắm, rơi nhẹ xuống mặt đất.</div>
+     <div class="dlg"><b>Câu 1.</b> Cây bàng được trồng ở đâu?<br>A. Sau lớp học &nbsp; B. Trước sân trường &nbsp; C. Trong công viên<br><b>Câu 2.</b> Mùa hè, tán cây được so sánh với hình ảnh nào? ..........<br><b>Câu 3.</b> Nối mùa với đặc điểm: <b>Xuân · Hè · Thu</b> — a. lá vàng rồi đỏ / b. tán cây che mát / c. lá non xanh mướt</div>`,
+    "ans25", `<b>Câu 1:</b> B. Trước sân trường.<br><b>Câu 2:</b> Một chiếc ô khổng lồ.<br><b>Câu 3:</b> Xuân – c &nbsp; Hè – b &nbsp; Thu – a.`),
+  26: xEx("Trả lời nhanh",
+    `<div class="dlg">Trả lời ngắn:<br>1. AI là viết tắt của cụm từ tiếng Việt nào?<br>2. AI có luôn luôn trả lời đúng không?<br>3. Em có nên cho AI biết mật khẩu, địa chỉ nhà không?</div>`,
+    "ans26", `1. Trí tuệ nhân tạo.<br>2. Không — AI đôi khi trả lời sai, cần kiểm tra lại.<br>3. Không nên chia sẻ thông tin cá nhân với AI hay người lạ.`),
+  27: xEx("Điền d / đ",
+    `<div class="dlg">Điền <b>d</b> hoặc <b>đ</b>:<br>1. …i học &nbsp; 2. …a thịt (skin) &nbsp; 3. …ôi dép &nbsp; 4. …ây thừng</div>`,
+    "ans27", `1. đ (đi) · 2. d (da) · 3. đ (đôi) · 4. d (dây)`),
+  28: xEx("Điền l / n",
+    `<div class="dlg">Điền <b>l</b> hoặc <b>n</b>:<br>1. …á cây &nbsp; 2. …ước uống &nbsp; 3. …ên lớp &nbsp; 4. quả …a (na)</div>`,
+    "ans28", `1. l (lá) · 2. n (nước) · 3. l (lên) · 4. n (na)`),
+  29: xEx("Điền qu",
+    `<div class="dlg">Điền tiếng có <b>qu</b>:<br>1. …ả táo (fruit) &nbsp; 2. …à tặng (gift) &nbsp; 3. …ê hương (homeland)<br>Và: Chữ <b>q</b> luôn đi cùng chữ nào?</div>`,
+    "ans29", `1. quả · 2. quà · 3. quê<br>Chữ <b>q</b> luôn đi cùng <b>u</b> (thành <b>qu</b>).`),
+  30: xEx("Điền s / x",
+    `<div class="dlg">Điền <b>s</b> hoặc <b>x</b>:<br>1. ngôi …ao (star) &nbsp; 2. …e đạp (bicycle) &nbsp; 3. …ữa tươi (milk) &nbsp; 4. …ôi gấc (sticky rice)</div>`,
+    "ans30", `1. s (sao) · 2. x (xe) · 3. s (sữa) · 4. x (xôi)`),
+};
+function lessonExtraFor(l){
+  const m = (l && l.title || "").match(/^Bài\s+(\d+)/);
+  return (m && LESSON_EXTRA[m[1]]) ? LESSON_EXTRA[m[1]] : "";
+}
 function openLesson(i){
   const l = LESSONS[i];
   logLesson(i);
   startLessonTimer(i);          // bắt đầu tính giờ (≥10 phút = đã học)
   document.getElementById("lessonBody").innerHTML =
     `<div class="lessonHead"><div class="lh-ic">${l.icon}</div><div><h2>${lessonTitle(i)}</h2><p>${l.desc}</p></div></div>
-     <div class="lContent">${l.body}${renderLessonGames(LESSON_GAMES[i])}</div>`;
+     <div class="lContent">${l.body}${lessonExtraFor(l)}${renderLessonGames(LESSON_GAMES[i])}</div>`;
   document.getElementById("lessonModal").classList.remove("hidden");
   document.body.style.overflow = "hidden";
   sfx.pop();
