@@ -3407,13 +3407,110 @@ function lessonExtraFor(l){
   const m = (l && l.title || "").match(/^Bài\s+(\d+)/);
   return (m && LESSON_EXTRA[m[1]]) ? LESSON_EXTRA[m[1]] : "";
 }
+/* ===== 2 đề VIẾT ĐOẠN VĂN cho mỗi bài (từ chữ O = Bài 3 trở đi) ===== */
+function xWrite(id, de1, de2, s1, s2){
+  return `<div class="secTitle" data-icon="✍️">Viết đoạn văn</div>
+    <div class="dlg"><b>Đề 1:</b> ${de1}<br><b>Đề 2:</b> ${de2}</div>
+    <button class="ansBtn" onclick="toggleAns(this,'${id}')">❓ Xem đoạn văn mẫu</button>
+    <div class="ansBox hidden" id="${id}"><b>Đề 1:</b> ${s1}<br><br><b>Đề 2:</b> ${s2}</div>`;
+}
+const LESSON_WRITE = {
+  3: xWrite("w3", "Viết 4–6 câu tả một con vật mà em yêu thích.", "Viết 4–6 câu kể về một ngày đi học của em.",
+    "Nhà em nuôi một chú mèo tam thể. Chú có bộ lông mềm mượt và đôi mắt tròn xoe. Mỗi khi em đi học về, chú lại chạy ra dụi đầu vào chân em. Em rất yêu chú mèo nhỏ của mình.",
+    "Buổi sáng, em dậy sớm, đánh răng rửa mặt rồi ăn sáng. Em đến trường học bài cùng các bạn. Chiều về, em giúp mẹ quét nhà và làm bài tập. Một ngày của em trôi qua thật vui và bổ ích."),
+  4: xWrite("w4", "Viết 4–6 câu tả một đồ vật em yêu thích.", "Viết 4–6 câu kể về một việc tốt em đã làm.",
+    "Em có một chiếc cặp sách màu xanh. Cặp có nhiều ngăn để đựng sách vở và bút. Ngày nào em cũng mang cặp đến trường. Em luôn giữ gìn chiếc cặp thật sạch đẹp.",
+    "Hôm qua, em thấy một bạn nhỏ bị ngã ở sân trường. Em vội chạy đến đỡ bạn dậy và phủi bụi giúp bạn. Bạn cười và cảm ơn em. Em thấy rất vui vì đã giúp được bạn."),
+  5: xWrite("w5", "Viết 4–6 câu tả ngôi nhà của em.", "Viết 4–6 câu kể một kỉ niệm vui của em.",
+    "Nhà em là một ngôi nhà nhỏ có mái ngói đỏ. Trước nhà có một khoảng sân trồng nhiều hoa. Buổi tối, cả nhà quây quần bên nhau thật ấm cúng. Em rất yêu ngôi nhà của mình.",
+    "Tết năm ngoái, em được về quê thăm ông bà. Em cùng các anh chị gói bánh chưng và xem pháo hoa. Ông bà lì xì và kể chuyện cho em nghe. Đó là một kỉ niệm em không bao giờ quên."),
+  6: xWrite("w6", "Viết 4–6 câu tả một cây mà em thích.", "Viết 4–6 câu kể về bữa cơm gia đình em.",
+    "Trước sân nhà em có một cây bưởi. Thân cây to, tán lá xanh um. Mùa thu, cây ra những quả bưởi vàng thơm. Em thích ngồi dưới bóng mát của cây để đọc sách.",
+    "Bữa cơm tối nhà em thật vui. Mẹ nấu canh rau và cá kho. Cả nhà vừa ăn vừa trò chuyện về một ngày của mình. Em thấy hạnh phúc khi được ăn cơm cùng gia đình."),
+  7: xWrite("w7", "Viết 4–6 câu tả một con vật nuôi trong nhà.", "Viết 4–6 câu tả món ăn em thích nhất.",
+    "Nhà em nuôi một chú chó tên Vàng. Chú có bộ lông vàng óng và cái đuôi luôn vẫy mừng. Vàng rất trung thành và biết trông nhà. Em coi Vàng như một người bạn nhỏ.",
+    "Món ăn em thích nhất là phở. Bát phở nóng hổi thơm mùi thịt bò và hành. Nước dùng ngọt, bánh phở mềm dai. Sáng nào được ăn phở là em thấy vui cả ngày."),
+  8: xWrite("w8", "Viết 4–6 câu kể về một người bạn của em.", "Viết 4–6 câu thuật lại một lần em trò chuyện với ông (bà).",
+    "Bạn thân của em tên là Minh. Bạn học giỏi và rất vui tính. Giờ ra chơi, chúng em thường chơi đá cầu với nhau. Em quý Minh vì bạn luôn sẵn sàng giúp đỡ mọi người.",
+    "Tối qua, em ngồi trò chuyện với bà. Bà kể cho em nghe chuyện ngày xưa bà đi học. Em hỏi bà nhiều điều và bà cười hiền hậu trả lời. Em mong bà luôn khỏe mạnh."),
+  9: xWrite("w9", "Viết 4–6 câu tả quyển sách (hoặc món đồ chơi) em thích.", "Viết 4–6 câu kể một việc em giúp mẹ.",
+    "Em có một quyển truyện tranh rất đẹp. Bìa sách in hình chú thỏ trắng ngộ nghĩnh. Trong sách có nhiều câu chuyện hay và bổ ích. Em thường đọc sách vào mỗi buổi tối.",
+    "Cuối tuần, em giúp mẹ dọn dẹp nhà cửa. Em quét nhà, lau bàn và gấp quần áo. Mẹ khen em ngoan và biết giúp đỡ. Em thấy vui vì đã làm mẹ đỡ vất vả."),
+  10: xWrite("w10", "Viết 4–6 câu tả cảnh sân trường giờ ra chơi.", "Viết 4–6 câu kể lại một câu chuyện em đã đọc.",
+    "Giờ ra chơi, sân trường thật nhộn nhịp. Các bạn nam chơi đá bóng, các bạn nữ nhảy dây. Tiếng cười nói vang khắp nơi. Em rất thích những giờ ra chơi vui vẻ như thế.",
+    "Em đã đọc truyện Rùa và Thỏ. Thỏ chủ quan nên ngủ quên giữa đường. Rùa tuy chậm nhưng kiên trì nên về đích trước. Câu chuyện dạy em phải chăm chỉ và không được kiêu căng."),
+  11: xWrite("w11", "Viết 4–6 câu tả bố (hoặc mẹ) của em.", "Viết 4–6 câu giới thiệu về gia đình em.",
+    "Mẹ em năm nay ba mươi lăm tuổi. Mẹ có mái tóc dài và nụ cười thật hiền. Mẹ nấu ăn rất ngon và luôn chăm sóc cả nhà. Em yêu mẹ nhất trên đời.",
+    "Gia đình em có bốn người: bố, mẹ, anh trai và em. Bố là bộ đội, mẹ là cô giáo. Mọi người trong nhà đều yêu thương nhau. Em rất tự hào về gia đình mình."),
+  12: xWrite("w12", "Viết 4–6 câu kể một lần em đi chợ (hoặc siêu thị) cùng mẹ.", "Viết 4–6 câu tả chiếc đồng hồ ở nhà em.",
+    "Chủ nhật, em theo mẹ đi chợ. Chợ rất đông và bán đủ thứ rau, cá, trái cây. Mẹ mua thức ăn còn em xách giúp mẹ túi rau. Đi chợ cùng mẹ em học được nhiều điều.",
+    "Nhà em có một chiếc đồng hồ treo tường. Đồng hồ hình tròn, có ba chiếc kim chạy đều. Tiếng tích tắc đều đặn nhắc em học và nghỉ đúng giờ. Em rất quý chiếc đồng hồ này."),
+  13: xWrite("w13", "Viết 4–6 câu kể về một ngày cuối tuần của em.", "Viết 4–6 câu tả buổi sáng ở nhà em.",
+    "Cuối tuần, em được nghỉ học. Buổi sáng em giúp mẹ tưới cây, buổi chiều em đi chơi công viên. Tối đến, cả nhà cùng xem phim. Em mong cuối tuần nào cũng vui như vậy.",
+    "Buổi sáng ở nhà em thật bình yên. Ông mặt trời từ từ nhô lên, chim hót líu lo. Mẹ chuẩn bị bữa sáng, bố tưới mấy chậu hoa. Em thích không khí trong lành của buổi sớm mai."),
+  14: xWrite("w14", "Viết 4–6 câu tả một người bạn thân của em.", "Viết 4–6 câu tả cô giáo (thầy giáo) của em.",
+    "Bạn Lan là bạn thân của em. Bạn có dáng người nhỏ nhắn và mái tóc buộc gọn gàng. Lan học giỏi và rất tốt bụng. Em và Lan luôn giúp nhau cùng tiến bộ.",
+    "Cô giáo của em tên là cô Hoa. Cô có giọng nói ấm áp và nụ cười dịu dàng. Cô dạy dễ hiểu và luôn quan tâm học sinh. Em rất kính yêu cô giáo của mình."),
+  15: xWrite("w15", "Viết 4–6 câu tả con đường từ nhà đến trường.", "Viết 4–6 câu kể một việc em thích làm nhất.",
+    "Con đường tới trường của em rất đẹp. Hai bên đường trồng nhiều cây xanh mát. Buổi sáng, học sinh đi học đông vui. Em rất thích đi trên con đường quen thuộc này.",
+    "Việc em thích nhất là đọc sách. Mỗi cuốn sách đưa em đến một thế giới mới lạ. Em học được nhiều điều hay từ sách. Đọc sách giúp em ngày càng hiểu biết hơn."),
+  16: xWrite("w16", "Viết 4–6 câu tả một cây hoa (hoặc cây bóng mát) ở trường.", "Viết 4–6 câu kể về một trò chơi em thích.",
+    "Giữa sân trường em có một cây phượng già. Mùa hè, phượng nở hoa đỏ rực cả một góc trời. Chúng em thường ngồi dưới gốc phượng trò chuyện. Cây phượng gắn với bao kỉ niệm tuổi học trò.",
+    "Em thích nhất trò chơi trốn tìm. Một bạn nhắm mắt đếm, các bạn khác đi trốn. Ai bị tìm thấy sau cùng thì thắng. Trò chơi giúp chúng em thêm nhanh nhẹn và vui vẻ."),
+  17: xWrite("w17", "Viết 4–6 câu tả một cơn mưa mà em từng thấy.", "Viết 4–6 câu kể về một con vật em từng gặp.",
+    "Chiều nay trời đổ mưa rào. Những hạt mưa rơi lộp độp trên mái nhà. Cây cối được tắm mát nên xanh tươi hơn. Sau cơn mưa, bầu trời hiện lên một chiếc cầu vồng thật đẹp.",
+    "Hôm về quê, em gặp một chú trâu đang gặm cỏ. Chú trâu to lớn, đôi sừng cong và bộ lông đen bóng. Chú giúp bác nông dân cày ruộng. Em thấy con trâu thật hiền và chăm chỉ."),
+  18: xWrite("w18", "Viết 4–6 câu tả một vườn hoa (hoặc công viên).", "Viết 4–6 câu kể một buổi đi chơi của em.",
+    "Trong công viên gần nhà có một vườn hoa nhỏ. Hoa hồng, hoa cúc đua nhau khoe sắc. Bướm bay rập rờn hút mật bên những cánh hoa. Em thích ra vườn hoa hít thở không khí trong lành.",
+    "Chủ nhật vừa rồi, cả nhà em đi chơi công viên. Em được chơi đu quay và ăn kem. Bố mẹ chụp cho em nhiều tấm ảnh đẹp. Đó là một buổi đi chơi thật vui."),
+  19: xWrite("w19", "Viết 4–6 câu tả về bản thân em.", "Viết 4–6 câu kể việc em làm để giữ gìn sức khỏe.",
+    "Em tên là An, năm nay em tám tuổi. Em có dáng người nhỏ nhắn và mái tóc ngắn. Em thích học Tiếng Việt và thích chơi đá cầu. Em luôn cố gắng chăm ngoan để bố mẹ vui lòng.",
+    "Để khỏe mạnh, mỗi sáng em đều tập thể dục. Em ăn đủ chất và uống nhiều nước. Em cũng ngủ sớm và rửa tay sạch sẽ. Nhờ vậy, em ít khi bị ốm."),
+  20: xWrite("w20", "Viết 4–6 câu tả lớp học của em.", "Viết 4–6 câu tả ngôi trường của em.",
+    "Lớp học của em rất sạch và đẹp. Trên tường treo ảnh Bác Hồ và nhiều tranh vẽ. Bàn ghế được xếp ngay ngắn thành từng dãy. Em rất thích được học tập trong lớp mỗi ngày.",
+    "Trường em nằm trên một con phố nhỏ. Trường có nhiều phòng học và một sân chơi rộng. Giờ ra chơi, sân trường rộn rã tiếng cười. Em rất tự hào về ngôi trường của mình."),
+  21: xWrite("w21", "Viết 4–6 câu về ước mơ nghề nghiệp của em.", "Viết 4–6 câu tả công việc của bố (hoặc mẹ).",
+    "Lớn lên, em mơ ước trở thành bác sĩ. Em muốn chữa bệnh cho mọi người và giúp các bạn nhỏ khỏe mạnh. Vì thế, ngay từ bây giờ em phải chăm học. Em tin ước mơ của mình sẽ thành hiện thực.",
+    "Mẹ em là một cô giáo dạy tiểu học. Hằng ngày, mẹ đến trường dạy các em nhỏ tập đọc, tập viết. Tối về, mẹ còn soạn bài và chấm vở. Em rất yêu và tự hào về công việc của mẹ."),
+  22: xWrite("w22", "Viết 4–6 câu tả mùa em thích nhất.", "Viết 4–6 câu tả cảnh trời mưa.",
+    "Em thích nhất là mùa xuân. Mùa xuân, tiết trời ấm áp, muôn hoa đua nở. Cây cối đâm chồi nảy lộc xanh tươi. Mùa xuân còn có Tết để em được nhận lì xì và về thăm ông bà.",
+    "Bầu trời bỗng tối sầm rồi mưa rơi. Mưa mỗi lúc một to, gió thổi mạnh. Mọi người vội vàng tìm chỗ trú. Một lát sau, mưa tạnh, không khí trở nên mát mẻ, dễ chịu."),
+  23: xWrite("w23", "Viết 4–6 câu tả con mèo (chú ý dùng danh từ, động từ, tính từ).", "Viết 4–6 câu kể những việc em đã làm hôm nay.",
+    "Chú mèo nhà em có bộ lông trắng muốt. Chú thường nằm cuộn tròn sưởi nắng. Đôi mắt xanh của chú long lanh rất đẹp. Chú mèo tinh nghịch nhưng rất đáng yêu.",
+    "Hôm nay em đã làm được nhiều việc. Sáng em đi học, trưa em giúp mẹ dọn cơm. Chiều em làm bài tập và tưới cây. Em thấy một ngày trôi qua thật có ích."),
+  24: xWrite("w24", "Viết 4–6 câu kể lại buổi em hỏi chuyện một người bạn.", "Viết 4–6 câu về một điều em tò mò muốn tìm hiểu.",
+    "Giờ ra chơi, em hỏi bạn Nam về sở thích. Nam bảo bạn thích vẽ tranh và nuôi cá. Em hỏi thêm vì sao bạn thích vẽ, Nam cười nói vẽ giúp bạn thư giãn. Nhờ hỏi chuyện, em hiểu bạn hơn.",
+    "Em rất tò mò vì sao bầu trời lại có màu xanh. Em đã hỏi cô giáo và tìm trong sách. Em biết được đó là do ánh sáng mặt trời. Càng tìm hiểu, em càng thấy thế giới thật kì diệu."),
+  25: xWrite("w25", "Viết 4–6 câu tả một đồ dùng học tập của em.", "Viết 4–6 câu kể về một chuyến đi mà em nhớ nhất.",
+    "Em có một hộp bút chì màu rất đẹp. Hộp có đủ các màu xanh, đỏ, vàng, tím. Nhờ hộp bút, những bức tranh của em thêm rực rỡ. Em luôn giữ gìn hộp bút thật cẩn thận.",
+    "Hè năm ngoái, em được bố mẹ cho đi biển. Nước biển trong xanh, sóng vỗ rì rào. Em xây lâu đài cát và nhặt vỏ ốc. Chuyến đi ấy khiến em nhớ mãi không quên."),
+  26: xWrite("w26", "Viết 4–6 câu về ích lợi của AI đối với việc học của em.", "Viết 4–6 câu về cách dùng AI an toàn, thông minh.",
+    "AI giúp em học tập dễ dàng hơn. Khi không hiểu bài, em có thể hỏi AI để được giải thích. AI còn gợi ý cách học và giúp em luyện tiếng Anh. Nhờ AI, việc học của em trở nên thú vị hơn.",
+    "Khi dùng AI, em luôn hỏi ý kiến bố mẹ. Em không chia sẻ tên, địa chỉ hay mật khẩu cho AI. Em cũng kiểm tra lại vì AI đôi khi trả lời sai. Dùng AI đúng cách sẽ giúp em học giỏi hơn."),
+  27: xWrite("w27", "Viết 4–6 câu tả một con vật ở quê (con bò, con trâu, con gà…).", "Viết 4–6 câu kể một buổi em chơi cùng các bạn.",
+    "Ở quê bà, em thích nhất đàn gà. Chú gà trống có bộ lông sặc sỡ và chiếc mào đỏ tươi. Sáng sớm, gà trống gáy vang gọi mọi người thức dậy. Em thấy đàn gà thật gần gũi và đáng yêu.",
+    "Chiều qua, em cùng các bạn chơi ở sân. Chúng em chơi nhảy dây và đá cầu. Ai cũng cười nói vui vẻ. Buổi chơi giúp chúng em thêm gắn bó với nhau."),
+  28: xWrite("w28", "Viết 4–6 câu tả một bông hoa mà em thích.", "Viết 4–6 câu kể về một buổi học vui.",
+    "Trong vườn nhà em có một bông hoa hồng nhung. Cánh hoa đỏ thắm, mềm mại như nhung. Hương hoa thơm dịu lan trong gió. Em thích ngắm bông hoa hồng mỗi buổi sáng.",
+    "Hôm nay lớp em có tiết học vẽ thật vui. Cô cho chúng em vẽ về gia đình. Ai cũng chăm chú tô màu bức tranh của mình. Cuối giờ, cô khen cả lớp vẽ đẹp."),
+  29: xWrite("w29", "Viết 4–6 câu tả một cơn mưa mùa hè.", "Viết 4–6 câu về người mẹ của em.",
+    "Chiều hè, cơn mưa rào bất chợt kéo đến. Mưa rơi ào ào, mát rượi cả không gian. Cây cối như được gột rửa, xanh mướt hơn. Sau mưa, tiếng ếch nhái kêu vang ngoài đồng.",
+    "Mẹ là người em yêu quý nhất. Mẹ luôn dịu dàng chăm sóc cả nhà. Mỗi khi em buồn, mẹ ôm em vào lòng an ủi. Em mong mẹ luôn vui khỏe bên em."),
+  30: xWrite("w30", "Viết 4–6 câu tả bầu trời đêm đầy sao.", "Viết 4–6 câu về một ước mơ của em.",
+    "Buổi tối, bầu trời quê em đầy sao. Những ngôi sao lấp lánh như những viên ngọc nhỏ. Ông trăng tròn tỏa ánh sáng vàng dịu. Em thích nằm ngắm sao và mơ về những điều đẹp đẽ.",
+    "Em có một ước mơ là trở thành cô giáo. Em muốn dạy các em nhỏ biết đọc, biết viết. Em sẽ kể cho các em nghe nhiều câu chuyện hay. Để làm được điều đó, ngay bây giờ em phải chăm học."),
+};
+function lessonWriteFor(l){
+  const m = (l && l.title || "").match(/^Bài\s+(\d+)/);
+  return (m && LESSON_WRITE[m[1]]) ? LESSON_WRITE[m[1]] : "";
+}
 function openLesson(i){
   const l = LESSONS[i];
   logLesson(i);
   startLessonTimer(i);          // bắt đầu tính giờ (≥10 phút = đã học)
   document.getElementById("lessonBody").innerHTML =
     `<div class="lessonHead"><div class="lh-ic">${l.icon}</div><div><h2>${lessonTitle(i)}</h2><p>${l.desc}</p></div></div>
-     <div class="lContent">${l.body}${lessonExtraFor(l)}${renderLessonGames(LESSON_GAMES[i])}</div>`;
+     <div class="lContent">${l.body}${lessonExtraFor(l)}${lessonWriteFor(l)}${renderLessonGames(LESSON_GAMES[i])}</div>`;
   document.getElementById("lessonModal").classList.remove("hidden");
   document.body.style.overflow = "hidden";
   sfx.pop();
