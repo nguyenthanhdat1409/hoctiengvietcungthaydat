@@ -2290,7 +2290,16 @@ const LESSONS = [
       </div>
 
       <div class="tipBox"><b>Mẹo:</b> So sánh: <b>bò</b> (cow - O) vs <b>bố</b> (father - Ô) vs <b>bơ</b> (avocado - Ơ). Cùng chữ "b" nhưng 3 âm khác nhau!</div>
-      <div class="challengeBox"><b>Thử thách:</b> Đọc to: bò – bố – bơ – cô – mơ. Nghe có khác nhau không?</div>`},
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: bò – bố – bơ – cô – mơ. Nghe có khác nhau không?</div>
+
+      <div class="secTitle" data-icon="✏️">Bài tập mở rộng — Đọc hiểu</div>
+      <div class="passage"><b>Chú chó Đốm</b><br>
+      Nhà bé Na có một chú chó nhỏ tên là Đốm. Đốm có bộ lông màu nâu, hai tai to và cái đuôi luôn ngoe nguẩy. Mỗi chiều, Đốm chạy ra cổng đón bé Na đi học về. Bé Na rất yêu quý Đốm và thường cho Đốm ăn no.</div>
+      <div class="dlg"><b>Câu 1.</b> Chú chó tên là gì?<br>A. Vàng &nbsp; B. Đốm &nbsp; C. Mực &nbsp; D. Nâu<br>
+      <b>Câu 2.</b> Đốm có bộ lông màu gì? ............................<br>
+      <b>Câu 3.</b> Vì sao bé Na yêu quý Đốm? ............................</div>
+      <button class="ansBtn" onclick="toggleAns(this,'ans-o')">❓ Xem đáp án</button>
+      <div class="ansBox hidden" id="ans-o"><b>Câu 1:</b> B. Đốm.<br><b>Câu 2:</b> Màu nâu.<br><b>Câu 3:</b> Vì Đốm ngoan, mỗi chiều ra cổng đón bé Na đi học về (em có thể trả lời theo ý mình).</div>`},
 
   {icon:"🔤", color:"#22C55E", title:"Bài 4: Nhóm U — U, Ư", desc:"2 nguyên âm U: âm tròn môi và âm môi cong — dễ học sau nhóm O.",
     body:`<p><b>🎯 Mục tiêu:</b> Phân biệt U và Ư — U tròn hơn, Ư môi cong hơn.</p>
@@ -2310,7 +2319,15 @@ const LESSONS = [
       </div>
 
       <div class="tipBox"><b>Mẹo:</b> So sánh: <b>tủ</b> (closet - U) vs <b>từ</b> (from - Ư). Cùng "t" nhưng âm sau hoàn toàn khác!</div>
-      <div class="challengeBox"><b>Thử thách:</b> Đọc to: tủ – từ – dừa – cửa – vừa. Ai phân biệt được U và Ư?</div>`},
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: tủ – từ – dừa – cửa – vừa. Ai phân biệt được U và Ư?</div>
+
+      <div class="secTitle" data-icon="✏️">Bài tập mở rộng — Điền từ</div>
+      <div class="dlg">Chọn từ thích hợp điền vào chỗ trống:<br><b>( chăm chỉ – đoàn kết – thật thà )</b><br>
+      1. Bạn Lan luôn .................... trong học tập.<br>
+      2. Tập thể lớp em rất .....................<br>
+      3. Người học sinh cần .................... trong lời nói.</div>
+      <button class="ansBtn" onclick="toggleAns(this,'ans-u')">❓ Xem đáp án</button>
+      <div class="ansBox hidden" id="ans-u"><b>1.</b> chăm chỉ &nbsp; <b>2.</b> đoàn kết &nbsp; <b>3.</b> thật thà</div>`},
 
   {icon:"🔤", color:"#F97316", title:"Bài 5: Nhóm I — I, Y", desc:"2 nguyên âm cuối: I và Y — Y thường xuất hiện sau chữ U.",
     body:`<p><b>🎯 Mục tiêu:</b> Hiểu khi nào dùng I và khi nào dùng Y trong từ tiếng Việt.</p>
@@ -2330,7 +2347,13 @@ const LESSONS = [
       </div>
 
       <div class="tipBox"><b>Mẹo:</b> Y hay đi sau U (tu<b>y</b>, qu<b>ý</b>, ngu<b>y</b>). Y cũng đứng đầu vài từ quen thuộc: <b>y</b> tá, <b>y</b>êu, <b>y</b>ên.</div>
-      <div class="challengeBox"><b>Thử thách:</b> Đọc to: duy – quý – nguy – y tá – yêu. Nghe Y có giống I không?</div>`},
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: duy – quý – nguy – y tá – yêu. Nghe Y có giống I không?</div>
+
+      <div class="secTitle" data-icon="✏️">Bài tập mở rộng — Viết đoạn văn</div>
+      <div class="dlg"><b>Đề:</b> Viết một đoạn văn 6–8 câu tả một người thân mà em yêu quý.<br>
+      <b>Gợi ý:</b><br>• Người đó là ai?<br>• Ngoại hình có gì nổi bật?<br>• Người đó thường làm gì?<br>• Vì sao em yêu quý người đó?</div>
+      <button class="ansBtn" onclick="toggleAns(this,'ans-i')">❓ Xem đoạn văn mẫu</button>
+      <div class="ansBox hidden" id="ans-i">Bà của em năm nay đã sáu mươi tuổi. Bà có mái tóc bạc trắng và nụ cười thật hiền. Mỗi ngày, bà thường kể chuyện cổ tích cho em nghe. Bà còn nấu những món ăn rất ngon. Em yêu quý bà vì bà luôn quan tâm và chăm sóc cho cả nhà. Em mong bà luôn khỏe mạnh và sống thật lâu bên em.</div>`},
 
   {icon:"🎵", color:"#EC4899", title:"Bài 6: 6 Dấu thanh", desc:"Ngang – huyền – sắc – hỏi – ngã – nặng. Đổi dấu là đổi nghĩa!",
     body:`<p><b>🎯 Mục tiêu:</b> Nghe và phân biệt 6 thanh điệu tiếng Việt.</p>
@@ -3311,6 +3334,13 @@ function closeLesson(e){
   stopLessonTimer();            // cộng dồn thời gian, kiểm tra đủ 10 phút chưa
   document.getElementById("lessonModal").classList.add("hidden");
   document.body.style.overflow = "";
+}
+/* Nút "❓ Đáp án" trong Bài tập mở rộng — bấm để hiện/ẩn đáp án */
+function toggleAns(btn, id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const shown = !el.classList.toggle("hidden");   // toggle: trả true nếu vừa THÊM 'hidden'
+  if(btn) btn.textContent = shown ? "🙈 Ẩn đáp án" : "❓ Xem đáp án";
 }
 /* ---- Đếm thời gian ở trong bài học ---- */
 let _lsIdx = null, _lsStart = 0, _lsTimer = null;
