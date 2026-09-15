@@ -2253,17 +2253,17 @@ const LESSONS = [
       <div class="secTitle" data-icon="📖">E — Âm đơn giản</div>
       <div class="toneList">
         <div class="toneRow pink"><div class="tg">E</div><div class="td"><b>Cách phát âm:</b> Miệng mở vừa, lưỡi phẳng, âm ngắn.<br>
-          <div class="exampleWords"><span class="exampleWord">e <span class="ew">eh</span></span><span class="exampleWord">mẹ <span class="ew">mother</span></span><span class="exampleWord">dê <span class="ew">goat</span></span><span class="exampleWord">xe đạp <span class="ew">bicycle</span></span><span class="exampleWord">mẹ hiền <span class="ew">kind mom</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">em bé <span class="ew">baby</span></span><span class="exampleWord">mẹ <span class="ew">mother</span></span><span class="exampleWord">xe đạp <span class="ew">bicycle</span></span><span class="exampleWord">cây tre <span class="ew">bamboo</span></span><span class="exampleWord">mùa hè <span class="ew">summer</span></span></div></div></div>
       </div>
 
       <div class="secTitle" data-icon="📖">Ê — Âm đóng miệng</div>
       <div class="toneList">
         <div class="toneRow lime"><div class="tg">Ê</div><div class="td"><b>Cách phát âm:</b> Miệng hơi nhắm, mũi cong lên, âm kéo dài hơn E.<br>
-          <div class="exampleWords"><span class="exampleWord">bê <span class="ew">calf</span></span><span class="exampleWord">thế <span class="ew">how/about</span></span><span class="exampleWord">mê <span class="ew">love</span></span><span class="exampleWord">cái ghế <span class="ew">chair</span></span><span class="exampleWord">về quê <span class="ew">go home</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">con dê <span class="ew">goat</span></span><span class="exampleWord">bê <span class="ew">calf</span></span><span class="exampleWord">cái ghế <span class="ew">chair</span></span><span class="exampleWord">đêm <span class="ew">night</span></span><span class="exampleWord">về quê <span class="ew">go home</span></span></div></div></div>
       </div>
 
-      <div class="tipBox"><b>Mẹo:</b> So sánh: <b>mẹ</b> (mother) vs <b>mê</b> (love). Cùng nghĩa tiếng Anh nhưng âm khác hẳn!</div>
-      <div class="challengeBox"><b>Thử thách:</b> Đọc to: mẹ – bê – dê – thế. Người bên cạnh có nghe ra E và Ê khác nhau không?</div>`},
+      <div class="tipBox"><b>Mẹo:</b> So sánh: <b>bé</b> (small - E) vs <b>bế</b> (to carry - Ê). Cùng chữ "b" nhưng âm khác hẳn!</div>
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: bé – bế – mẹ – dê – ghế. Người bên cạnh có nghe ra E và Ê khác nhau không?</div>`},
 
   {icon:"🔤", color:"#06B6D4", title:"Bài 3: Nhóm O — O, Ô, Ơ", desc:"3 nguyên âm O: âm tròn, âm mũi, âm mở — rất quan trọng cho người nước ngoài.",
     body:`<p><b>🎯 Mục tiêu:</b> Phân biệt O, Ô, Ơ — 3 âm dễ nhầm lẫn, cần luyện nhiều!</p>
@@ -2300,37 +2300,37 @@ const LESSONS = [
       <div class="secTitle" data-icon="📖">U — Âm tròn, môi chu</div>
       <div class="toneList">
         <div class="toneRow org"><div class="tg">U</div><div class="td"><b>Cách phát âm:</b> Môi tròn như đang hôn, âm dài.<br>
-          <div class="exampleWords"><span class="exampleWord">bù <span class="ew">compensate</span></span><span class="exampleWord">tủ <span class="ew">closet</span></span><span class="exampleWord">đủ <span class="ew">enough</span></span><span class="exampleWord">chú chó <span class="ew">the dog</span></span><span class="exampleWord">mùa thu <span class="ew">autumn</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">đu đủ <span class="ew">papaya</span></span><span class="exampleWord">tủ <span class="ew">closet</span></span><span class="exampleWord">đủ <span class="ew">enough</span></span><span class="exampleWord">chú chó <span class="ew">puppy</span></span><span class="exampleWord">mùa thu <span class="ew">autumn</span></span></div></div></div>
       </div>
 
       <div class="secTitle" data-icon="📖">Ư — Âm môi cong, miệng mở</div>
       <div class="toneList">
         <div class="toneRow yel"><div class="tg">Ư</div><div class="td"><b>Cách phát âm:</b> Môi cong như đang cười, miệng mở rộng.<br>
-          <div class="exampleWords"><span class="exampleWord">từ <span class="ew">from</span></span><span class="exampleWord">tư <span class="ew">personal</span></span><span class="exampleWord">vừa <span class="ew">just/enough</span></span><span class="exampleWord">chữ cái <span class="ew">letters</span></span><span class="exampleWord">cửa sổ <span class="ew">window</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">sư tử <span class="ew">lion</span></span><span class="exampleWord">quả dừa <span class="ew">coconut</span></span><span class="exampleWord">chữ cái <span class="ew">letters</span></span><span class="exampleWord">cửa sổ <span class="ew">window</span></span><span class="exampleWord">vừa <span class="ew">just right</span></span></div></div></div>
       </div>
 
       <div class="tipBox"><b>Mẹo:</b> So sánh: <b>tủ</b> (closet - U) vs <b>từ</b> (from - Ư). Cùng "t" nhưng âm sau hoàn toàn khác!</div>
-      <div class="challengeBox"><b>Thử thách:</b> Đọc to: tủ – từ – bù – vừa – tư. Ai phân biệt được U và Ư?</div>`},
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: tủ – từ – dừa – cửa – vừa. Ai phân biệt được U và Ư?</div>`},
 
   {icon:"🔤", color:"#F97316", title:"Bài 5: Nhóm I — I, Y", desc:"2 nguyên âm cuối: I và Y — Y thường xuất hiện sau chữ U.",
     body:`<p><b>🎯 Mục tiêu:</b> Hiểu khi nào dùng I và khi nào dùng Y trong từ tiếng Việt.</p>
       <div class="langBox"><b>I</b> = "ee" sound, like "see" — miệng mở rộng, môi cười.<br>
-      <b>Y</b> = cũng "ee" sound, nhưng chỉ xuất hiện sau U (uy, uyên, uỷ).</div>
+      <b>Y</b> = cũng âm "ee" như I; thường đi sau U (uy, uyên) và đứng đầu vài từ như <b>y</b> tá, <b>y</b>êu.</div>
 
       <div class="secTitle" data-icon="📖">I — Âm đơn giản</div>
       <div class="toneList">
         <div class="toneRow vio"><div class="tg">I</div><div class="td"><b>Cách phát âm:</b> Miệng mở rộng, môi cười như đang nói "ee".<br>
-          <div class="exampleWords"><span class="exampleWord">tin <span class="ew">news</span></span><span class="exampleWord">sinh <span class="ew">life</span></span><span class="exampleWord">tim <span class="ew">heart</span></span><span class="exampleWord">đi học <span class="ew">go to school</span></span><span class="exampleWord">chim non <span class="ew">baby bird</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">tim <span class="ew">heart</span></span><span class="exampleWord">con chim <span class="ew">bird</span></span><span class="exampleWord">đi học <span class="ew">go to school</span></span><span class="exampleWord">quả bí <span class="ew">pumpkin</span></span><span class="exampleWord">cái kính <span class="ew">glasses</span></span></div></div></div>
       </div>
 
-      <div class="secTitle" data-icon="📖">Y — Y chỉ xuất hiện sau U</div>
+      <div class="secTitle" data-icon="📖">Y — thường đi sau U (uy)</div>
       <div class="toneList">
-        <div class="toneRow pink"><div class="tg">Y</div><div class="td"><b>Cách phát âm:</b> Giống I, nhưng chỉ sau U.<br>
-          <div class="exampleWords"><span class="exampleWord">tuy <span class="ew">though</span></span><span class="exampleWord">huy <span class="ew">wave</span></span><span class="exampleWord">nguy <span class="ew">danger</span></span><span class="exampleWord">duy nhất <span class="ew">only</span></span><span class="exampleWord">suy nghĩ <span class="ew">think</span></span></div></div></div>
+        <div class="toneRow pink"><div class="tg">Y</div><div class="td"><b>Cách phát âm:</b> Giống I; hay đứng sau U (uy) hoặc đầu từ (y tá, yêu).<br>
+          <div class="exampleWords"><span class="exampleWord">duy nhất <span class="ew">only</span></span><span class="exampleWord">suy nghĩ <span class="ew">think</span></span><span class="exampleWord">nguy hiểm <span class="ew">danger</span></span><span class="exampleWord">quý giá <span class="ew">precious</span></span><span class="exampleWord">huy hiệu <span class="ew">badge</span></span></div></div></div>
       </div>
 
-      <div class="tipBox"><b>Mẹo:</b> Y không bao giờ đứng đầu từ! Nếu thấy Y, nhìn chữ trước đó chắc chắn là U. Remember: U + Y = always!</div>
-      <div class="challengeBox"><b>Thử thách:</b> Tìm từ có Y trong từ điển? Không có đâu! Y chỉ xuất hiện sau U thôi.</div>`},
+      <div class="tipBox"><b>Mẹo:</b> Y hay đi sau U (tu<b>y</b>, qu<b>ý</b>, ngu<b>y</b>). Y cũng đứng đầu vài từ quen thuộc: <b>y</b> tá, <b>y</b>êu, <b>y</b>ên.</div>
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: duy – quý – nguy – y tá – yêu. Nghe Y có giống I không?</div>`},
 
   {icon:"🎵", color:"#EC4899", title:"Bài 6: 6 Dấu thanh", desc:"Ngang – huyền – sắc – hỏi – ngã – nặng. Đổi dấu là đổi nghĩa!",
     body:`<p><b>🎯 Mục tiêu:</b> Nghe và phân biệt 6 thanh điệu tiếng Việt.</p>
@@ -3514,7 +3514,7 @@ function closeFlash(e){
   document.body.style.overflow = "";
 }
 function fsStart(){
-  fsSt = { time:40, score:0, streak:0, miss:0, timer:null, done:false, cur:null };
+  fsSt = { time:60, score:0, streak:0, miss:0, timer:null, done:false, cur:null };
   fsNext();
   clearInterval(fsSt.timer);
   fsSt.timer = setInterval(fsTick, 1000);
@@ -3600,7 +3600,7 @@ function fsResume(){
 function fsUpdateRing(){
   const s = fsSt; if(!s) return;
   const ring = document.getElementById("fsRing"), num = document.getElementById("fsTime");
-  const pct = Math.max(0, s.time / 40 * 100), low = s.time <= 10;
+  const pct = Math.max(0, s.time / 60 * 100), low = s.time <= 10;
   if(ring){ ring.style.setProperty("--pct", pct); ring.classList.toggle("low", low); }
   if(num){ num.textContent = s.time; num.classList.toggle("low", low); }
 }
@@ -3615,6 +3615,7 @@ function fsAnswer(said){
     fsNext();
   } else {
     s.streak = 0; s.miss++; sfx.wrong();
+    s.time = Math.max(0, s.time - 5); // bấm sai bị trừ 5 giây
     fsMissToast(s.miss);              // popup nhỏ: thống kê số lần sai trong ca này
     fsFeedback();                     // sai → hiện từ đúng + lý do, dừng lại cho bé đọc
   }
@@ -3625,7 +3626,7 @@ function fsMissToast(n){
   const old = box.querySelector(".fsMissPop"); if(old) old.remove();
   const t = document.createElement("div");
   t.className = "fsMissPop";
-  t.innerHTML = `❌ Ca này đã sai <b>${n}</b> lần`;
+  t.innerHTML = `❌ −5 giây · Ca này đã sai <b>${n}</b> lần`;
   box.appendChild(t);
   setTimeout(() => { t.classList.add("out"); setTimeout(() => { if(t.parentNode) t.remove(); }, 300); }, 1400);
 }
@@ -6572,7 +6573,7 @@ function startDetective(){
 function startDetRound(){
   const s = tnState, c = s.queue[s.round];
   s.r = { c, total: c.words.filter(w => typeof w === "object").length, caught:0, wrong:0, roundXp:0,
-          time: 40, timer:null, done:false, found:new Set(), accused:new Set() };
+          time: 60, timer:null, done:false, found:new Set(), accused:new Set() };
   renderDetective();
   clearInterval(s.r.timer);
   s.r.timer = setInterval(detTick, 1000);
@@ -6620,7 +6621,7 @@ function updateDetTimer(){
   const r = tnState && tnState.r; if(!r) return;
   const ring = document.getElementById("detRing");
   const num = document.getElementById("detTimerNum");
-  const pct = Math.max(0, r.time / 40 * 100);
+  const pct = Math.max(0, r.time / 60 * 100);
   const low = r.time <= 10;
   if(ring){ ring.style.setProperty("--pct", pct); ring.classList.toggle("low", low); }
   if(num){ num.textContent = r.time; num.classList.toggle("low", low); }
@@ -6838,7 +6839,7 @@ function closeDoctor(e){
   document.getElementById("drModal").classList.add("hidden");
   document.body.style.overflow = "";
 }
-const DR_TIME = 50;   // mỗi bệnh nhân 50 giây (khó hơn nên cho nhiều giờ hơn Truy tìm từ sai)
+const DR_TIME = 60;   // mỗi bệnh nhân 60 giây
 function startPatient(){
   const s = drState;
   s.p = { c: s.queue[s.round], filled:new Set(), active:0, wrong:0, done:false, time:DR_TIME, timer:null, roundXp:0 };
@@ -6934,8 +6935,11 @@ function pickTone(oi){
   } else {
     p.wrong++; s.sess.wrong++;
     sfx.wrong();
+    p.time = Math.max(0, p.time - 5);   // chẩn sai bị trừ 5 giây
+    updateDrTimer();
+    if(p.time <= 0){ clearInterval(p.timer); doctorTimeout(); return; }
     const el = document.getElementById("drs" + p.active);
-    detFloat(el, "chưa đúng", "bad");
+    detFloat(el, "−5 giây", "bad");
     // nháy đỏ nút vừa chọn
     const btns = document.querySelectorAll("#drTrayWrap .drOpt");
     if(btns[oi]){ btns[oi].classList.add("drWrong"); setTimeout(() => { if(btns[oi]) btns[oi].classList.remove("drWrong"); }, 500); }
