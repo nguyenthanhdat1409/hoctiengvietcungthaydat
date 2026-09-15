@@ -2001,9 +2001,9 @@ const TONES = [
   {g:"ã",  n:"Thanh ngã",  ex:"ngã", w:"ngã tư 🚦"},
   {g:"ạ",  n:"Thanh nặng", ex:"mạ", w:"cây mạ 🌱"},
 ];
-const VOCAB_ANIMAL = [["🐱","Con mèo"],["🐶","Con chó"],["🐔","Con gà"],["🐟","Con cá"],["🐷","Con lợn"],["🐮","Con bò"]];
-const VOCAB_COLOR  = [["🔴","Màu đỏ"],["🔵","Màu xanh"],["🟡","Màu vàng"],["🟢","Màu lá"],["🟣","Màu tím"],["⚫","Màu đen"]];
-const VOCAB_FOOD   = [["🍚","Cơm"],["🍜","Phở"],["🍎","Quả táo"],["🍌","Quả chuối"],["🥛","Sữa"],["🍰","Bánh"]];
+const VOCAB_ANIMAL = [["🐱","Con mèo"],["🐶","Con chó"],["🐔","Con gà"],["🐟","Con cá"],["🐷","Con lợn"],["🐮","Con bò"],["🐰","Con thỏ"],["🐘","Con voi"],["🐵","Con khỉ"],["🦆","Con vịt"],["🐴","Con ngựa"],["🐸","Con ếch"]];
+const VOCAB_COLOR  = [["🔴","Màu đỏ"],["🔵","Màu xanh"],["🟡","Màu vàng"],["🟢","Màu lá"],["🟣","Màu tím"],["⚫","Màu đen"],["🟠","Màu cam"],["🟤","Màu nâu"],["⚪","Màu trắng"],["🩷","Màu hồng"]];
+const VOCAB_FOOD   = [["🍚","Cơm"],["🍜","Phở"],["🍎","Quả táo"],["🍌","Quả chuối"],["🥛","Sữa"],["🍰","Bánh"],["🥚","Trứng"],["🍞","Bánh mì"],["🍊","Quả cam"],["🥕","Cà rốt"],["🍦","Kem"],["💧","Nước"]];
 
 const vocabHtml = list => `<div class="vocabGrid">${list.map(([e,w]) =>
   `<div class="vocabItem"><div class="ve">${e}</div><div class="vw">${w}</div></div>`).join("")}</div>`;
@@ -2373,6 +2373,11 @@ const LESSONS = [
         <div class="vocabItem"><div class="ve">👶</div><div class="vw">Em bé (baby)</div></div>
         <div class="vocabItem"><div class="ve">👴</div><div class="vw">Ông (grandpa)</div></div>
         <div class="vocabItem"><div class="ve">👵</div><div class="vw">Bà (grandma)</div></div>
+        <div class="vocabItem"><div class="ve">🧔</div><div class="vw">Chú / Bác (uncle)</div></div>
+        <div class="vocabItem"><div class="ve">👩</div><div class="vw">Cô / Dì (aunt)</div></div>
+        <div class="vocabItem"><div class="ve">🧒</div><div class="vw">Cháu (grandchild)</div></div>
+        <div class="vocabItem"><div class="ve">👦</div><div class="vw">Em trai (younger brother)</div></div>
+        <div class="vocabItem"><div class="ve">👧</div><div class="vw">Em gái (younger sister)</div></div>
         <div class="vocabItem"><div class="ve">👨‍👩‍👧</div><div class="vw">Gia đình (family)</div></div>
       </div>
       <div class="dlg"><b>Ví dụ:</b> "Đây là <b>bố</b> mình. Bố rất thích đọc sách."</div>
@@ -2406,6 +2411,10 @@ const LESSONS = [
         <div class="vocabItem"><div class="ve">😊</div><div class="vw">Vui vẻ (happy)</div></div>
         <div class="vocabItem"><div class="ve">😠</div><div class="vw">Buồn / Giận (sad/angry)</div></div>
         <div class="vocabItem"><div class="ve">👓</div><div class="vw">Đeo kính (wear glasses)</div></div>
+        <div class="vocabItem"><div class="ve">🧍</div><div class="vw">Mập / Gầy (fat/thin)</div></div>
+        <div class="vocabItem"><div class="ve">💪</div><div class="vw">Khỏe mạnh (strong)</div></div>
+        <div class="vocabItem"><div class="ve">😇</div><div class="vw">Hiền lành (kind)</div></div>
+        <div class="vocabItem"><div class="ve">🌸</div><div class="vw">Xinh đẹp (beautiful)</div></div>
       </div>
       <div class="dlg"><b>Ví dụ:</b> "Anh trai mình <b>cao</b>, có <b>tóc ngắn</b> và rất <b>vui vẻ</b>."<br>
       <b>English:</b> "My older brother is <b>tall</b>, has <b>short hair</b> and is very <b>happy</b>."</div>
@@ -2523,7 +2532,11 @@ const LESSONS = [
         <div class="vocabItem"><div class="ve">🦷</div><div class="vw">Răng (teeth)</div></div>
         <div class="vocabItem"><div class="ve">✋</div><div class="vw">Tay (hands)</div></div>
         <div class="vocabItem"><div class="ve">🦶</div><div class="vw">Chân (feet)</div></div>
-        <div class="vocabItem"><div class="ve">❤️</div><div class="vw">Bụng (tummy)</div></div>
+        <div class="vocabItem"><div class="ve">🫃</div><div class="vw">Bụng (tummy)</div></div>
+        <div class="vocabItem"><div class="ve">💪</div><div class="vw">Cánh tay (arm)</div></div>
+        <div class="vocabItem"><div class="ve">☝️</div><div class="vw">Ngón tay (finger)</div></div>
+        <div class="vocabItem"><div class="ve">🦵</div><div class="vw">Đầu gối (knee)</div></div>
+        <div class="vocabItem"><div class="ve">👅</div><div class="vw">Lưỡi (tongue)</div></div>
       </div>
       <div class="dlg"><b>Trò chơi:</b> Người lớn nói "chỉ vào <b>mũi</b>!", bé chỉ đúng thật nhanh. Đổi vai cho vui nha!</div>
       <div class="tipBox">💡 <b>Mẹo:</b> Vừa hát vừa chỉ: "Đầu – vai – gối – chân". Vận động giúp nhớ lâu hơn!</div>`},
@@ -2540,6 +2553,11 @@ const LESSONS = [
         <div class="vocabItem"><div class="ve">🧽</div><div class="vw">Cục tẩy (eraser)</div></div>
         <div class="vocabItem"><div class="ve">🖍️</div><div class="vw">Bút màu (crayon)</div></div>
         <div class="vocabItem"><div class="ve">🪑</div><div class="vw">Bàn ghế (desk)</div></div>
+        <div class="vocabItem"><div class="ve">🟩</div><div class="vw">Bảng (board)</div></div>
+        <div class="vocabItem"><div class="ve">✂️</div><div class="vw">Kéo (scissors)</div></div>
+        <div class="vocabItem"><div class="ve">🧴</div><div class="vw">Hồ dán (glue)</div></div>
+        <div class="vocabItem"><div class="ve">🕐</div><div class="vw">Đồng hồ (clock)</div></div>
+        <div class="vocabItem"><div class="ve">🌐</div><div class="vw">Quả địa cầu (globe)</div></div>
         <div class="vocabItem"><div class="ve">👩‍🏫</div><div class="vw">Cô giáo (teacher)</div></div>
       </div>
       <div class="dlg"><b>Ví dụ:</b> "Trong cặp của mình có <b>sách</b>, <b>vở</b> và <b>bút chì</b>."</div>
@@ -2556,6 +2574,11 @@ const LESSONS = [
         <div class="vocabItem"><div class="ve">👨‍🍳</div><div class="vw">Đầu bếp (chef)</div></div>
         <div class="vocabItem"><div class="ve">👷</div><div class="vw">Thợ xây (builder)</div></div>
         <div class="vocabItem"><div class="ve">🎨</div><div class="vw">Họa sĩ (painter)</div></div>
+        <div class="vocabItem"><div class="ve">🚒</div><div class="vw">Lính cứu hỏa (firefighter)</div></div>
+        <div class="vocabItem"><div class="ve">💉</div><div class="vw">Y tá (nurse)</div></div>
+        <div class="vocabItem"><div class="ve">🎤</div><div class="vw">Ca sĩ (singer)</div></div>
+        <div class="vocabItem"><div class="ve">🪖</div><div class="vw">Bộ đội (soldier)</div></div>
+        <div class="vocabItem"><div class="ve">🔬</div><div class="vw">Nhà khoa học (scientist)</div></div>
       </div>
       <div class="dlg"><b>Hỏi – đáp:</b> "Lớn lên con muốn làm gì?" → "Con muốn làm <b>bác sĩ</b> để chữa bệnh cho mọi người."</div>
       <div class="tipBox">💡 <b>Mẹo:</b> Hỏi bé về ước mơ nghề nghiệp và lý do — vừa học từ vừa tập nói thành câu!</div>`},
@@ -2570,6 +2593,10 @@ const LESSONS = [
         <div class="vocabItem"><div class="ve">🥵</div><div class="vw">Nóng (hot)</div></div>
         <div class="vocabItem"><div class="ve">🥶</div><div class="vw">Lạnh (cold)</div></div>
         <div class="vocabItem"><div class="ve">🌈</div><div class="vw">Cầu vồng (rainbow)</div></div>
+        <div class="vocabItem"><div class="ve">⛅</div><div class="vw">Trời nhiều mây (cloudy)</div></div>
+        <div class="vocabItem"><div class="ve">🌫️</div><div class="vw">Sương mù (fog)</div></div>
+        <div class="vocabItem"><div class="ve">🌩️</div><div class="vw">Bão (storm)</div></div>
+        <div class="vocabItem"><div class="ve">🌨️</div><div class="vw">Tuyết rơi (snow)</div></div>
       </div>
       <div class="secTitle" data-icon="🍂">Bốn mùa</div>
       <div class="vocabGrid">
