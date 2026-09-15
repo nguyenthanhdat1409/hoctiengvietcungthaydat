@@ -2430,8 +2430,8 @@ const LESSONS = [
         <div class="vocabItem"><div class="ve">✂️</div><div class="vw">kéo (scissors)</div></div>
         <div class="vocabItem"><div class="ve">🍃</div><div class="vw">lá (leaf)</div></div>
         <div class="vocabItem"><div class="ve">🐱</div><div class="vw">mèo (cat)</div></div>
-        <div class="vocabItem"><div class="ve">🏠</div><div class="vw">nhà (house)</div></div>
-        <div class="vocabItem"><div class="ve">🍜</div><div class="vw">phở (pho)</div></div>
+        <div class="vocabItem"><div class="ve">👒</div><div class="vw">nón (hat)</div></div>
+        <div class="vocabItem"><div class="ve">🔦</div><div class="vw">đèn pin (flashlight)</div></div>
         <div class="vocabItem"><div class="ve">🌾</div><div class="vw">rơm (straw)</div></div>
         <div class="vocabItem"><div class="ve">📚</div><div class="vw">sách (book)</div></div>
         <div class="vocabItem"><div class="ve">✋</div><div class="vw">tay (hand)</div></div>
@@ -2498,7 +2498,7 @@ const LESSONS = [
         <div class="vocabItem"><div class="ve">🙏</div><div class="vw">ơn (thanks)</div></div>
         <div class="vocabItem"><div class="ve">🚪</div><div class="vw">then (latch)</div></div>
         <div class="vocabItem"><div class="ve">📰</div><div class="vw">tin (news)</div></div>
-        <div class="vocabItem"><div class="ve">🎁</div><div class="vw">bún (noodle)</div></div>
+        <div class="vocabItem"><div class="ve">🍜</div><div class="vw">bún (noodle)</div></div>
       </div>
       <div class="secTitle" data-icon="📖">Vần kết thúc bằng ng</div>
       <div class="vocabGrid">
@@ -2601,7 +2601,7 @@ const LESSONS = [
       <div class="toneList">
         <div class="toneRow vio"><div class="tg">👤</div><div class="td"><b>Ai?</b> — hỏi về người. VD: "<b>Ai</b> đang nấu cơm?"</div></div>
         <div class="toneRow pink"><div class="tg">📦</div><div class="td"><b>Cái gì?</b> — hỏi về vật, việc. VD: "Bạn đang làm <b>cái gì</b>?"</div></div>
-        <div class="toneRow cyan"><div class="tg">📍</div><div class="td"><b>Ở đâu?</b> — hỏi về nơi chốn. VD: "Chữ bạn <b>ở đâu</b>?"</div></div>
+        <div class="toneRow cyan"><div class="tg">📍</div><div class="td"><b>Ở đâu?</b> — hỏi về nơi chốn. VD: "Nhà bạn <b>ở đâu</b>?"</div></div>
         <div class="toneRow org"><div class="tg">⏰</div><div class="td"><b>Khi nào?</b> — hỏi về thời gian. VD: "<b>Khi nào</b> mình đi chơi?"</div></div>
         <div class="toneRow lime"><div class="tg">💡</div><div class="td"><b>Vì sao?</b> — hỏi về lý do. VD: "<b>Vì sao</b> bạn buồn?"</div></div>
         <div class="toneRow yel"><div class="tg">🔄</div><div class="td"><b>Thế nào?</b> — hỏi về cách, trạng thái. VD: "Hôm nay bạn <b>thế nào</b>?"</div></div>
@@ -3806,9 +3806,11 @@ function scStart(){
 function scNext(){
   const s = scSt;
   if(s.idx >= s.total){ scResult(); return; }
-  const words = s.deck[s.idx % s.deck.length];
+  const words = s.deck[s.idx % s.deck.length].slice();
+  const last = words.length - 1;
+  if(!/[.!?]$/.test(words[last])) words[last] = words[last] + ".";   // dấu chấm ở từ cuối câu
   s.target = words.join(" ");
-  s.hint = words.length >= 7 ? s.target + "." : null;
+  s.hint = words.length >= 7 ? s.target : null;
   let order;
   do { order = shuffle(words.map((_, i) => i)); }
   while(words.length > 1 && order.map(i => words[i]).join(" ") === s.target);
