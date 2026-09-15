@@ -2274,23 +2274,23 @@ const LESSONS = [
       <div class="secTitle" data-icon="📖">O — Âm tròn, miệng chu</div>
       <div class="toneList">
         <div class="toneRow cyan"><div class="tg">O</div><div class="td"><b>Cách phát âm:</b> Miệng tròn như đang huýt sáo, âm dài.<br>
-          <div class="exampleWords"><span class="exampleWord">cô <span class="ew">aunt</span></span><span class="exampleWord">cho <span class="ew">give</span></span><span class="exampleWord">to <span class="ew">to</span></span><span class="exampleWord">con bò <span class="ew">cow</span></span><span class="exampleWord">to lớn <span class="ew">big</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">con bò <span class="ew">cow</span></span><span class="exampleWord">quả bóng <span class="ew">ball</span></span><span class="exampleWord">có <span class="ew">have</span></span><span class="exampleWord">cho <span class="ew">give</span></span><span class="exampleWord">to lớn <span class="ew">big</span></span></div></div></div>
       </div>
 
       <div class="secTitle" data-icon="📖">Ô — Âm mũi, mũi ưỡn lên</div>
       <div class="toneList">
         <div class="toneRow lime"><div class="tg">Ô</div><div class="td"><b>Cách phát âm:</b> Mũi ưỡn lên, môi tròn như "oo" trong "book".<br>
-          <div class="exampleWords"><span class="exampleWord">bố <span class="ew">father</span></span><span class="exampleWord">có <span class="ew">have</span></span><span class="exampleWord">nô <span class="ew">play</span></span><span class="exampleWord">cái ô <span class="ew">umbrella</span></span><span class="exampleWord">hôm nay <span class="ew">today</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">bố <span class="ew">father</span></span><span class="exampleWord">cô <span class="ew">aunt</span></span><span class="exampleWord">ô tô <span class="ew">car</span></span><span class="exampleWord">cái ô <span class="ew">umbrella</span></span><span class="exampleWord">hôm nay <span class="ew">today</span></span></div></div></div>
       </div>
 
       <div class="secTitle" data-icon="📖">Ơ — Âm mở, lưỡi thấp</div>
       <div class="toneList">
         <div class="toneRow org"><div class="tg">Ơ</div><div class="td"><b>Cách phát âm:</b> Miệng mở, lưỡi thấp xuống, âm ngắn.<br>
-          <div class="exampleWords"><span class="exampleWord">mơ <span class="ew">dream</span></span><span class="exampleWord">dơ <span class="ew">dirty</span></span><span class="exampleWord">cơ <span class="ew">sticky rice</span></span><span class="exampleWord">ăn cơm <span class="ew">eat rice</span></span><span class="exampleWord">tờ giấy <span class="ew">paper</span></span></div></div></div>
+          <div class="exampleWords"><span class="exampleWord">mơ <span class="ew">dream</span></span><span class="exampleWord">quả bơ <span class="ew">avocado</span></span><span class="exampleWord">dơ <span class="ew">dirty</span></span><span class="exampleWord">ăn cơm <span class="ew">eat rice</span></span><span class="exampleWord">tờ giấy <span class="ew">paper</span></span></div></div></div>
       </div>
 
-      <div class="tipBox"><b>Mẹo:</b> So sánh: <b>cô</b> (aunt - O) vs <b>cô</b> (girl - Ô) vs <b>cơ</b> (sticky rice - Ơ). Cùng chữ "c" nhưng 3 âm khác nhau!</div>
-      <div class="challengeBox"><b>Thử thách:</b> Đọc to: cô – bố – mơ – ơi – ơn. Nghe có khác nhau không?</div>`},
+      <div class="tipBox"><b>Mẹo:</b> So sánh: <b>bò</b> (cow - O) vs <b>bố</b> (father - Ô) vs <b>bơ</b> (avocado - Ơ). Cùng chữ "b" nhưng 3 âm khác nhau!</div>
+      <div class="challengeBox"><b>Thử thách:</b> Đọc to: bò – bố – bơ – cô – mơ. Nghe có khác nhau không?</div>`},
 
   {icon:"🔤", color:"#22C55E", title:"Bài 4: Nhóm U — U, Ư", desc:"2 nguyên âm U: âm tròn môi và âm môi cong — dễ học sau nhóm O.",
     body:`<p><b>🎯 Mục tiêu:</b> Phân biệt U và Ư — U tròn hơn, Ư môi cong hơn.</p>
