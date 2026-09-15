@@ -681,6 +681,34 @@ h1,h2,h3{font-family:'Baloo 2',cursive; margin:0; line-height:1.15}
 .progLogin .plTxt b{display:block; font-family:'Baloo 2',cursive; font-size:17px}
 .progLogin .plTxt span{font-size:13px; opacity:.92; line-height:1.4}
 
+/* Nhiệm vụ hằng ngày + Bảng xếp hạng lớp (trang chủ) */
+.dqCard, .lbCard{background:#fff; border-radius:22px; padding:16px 18px; margin-top:16px; box-shadow:0 10px 30px rgba(30,27,75,.18)}
+.dqHead, .lbHead{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px}
+.dqHead h3, .lbHead h3{font-family:'Baloo 2',cursive; font-size:19px; color:var(--ink)}
+.dqCount{font-family:'Baloo 2',cursive; font-weight:800; font-size:14px; color:var(--vio); background:#EDE9FE; border-radius:999px; padding:4px 12px}
+.lbSub{font-size:12px; font-weight:700; color:#94A3B8}
+.dqItem{display:flex; align-items:center; gap:12px; background:#F8FAFC; border:2px solid #EEF2FF; border-radius:14px; padding:10px 12px; margin-bottom:8px}
+.dqItem.done{background:#ECFDF5; border-color:#A7F3D0}
+.dqIc{font-size:22px; width:28px; text-align:center; flex-shrink:0}
+.dqMain{flex:1; min-width:0}
+.dqTxt{font-weight:700; font-size:14px; color:var(--ink); margin-bottom:5px}
+.dqBar{height:8px; background:#E2E8F0; border-radius:999px; overflow:hidden}
+.dqBar>span{display:block; height:100%; background:linear-gradient(90deg,var(--org),var(--pink)); border-radius:999px; transition:width .4s ease}
+.dqItem.done .dqBar>span{background:linear-gradient(90deg,#34D399,#10B981)}
+.dqNum{font-family:'Baloo 2',cursive; font-weight:800; font-size:15px; color:#64748B; flex-shrink:0}
+.dqItem.done .dqNum{color:#059669}
+.dqReward{margin-top:6px; text-align:center; font-size:13.5px; font-weight:600; color:#92400E; background:#FEF3C7; border:2px dashed #FCD34D; border-radius:14px; padding:10px 12px}
+.dqReward.claimed{color:#065F46; background:#DCFCE7; border-color:#6EE7B7; border-style:solid}
+.dqReward b{font-family:'Baloo 2',cursive}
+.lbRow{display:flex; align-items:center; gap:12px; padding:9px 10px; border-radius:12px}
+.lbRow:nth-child(even){background:#F8FAFC}
+.lbRow.me{background:#EDE9FE; border:2px solid var(--vio)}
+.lbPos{width:30px; text-align:center; font-size:20px; flex-shrink:0}
+.lbRank{font-family:'Baloo 2',cursive; font-weight:800; font-size:15px; color:#94A3B8}
+.lbName{flex:1; min-width:0; font-weight:700; font-size:15px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.lbYou{color:var(--vio); font-weight:800; font-size:13px}
+.lbXp{font-family:'Baloo 2',cursive; font-weight:800; font-size:15px; color:var(--org); flex-shrink:0}
+
 /* Popup cách nhận XP */
 .xhHead{display:flex; align-items:center; gap:14px; padding:22px 22px; background:linear-gradient(135deg,var(--org),var(--pink)); color:#fff; border-radius:26px 26px 0 0}
 .xhHead .xhAva{width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.25); display:flex; align-items:center; justify-content:center; font-size:30px; flex-shrink:0}

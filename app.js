@@ -63,10 +63,13 @@ function addXP(amount){
   if(!isStudentLogged()) return;           // chưa đăng nhập → không cộng XP
   if(!amount || amount <= 0) return;
   progress.xp += amount;
+  ensureDaily(); progress.daily.xp += amount;   // đếm XP trong ngày (nhiệm vụ hằng ngày)
   if(typeof xpFly === "function") xpFly(amount);
   updateStreak();              // có cộng XP hôm nay = tính ngày học
   checkBadges();
   saveProgress(progress);
+  checkDailyQuest();
+  try{ renderDailyQuests(); }catch(e){}
 }
 function recordQuiz(score, total){
   if(!isStudentLogged()) return;           // chưa đăng nhập → không tính
@@ -76,8 +79,38 @@ function recordQuiz(score, total){
   progress.totalStars += Math.round(score);
   updateStreak();             // làm bài = có học hôm nay (kể cả khi chưa đủ XP)
   saveProgress(progress);
+  bumpDailyQuiz();            // đếm cho nhiệm vụ hằng ngày
 }
-function awardGameXP(){ addXP(XP_GAME); }   // gọi khi hoàn thành 1 trò chơi trong bài
+function awardGameXP(){ addXP(XP_GAME); bumpDailyGame(); }   // gọi khi hoàn thành 1 trò chơi trong bài
+
+/* ===== NHIỆM VỤ HẰNG NGÀY (reset theo ngày, thưởng khi đủ 3) ===== */
+function _todayKey(){ return new Date().toLocaleDateString("en-CA"); }   // YYYY-MM-DD giờ máy
+function ensureDaily(){
+  if(!progress.daily || progress.daily.date !== _todayKey()){
+    progress.daily = { date:_todayKey(), games:0, quizzes:0, xp:0, claimed:false };
+  }
+  return progress.daily;
+}
+const DAILY_QUESTS = [
+  { id:"xp",   ic:"⚡", goal:15, get:d => d.xp||0,      txt:"Kiếm 15 XP hôm nay" },
+  { id:"game", ic:"🎮", goal:2,  get:d => d.games||0,   txt:"Chơi 2 trò chơi" },
+  { id:"quiz", ic:"📝", goal:1,  get:d => d.quizzes||0, txt:"Làm 1 bài Kiểm tra hoặc Luyện tập" },
+];
+const DAILY_BONUS = 5;
+function bumpDailyGame(){ if(!isStudentLogged()) return; const d = ensureDaily(); d.games++; saveProgress(progress); checkDailyQuest(); try{ renderDailyQuests(); }catch(e){} }
+function bumpDailyQuiz(){ if(!isStudentLogged()) return; const d = ensureDaily(); d.quizzes++; saveProgress(progress); checkDailyQuest(); try{ renderDailyQuests(); }catch(e){} }
+function checkDailyQuest(){
+  if(!isStudentLogged()) return;
+  const d = ensureDaily();
+  if(!d.claimed && DAILY_QUESTS.every(q => q.get(d) >= q.goal)){
+    d.claimed = true;
+    progress.xp += DAILY_BONUS; d.xp += DAILY_BONUS;   // thưởng — cộng thẳng, không gọi addXP để tránh lặp
+    if(typeof xpFly === "function") xpFly(DAILY_BONUS);
+    try{ burst(16, ["🎉","⭐","🏆","💜"]); }catch(e){}
+    checkBadges(); saveProgress(progress);
+    try{ renderDailyQuests(); }catch(e){}
+  }
+}
 /* Bài học chỉ được tính là "đã học" khi ở trong bài đủ 10 phút */
 function checkLessonLearned(idx){
   if(!isStudentLogged()) return;           // chưa đăng nhập → không tính
@@ -1837,6 +1870,8 @@ function renderHome(){
       <div class="plTxt"><b>Đăng nhập để lưu điểm nhé!</b><span>XP, chuỗi ngày và thành tích chỉ được tính khi em đăng nhập tài khoản học sinh.</span></div>
       <button class="btn small" onclick="openAuth()">👤 Đăng nhập</button>
     </div>`;
+    const dq = document.getElementById("dailyQuests"); if(dq) dq.innerHTML = "";
+    const lb = document.getElementById("leaderboard"); if(lb) lb.innerHTML = "";
     initHeroAnim();
     return;
   }
@@ -1859,7 +1894,55 @@ function renderHome(){
       </div>
       ${badges.length ? `<div class="badgeRow">${badges.map(b => `<span class="badge" title="${b.desc}">${b.icon} ${b.name}</span>`).join("")}</div>` : ""}`;
   }
+  try{ renderDailyQuests(); }catch(e){}
+  try{ loadLeaderboard(); }catch(e){}
   initHeroAnim();
+}
+/* ===== UI: Nhiệm vụ hằng ngày ===== */
+function renderDailyQuests(){
+  const el = document.getElementById("dailyQuests"); if(!el) return;
+  if(!isStudentLogged()){ el.innerHTML = ""; return; }
+  const d = ensureDaily();
+  const done = DAILY_QUESTS.filter(q => q.get(d) >= q.goal).length;
+  const items = DAILY_QUESTS.map(q => {
+    const cur = Math.min(q.get(d), q.goal), ok = cur >= q.goal;
+    const pct = Math.round(cur / q.goal * 100);
+    return `<div class="dqItem${ok ? " done" : ""}">
+      <div class="dqIc">${ok ? "✅" : q.ic}</div>
+      <div class="dqMain">
+        <div class="dqTxt">${q.txt}</div>
+        <div class="dqBar"><span style="width:${pct}%"></span></div>
+      </div>
+      <div class="dqNum">${cur}/${q.goal}</div>
+    </div>`;
+  }).join("");
+  const banner = d.claimed
+    ? `<div class="dqReward claimed">🏆 Đã hoàn thành hết! Nhận <b>+${DAILY_BONUS} XP</b> thưởng 🎉</div>`
+    : `<div class="dqReward">🎁 Xong cả ${DAILY_QUESTS.length} nhiệm vụ để nhận <b>+${DAILY_BONUS} XP</b> thưởng nha!</div>`;
+  el.innerHTML = `<div class="card dqCard">
+    <div class="dqHead"><h3>🎯 Nhiệm vụ hôm nay</h3><span class="dqCount">${done}/${DAILY_QUESTS.length}</span></div>
+    ${items}${banner}
+  </div>`;
+}
+/* ===== UI: Bảng xếp hạng lớp (gọi RPC class_leaderboard trên Supabase) ===== */
+async function loadLeaderboard(){
+  const el = document.getElementById("leaderboard"); if(!el) return;
+  if(!isStudentLogged()){ el.innerHTML = ""; return; }
+  const c = getSB(); if(!c){ el.innerHTML = ""; return; }
+  try{
+    const { data, error } = await c.rpc("class_leaderboard");
+    if(error || !data || !data.length){ el.innerHTML = ""; return; }
+    const medal = i => i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `<span class="lbRank">${i+1}</span>`;
+    const rows = data.map((r, i) => `<div class="lbRow${r.is_me ? " me" : ""}">
+      <div class="lbPos">${medal(i)}</div>
+      <div class="lbName">${r.display_name}${r.is_me ? ' <span class="lbYou">(em)</span>' : ""}</div>
+      <div class="lbXp">${r.xp || 0} ⚡</div>
+    </div>`).join("");
+    el.innerHTML = `<div class="card lbCard">
+      <div class="lbHead"><h3>🏆 Xếp hạng lớp</h3><span class="lbSub">theo tổng XP</span></div>
+      ${rows}
+    </div>`;
+  }catch(e){ el.innerHTML = ""; }
 }
 function initHeroAnim(){
   const hero = document.querySelector(".heroArt");
@@ -3554,6 +3637,7 @@ function fsTick(){
 }
 function fsResult(){
   const s = fsSt;
+  bumpDailyGame();
   const win = s.score >= 15;
   document.getElementById("fsBody").innerHTML = `
     <div class="detGlow"></div>
@@ -3670,6 +3754,7 @@ function gvCheck(){
   }
 }
 function gvResult(){
+  bumpDailyGame();
   const s = gvSt, win = s.score >= 6;
   document.getElementById("gvBody").innerHTML = `
     <div class="detGlow"></div>
@@ -3797,6 +3882,7 @@ function scCheck(){
   }
 }
 function scResult(){
+  bumpDailyGame();
   const s = scSt, win = s.score >= 7;
   document.getElementById("scBody").innerHTML = `
     <div class="detGlow"></div>
