@@ -7,7 +7,7 @@
 <meta name="description" content="Website học tiếng Việt vui nhộn cho học sinh — bài học, bài tập, kiểm tra trình độ cùng Thầy Đạt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;600;700&family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=94">
+<link rel="stylesheet" href="styles.css?v=95">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 </head>
@@ -197,19 +197,35 @@
   <!-- ---------- KIỂM TRA (màn giới thiệu) ---------- -->
   <section id="kiemtra" class="page hidden">
     <div class="card hero quizIntro">
-      <div class="avatar">😎</div>
-      <h1>Thử tài tiếng Việt<br><span class="grad">cùng Thầy Đạt!</span></h1>
-      <p class="intro"><b>20 câu</b> · đủ 4 kỹ năng <b>nghe · nói · đọc · viết</b>.<br>Trả lời đúng để leo lên <b>3 sao ⭐</b> nhé! 🚀</p>
+      <div class="qiHero">
+        <span class="qiSpark s1">⭐</span><span class="qiSpark s2">✨</span><span class="qiSpark s3">🎯</span>
+        <div class="avatar">😎</div>
+        <span class="qiKicker">🏆 Bài kiểm tra trình độ</span>
+        <h1>Thử tài tiếng Việt<br><span class="grad">cùng Thầy Đạt!</span></h1>
+        <p class="intro">Trả lời đúng để leo lên <b>3 sao ⭐</b> — càng đúng, câu càng khó nha! 🚀</p>
+      </div>
+
+      <div class="qiStats">
+        <div class="qiStat"><b>20</b><span>câu hỏi</span></div>
+        <div class="qiStat"><b>3⭐</b><span>tối đa</span></div>
+        <div class="qiStat"><b>9</b><span>dạng bài</span></div>
+        <div class="qiStat"><b>4</b><span>kỹ năng</span></div>
+      </div>
+
+      <div class="qiSecTitle">🎮 Luật chơi</div>
       <div class="rules">
         <div class="rule up"><div class="ic">✅</div><div><div class="tt">Đúng +1 sao</div><div class="dd">Câu sau khó hơn</div></div></div>
         <div class="rule down"><div class="ic">❌</div><div><div class="tt">Sai −1 sao</div><div class="dd">Câu sau dễ lại</div></div></div>
         <div class="rule rand"><div class="ic">🎲</div><div><div class="tt">Ngẫu nhiên</div><div class="dd">Mỗi lần một bộ mới</div></div></div>
       </div>
+
+      <div class="qiSecTitle">✨ 9 dạng câu hỏi</div>
       <div class="tags">
         <span class="tg-doc">🖼️ Hình → từ</span><span class="tg-noi">💬 Hội thoại</span>
         <span class="tg-doc">🔤 Mặt chữ</span><span class="tg-doc">🌏 Anh → Việt</span><span class="tg-viet">🎵 Dấu thanh</span>
         <span class="tg-nghe">🎧 Nghe</span><span class="tg-noi">🎤 Nói</span><span class="tg-viet">🧩 Xếp câu</span><span class="tg-doc">📖 Đọc hiểu</span>
       </div>
+
       <div class="tutorNote">👩‍🏫 <b>Phụ huynh (Thầy Cô) chỉ được hỗ trợ:</b> đọc hộ câu hỏi (trừ 📖 &amp; 🎧 — bé tự làm). Câu 🎤 Nói: nghe bé rồi chấm giúp, đừng sửa giữa chừng nhé! 💜</div>
       <button class="btn pulseBtn" onclick="startQuiz()">Bắt đầu luôn! 🎮</button>
     </div>
