@@ -3504,13 +3504,56 @@ function lessonWriteFor(l){
   const m = (l && l.title || "").match(/^Bài\s+(\d+)/);
   return (m && LESSON_WRITE[m[1]]) ? LESSON_WRITE[m[1]] : "";
 }
+/* ===== 2 câu TRẮC NGHIỆM cho mỗi bài (từ chữ O = Bài 3 trở đi) ===== */
+function xQuiz(items){
+  const qs = items.map((it, qi) => {
+    const opts = it.opts.map((o, oi) =>
+      `<button class="quizOpt"${oi === it.a ? " data-correct" : ""} onclick="quizPick(this)">${String.fromCharCode(65+oi)}. ${o}</button>`).join("");
+    return `<div class="quizQ"><div class="quizQt">${qi+1}. ${it.q}</div><div class="quizOpts">${opts}</div></div>`;
+  }).join("");
+  return `<div class="secTitle" data-icon="❓">Trắc nghiệm nhanh</div>${qs}`;
+}
+const LESSON_QUIZ = {
+  3: xQuiz([{q:"Tiếng nào có âm <b>ô</b>?",opts:["con bò","cái ô","quả bơ"],a:1},{q:"“Quả bơ” trong tiếng Anh là gì?",opts:["apple","avocado","banana"],a:1}]),
+  4: xQuiz([{q:"Từ nào có âm <b>ư</b>?",opts:["tủ","từ","chú"],a:1},{q:"“Sư tử” là con gì?",opts:["hổ (tiger)","sư tử (lion)","gấu (bear)"],a:1}]),
+  5: xQuiz([{q:"Từ nào bắt đầu bằng chữ <b>y</b>?",opts:["in","yêu","im"],a:1},{q:"Chữ <b>y</b> thường đi ngay sau chữ nào?",opts:["a","u","o"],a:1}]),
+  6: xQuiz([{q:"Tiếng Việt có mấy dấu thanh?",opts:["4","5","6"],a:2},{q:"Từ “mẹ” mang dấu gì?",opts:["sắc","nặng","huyền"],a:1}]),
+  7: xQuiz([{q:"“Con mèo” thuộc nhóm nào?",opts:["con vật","màu sắc","đồ ăn"],a:0},{q:"Quả chuối chín có màu gì?",opts:["đỏ","vàng","tím"],a:1}]),
+  8: xQuiz([{q:"Khi được tặng quà, em nói gì?",opts:["Xin lỗi","Cảm ơn","Tạm biệt"],a:1},{q:"Gặp cô giáo, em chào thế nào cho lễ phép?",opts:["Ê cô!","Con chào cô ạ!","Chào!"],a:1}]),
+  9: xQuiz([{q:"b + a + huyền = ?",opts:["ba","bà","bá"],a:1},{q:"Tiếng “cá” có âm đầu là gì?",opts:["c","a","k"],a:0}]),
+  10: xQuiz([{q:"Giờ ra chơi, các bạn nam thường chơi gì?",opts:["nhảy dây","đá cầu, đá bóng","đọc truyện"],a:1},{q:"Truyện “Rùa và Thỏ” khuyên em điều gì?",opts:["nên lười biếng","chăm chỉ, kiên trì","nên kiêu căng"],a:1}]),
+  11: xQuiz([{q:"Em gái của mẹ gọi là gì?",opts:["cô","dì","bà"],a:1},{q:"Bố của bố em gọi là gì?",opts:["ông","cậu","chú"],a:0}]),
+  12: xQuiz([{q:"Số 7 đọc là gì?",opts:["sáu","bảy","tám"],a:1},{q:"“mười” + “năm” = ?",opts:["mười lăm","mười bốn","hai mươi"],a:0}]),
+  13: xQuiz([{q:"Một tuần có mấy ngày?",opts:["5","6","7"],a:2},{q:"Ngày nghỉ cuối tuần thường là?",opts:["thứ Hai","Chủ nhật","thứ Tư"],a:1}]),
+  14: xQuiz([{q:"Từ nào tả chiều cao của người?",opts:["vui vẻ","cao","hiền"],a:1},{q:"Phép so sánh thường dùng từ nào?",opts:["và","như","nhưng"],a:1}]),
+  15: xQuiz([{q:"Chữ nào KHÔNG phải phụ âm?",opts:["b","a","m"],a:1},{q:"Từ “kem” bắt đầu bằng phụ âm nào?",opts:["c","k","q"],a:1}]),
+  16: xQuiz([{q:"“ngh” chỉ đi với những chữ nào?",opts:["a, o, u","e, ê, i","tất cả"],a:1},{q:"Từ “trường” có phụ âm ghép nào?",opts:["ch","tr","th"],a:1}]),
+  17: xQuiz([{q:"Trước chữ <b>i</b> (kính) viết c hay k?",opts:["c","k"],a:1},{q:"Trước chữ <b>a</b> (gà) viết g hay gh?",opts:["g","gh"],a:0}]),
+  18: xQuiz([{q:"Tiếng “bàn” có vần gì?",opts:["an","ang","on"],a:0},{q:"Từ nào có vần <b>ăng</b>?",opts:["trăng","trân","trơn"],a:0}]),
+  19: xQuiz([{q:"Bộ phận nào để nhìn?",opts:["tai","mắt","mũi"],a:1},{q:"“Tay” trong tiếng Anh là gì?",opts:["hand","foot","head"],a:0}]),
+  20: xQuiz([{q:"Đồ dùng nào để viết?",opts:["thước","bút","tẩy"],a:1},{q:"“Sách” trong tiếng Anh là gì?",opts:["pen","book","bag"],a:1}]),
+  21: xQuiz([{q:"Ai là người chữa bệnh cho mọi người?",opts:["giáo viên","bác sĩ","nông dân"],a:1},{q:"Người lái máy bay gọi là gì?",opts:["phi công","thợ xây","đầu bếp"],a:0}]),
+  22: xQuiz([{q:"Mùa nào lạnh nhất trong năm?",opts:["mùa hạ","mùa đông","mùa xuân"],a:1},{q:"Nước từ mây rơi xuống gọi là gì?",opts:["nắng","mưa","gió"],a:1}]),
+  23: xQuiz([{q:"Từ “chạy” là loại từ gì?",opts:["danh từ","động từ","tính từ"],a:1},{q:"Từ “đẹp” là loại từ gì?",opts:["danh từ","động từ","tính từ"],a:2}]),
+  24: xQuiz([{q:"Từ nào dùng để hỏi về người?",opts:["Ở đâu","Ai","Khi nào"],a:1},{q:"Cuối câu hỏi dùng dấu gì?",opts:["dấu chấm","dấu chấm hỏi","dấu phẩy"],a:1}]),
+  25: xQuiz([{q:"Cây bàng được trồng ở đâu?",opts:["sau lớp học","trước sân trường","trong công viên"],a:1},{q:"Câu đầu của đoạn văn cần viết thế nào?",opts:["viết thường","lùi vào một chút","viết hoa cả câu"],a:1}]),
+  26: xQuiz([{q:"AI là viết tắt của cụm từ nào?",opts:["Trí tuệ nhân tạo","Âm nhạc","Ánh sáng"],a:0},{q:"Có nên cho AI biết mật khẩu của em không?",opts:["Có","Không","Tùy lúc"],a:1}]),
+  27: xQuiz([{q:"Từ “đi” bắt đầu bằng chữ nào?",opts:["d","đ","b"],a:1},{q:"Từ “da” (skin) bắt đầu bằng chữ nào?",opts:["d","đ","t"],a:0}]),
+  28: xQuiz([{q:"Từ “lá” bắt đầu bằng chữ nào?",opts:["l","n","h"],a:0},{q:"Từ “kính” bắt đầu bằng chữ nào?",opts:["c","k","g"],a:1}]),
+  29: xQuiz([{q:"Chữ <b>q</b> luôn đi cùng chữ nào?",opts:["a","u","o"],a:1},{q:"Từ “mẹ” bắt đầu bằng chữ nào?",opts:["n","m","p"],a:1}]),
+  30: xQuiz([{q:"Từ “sao” (star) bắt đầu bằng chữ nào?",opts:["s","x","r"],a:0},{q:"Từ “xe” (vehicle) bắt đầu bằng chữ nào?",opts:["s","x","t"],a:1}]),
+};
+function lessonQuizFor(l){
+  const m = (l && l.title || "").match(/^Bài\s+(\d+)/);
+  return (m && LESSON_QUIZ[m[1]]) ? LESSON_QUIZ[m[1]] : "";
+}
 function openLesson(i){
   const l = LESSONS[i];
   logLesson(i);
   startLessonTimer(i);          // bắt đầu tính giờ (≥10 phút = đã học)
   document.getElementById("lessonBody").innerHTML =
     `<div class="lessonHead"><div class="lh-ic">${l.icon}</div><div><h2>${lessonTitle(i)}</h2><p>${l.desc}</p></div></div>
-     <div class="lContent">${l.body}${lessonExtraFor(l)}${lessonWriteFor(l)}${renderLessonGames(LESSON_GAMES[i])}</div>`;
+     <div class="lContent">${l.body}${lessonExtraFor(l)}${lessonQuizFor(l)}${lessonWriteFor(l)}${renderLessonGames(LESSON_GAMES[i])}</div>`;
   document.getElementById("lessonModal").classList.remove("hidden");
   document.body.style.overflow = "hidden";
   sfx.pop();
@@ -3527,6 +3570,15 @@ function toggleAns(btn, id){
   if(!el) return;
   const shown = !el.classList.toggle("hidden");   // toggle: trả true nếu vừa THÊM 'hidden'
   if(btn) btn.textContent = shown ? "🙈 Ẩn đáp án" : "❓ Xem đáp án";
+}
+/* Trắc nghiệm trong bài học: bấm đáp án → hiện đúng/sai, tô đáp án đúng */
+function quizPick(btn){
+  const wrap = btn.parentElement;
+  if(!wrap || wrap.classList.contains("done")) return;
+  wrap.classList.add("done");
+  const correct = wrap.querySelector("[data-correct]");
+  if(btn === correct){ btn.classList.add("right"); try{ sfx.correct(); }catch(e){} }
+  else { btn.classList.add("wrong"); if(correct) correct.classList.add("right"); try{ sfx.wrong(); }catch(e){} }
 }
 /* ---- Đếm thời gian ở trong bài học ---- */
 let _lsIdx = null, _lsStart = 0, _lsTimer = null;
