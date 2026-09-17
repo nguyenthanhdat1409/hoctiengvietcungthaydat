@@ -7,3 +7,7 @@ claude.exe
 # File hệ thống
 Thumbs.db
 .DS_Store
+
+# Agent skills (công cụ hỗ trợ, không thuộc web)
+.agents/
+skills-lock.json

@@ -8656,7 +8656,11 @@ async function openStudentDetail(id){
     el.innerHTML = head +
       `<div class="stSum">${sum.map(s => `<div><span class="si">${s.ic}</span><b>${s.n}</b><span class="sl">${s.l}</span></div>`).join("")}</div>` +
       `<div class="stTlTitle">🕒 Lịch sử hoạt động</div><div class="stTl">${tl}</div>` +
-      `<div class="stReset"><button class="btn small stResetBtn" onclick="resetStudent('${id}')">🗑️ Đặt lại về 0</button></div>`;
+      `<div class="stReset">
+        <button class="btn small" onclick="changeStudentClass('${id}')">🏫 Đổi lớp</button>
+        <button class="btn small" onclick="changeStudentPin('${id}')">🔑 Đổi PIN</button>
+        <button class="btn small stResetBtn" onclick="resetStudent('${id}')">🗑️ Đặt lại về 0</button>
+      </div>`;
   }catch(err){
     el.innerHTML = head + `<p class="muted" style="padding:12px 20px">Lỗi tải: ${err && err.message}</p>`;
   }
@@ -8713,6 +8717,38 @@ async function resetStudent(id){
     loadDashboard();
     alert("✅ Đã đặt lại " + info.name + " về 0. (Có hiệu lực trên máy của bé ở lần đăng nhập kế tiếp.)");
   }catch(err){ alert("❌ Lỗi mạng: " + err.message); }
+}
+/* ---- Giáo viên: đổi PIN / đổi lớp học sinh (qua netlify function bảo mật) ---- */
+async function _studentAdmin(payload){
+  const c = getSB(); if(!c){ alert("Chưa kết nối máy chủ."); return null; }
+  const { data:{ session } } = await c.auth.getSession();
+  if(!session){ alert("Cần đăng nhập giáo viên."); return null; }
+  try{
+    const res = await fetch("/.netlify/functions/student-admin", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json", Authorization:"Bearer " + session.access_token },
+      body: JSON.stringify(payload)
+    });
+    const out = await res.json().catch(() => ({}));
+    if(!res.ok){ alert("❌ " + (out.error || "Thất bại")); return null; }
+    return out;
+  }catch(err){ alert("❌ Lỗi mạng: " + err.message); return null; }
+}
+async function changeStudentPin(id){
+  const info = (window._dashAgg && window._dashAgg[id]) || { name:"học sinh" };
+  const pin = prompt("Đặt PIN mới cho " + info.name + " (4–6 chữ số):");
+  if(pin == null) return;
+  if(!/^\d{4,6}$/.test(pin.trim())){ alert("PIN phải là 4–6 chữ số."); return; }
+  const out = await _studentAdmin({ action:"set_pin", student_id:id, pin:pin.trim() });
+  if(out) alert("✅ Đã đổi PIN cho " + info.name + ".\nBé đăng nhập: @" + (out.username || info.username || "") + " + PIN mới.");
+}
+async function changeStudentClass(id){
+  const info = (window._dashAgg && window._dashAgg[id]) || { name:"học sinh", cls:"" };
+  const cur = (info.cls && info.cls !== "—") ? info.cls : "";
+  const cls = prompt("Đổi lớp cho " + info.name + " (để trống nếu bỏ lớp):", cur);
+  if(cls == null) return;
+  const out = await _studentAdmin({ action:"set_class", student_id:id, class_code:cls.trim() });
+  if(out){ alert("✅ Đã đổi lớp " + info.name + " → " + (out.class_code || "(không lớp)") + "."); closeStudentDetail(); loadDashboard(); }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
