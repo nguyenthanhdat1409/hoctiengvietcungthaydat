@@ -4570,6 +4570,39 @@ function checkMulti(){
 }
 
 // res: 'full' | 'half' | 'none'
+// Giải thích ngắn "vì sao" cho câu trả lời (hiện khi bé làm SAI)
+function whyExplain(q){
+  if(!q) return "";
+  if(q.why) return q.why;                                   // câu có sẵn giải thích
+  const correct = (q.opts && q.a != null) ? q.opts[q.a] : "";
+  const g = q.glyph || "";
+  switch(q.cat){
+    case "anhviet": {
+      const m = (q.q || "").match(/[“"]([^”"]+)[”"]/);      // lấy từ tiếng Anh trong dấu ngoặc
+      const en = m ? m[1] : "";
+      return (en && correct) ? `“${en}” nghĩa là “${correct}”.` : "";
+    }
+    case "dauthanh":
+      return (g && correct) ? `Tiếng “${g}” mang dấu ${correct}.` : "";
+    case "matchu":
+      if(/vần/i.test(q.q || "")) return `Tiếng “${g}” có vần “${correct}”.`;
+      if(/phụ âm/i.test(q.q || "")) return `Tiếng “${g}” bắt đầu bằng “${correct}”.`;
+      if(/đọc là/i.test(q.q || "")) return `Chữ này đọc là “${correct}”.`;
+      return correct ? `Đúng là “${correct}”.` : "";
+    case "doc": case "docdai":
+      return "Đọc kỹ lại đoạn văn để tìm ý trả lời nha.";
+    case "nghe":
+      return correct ? `Từ đúng là “${correct}” — nghe lại thật kỹ nhé!` : "";
+    case "dientu":
+      return correct ? `Điền “${correct}” thì câu mới đúng nghĩa.` : "";
+    case "tuvung":
+      return correct ? `Hình này là “${correct}”.` : "";
+    case "hoithoai":
+      return correct ? `“${correct}” là cách nói lịch sự, phù hợp.` : "";
+    default:
+      return "";
+  }
+}
 function applyResult(res, picked, extra){
   locked = true;
   history.push({q: current, picked: picked, res: res});
@@ -4577,6 +4610,8 @@ function applyResult(res, picked, extra){
   const fbText = document.getElementById("fbText");
   if(res === "full") score += 1;
   else if(res === "half") score += 0.5;
+  const why = (res === "none") ? whyExplain(current) : "";
+  const extraFull = [extra, why ? "💡 " + why : ""].filter(Boolean).join(" · ");
 
   if(mode === "test"){
     if(res === "full"){
@@ -4592,7 +4627,7 @@ function applyResult(res, picked, extra){
       const msg = star > 1 ? `Về ${star-1} sao, gỡ lại ngay thôi! 💪` : "Vẫn 1 sao, cố lên! 💪";
       star = Math.max(1, star - 1);
       fb.classList.add("show","bad");
-      fbText.textContent = (extra ? extra + " · " : "") + msg;
+      fbText.textContent = (extraFull ? extraFull + " · " : "") + msg;
     }
     updateStars(true);
   } else { // ---- luyện tập: không tính sao ----
@@ -4602,7 +4637,7 @@ function applyResult(res, picked, extra){
       burst(5);
     } else {
       fb.classList.add("show","bad");
-      fbText.textContent = (extra ? extra + " — " : "") + "Không sao, câu sau cố lên nha! 💪";
+      fbText.textContent = (extraFull ? extraFull + " — " : "") + "Không sao, câu sau cố lên nha! 💪";
     }
   }
   document.getElementById("btnNext").classList.remove("hidden");
