@@ -908,6 +908,83 @@ const HARD = [
 ];
 HARD.forEach(q => BANK[3].push(q));
 
+/* NGÂN HÀNG ĐỀ KHÓ BỔ SUNG — mỗi chủ đề +5 câu (nối vào mức khó nhất) */
+const HARD_PLUS = [
+  // Hình → từ
+  {cat:"tuvung", type:"emojiQ", q:"Đây là con gì?", glyph:"🦒", opts:["Con ngựa","Con hươu cao cổ","Con lạc đà","Con nai"], a:1},
+  {cat:"tuvung", type:"emojiQ", q:"Đây là con gì?", glyph:"🦔", opts:["Con chuột","Con sóc","Con nhím","Con thỏ"], a:2},
+  {cat:"tuvung", type:"emojiQ", q:"Đây là con gì?", glyph:"🦩", opts:["Con cò","Chim hồng hạc","Con vịt","Con ngỗng"], a:1},
+  {cat:"tuvung", type:"emojiOpts", q:"Con vật nào sống ở vùng băng tuyết?", opts:["🐧","🦁","🐫","🦒"], a:0},
+  {cat:"tuvung", type:"emojiOpts", q:"Đâu là nhạc cụ có dây để gảy?", opts:["🎺","🥁","🎸","🎤"], a:2},
+  // Hội thoại
+  {cat:"hoithoai", type:"chat", q:"An nên đáp lại thế nào cho lịch sự?", chat:[["bao","Chúc mừng sinh nhật cậu nhé!"],["an","…?…"]], opts:["Cảm ơn cậu nhiều!","Biết rồi.","Kệ tớ.","Sao cậu biết?"], a:0},
+  {cat:"hoithoai", type:"chat", q:"Bảo nên nói gì khi muốn hỏi người lớn?", chat:[["bao","…?…"]], opts:["Xin lỗi, cho cháu hỏi một chút được không ạ?","Ê, tránh ra!","Nhanh lên!","Nói đi!"], a:0},
+  {cat:"hoithoai", type:"chat", q:"Được cô giáo khen, An nên nói gì?", chat:[["bao","Bài của em làm rất tốt!"],["an","…?…"]], opts:["Em cảm ơn cô ạ!","Đương nhiên rồi.","Có gì đâu.","Em biết mà."], a:0},
+  {cat:"hoithoai", type:"chat", q:"Thấy bạn bị ngã, em nên nói gì?", chat:[["bao","…?…"]], opts:["Cậu có sao không? Để tớ đỡ cậu dậy.","Ai bảo chạy nhanh!","Buồn cười quá!","Kệ cậu."], a:0},
+  {cat:"hoithoai", type:"chat", q:"Mượn bút của bạn xong, em nên nói gì?", chat:[["bao","…?…"]], opts:["Cảm ơn cậu, tớ trả nhé!","Cho tớ mượn thêm.","Tớ giữ luôn nhé.","Không nói gì cả."], a:0},
+  // Mặt chữ
+  {cat:"matchu", type:"glyph", q:"Từ này bắt đầu bằng phụ âm ghép nào?", glyph:"nghiêng", opts:["ngh","ng","nh","gh"], a:0, letterOpts:true},
+  {cat:"matchu", type:"glyph", q:"Tiếng này có vần gì?", glyph:"khuyên", opts:["uyên","iên","uên","yên"], a:0, letterOpts:true},
+  {cat:"matchu", type:"glyph", q:"Tiếng này có vần gì?", glyph:"quyển", opts:["uyên","iên","uyêt","yên"], a:0, letterOpts:true},
+  {cat:"matchu", type:"glyph", q:"Tiếng này có vần gì?", glyph:"ngoằn", opts:["oăn","oan","ăn","oen"], a:0, letterOpts:true},
+  {cat:"matchu", type:"glyph", q:"Tiếng này có vần gì?", glyph:"thuở", opts:["uơ","ua","uê","oa"], a:0, letterOpts:true},
+  // Anh → Việt
+  {cat:"anhviet", type:"glyph", q:"\"Elephant\" là con gì?", glyph:"Elephant 🐘", opts:["Con hổ","Con voi","Con gấu","Con tê giác"], a:1},
+  {cat:"anhviet", type:"glyph", q:"\"Umbrella\" là gì?", glyph:"Umbrella ☂️", opts:["Cái ô (dù)","Chiếc nón","Áo mưa","Đôi ủng"], a:0},
+  {cat:"anhviet", type:"glyph", q:"\"Butterfly\" là con gì?", glyph:"Butterfly 🦋", opts:["Con ong","Con bướm","Con chuồn chuồn","Con ruồi"], a:1},
+  {cat:"anhviet", type:"glyph", q:"\"Pineapple\" là quả gì?", glyph:"Pineapple 🍍", opts:["Quả dừa","Quả xoài","Quả dứa","Quả đu đủ"], a:2},
+  {cat:"anhviet", type:"glyph", q:"\"Rainbow\" là gì?", glyph:"Rainbow 🌈", opts:["Cầu vồng","Tia nắng","Đám mây","Cơn bão"], a:0},
+  // Dấu thanh
+  {cat:"dauthanh", type:"glyph", q:"Tiếng này mang dấu thanh gì?", glyph:"bão", opts:["ngã","hỏi","sắc","nặng"], a:0},
+  {cat:"dauthanh", type:"glyph", q:"Tiếng này mang dấu thanh gì?", glyph:"cửa", opts:["hỏi","ngã","huyền","sắc"], a:0},
+  {cat:"dauthanh", type:"glyph", q:"Tiếng này mang dấu thanh gì?", glyph:"mũi", opts:["ngã","hỏi","nặng","sắc"], a:0},
+  {cat:"dauthanh", type:"glyph", q:"Tiếng này mang dấu thanh gì?", glyph:"vẽ", opts:["ngã","hỏi","sắc","huyền"], a:0},
+  {cat:"dauthanh", type:"glyph", q:"Tiếng này mang dấu thanh gì?", glyph:"sửa", opts:["hỏi","ngã","nặng","sắc"], a:0},
+  // Nói
+  {cat:"noi", type:"speak", q:"Hãy kể lại một câu chuyện em từng đọc và cho biết em thích nhân vật nào nhất."},
+  {cat:"noi", type:"speak", q:"Theo em, vì sao chúng ta cần bảo vệ cây xanh và môi trường?"},
+  {cat:"noi", type:"speak", q:"Nếu được ước một điều, em sẽ ước gì? Vì sao?"},
+  {cat:"noi", type:"speak", q:"Hãy tả lại con đường từ nhà đến trường của em."},
+  {cat:"noi", type:"speak", q:"Em hãy giới thiệu về ước mơ nghề nghiệp của mình và lý do."},
+  // Xếp câu (Viết)
+  {cat:"viet", type:"order", q:"Bấm các từ theo đúng thứ tự thành câu có nghĩa!", words:["Mỗi","sáng","em","đều","tập","thể","dục"]},
+  {cat:"viet", type:"order", q:"Bấm các từ theo đúng thứ tự thành câu có nghĩa!", words:["Cả","lớp","chăm","chú","nghe","cô","giảng","bài"]},
+  {cat:"viet", type:"order", q:"Bấm các từ theo đúng thứ tự thành câu có nghĩa!", words:["Mùa","xuân","muôn","hoa","đua","nhau","khoe","sắc"]},
+  {cat:"viet", type:"order", q:"Bấm các từ theo đúng thứ tự thành câu có nghĩa!", words:["Chúng","em","cùng","nhau","dọn","vệ","sinh","lớp","học"]},
+  {cat:"viet", type:"order", q:"Bấm các từ theo đúng thứ tự thành câu có nghĩa!", words:["Bạn","Lan","luôn","sẵn","sàng","giúp","đỡ","bạn","bè"]},
+  // Đọc hiểu
+  {cat:"doc", type:"read", passage:"Trời đã tối mà Nam vẫn cặm cụi bên bàn học. Bạn muốn làm xong bài tập trước khi đi ngủ.", q:"Qua đó, em thấy Nam là người thế nào?", opts:["Chăm chỉ, tự giác","Lười biếng","Ham chơi","Hay quên"], a:0},
+  {cat:"doc", type:"read", passage:"Thấy một cụ già muốn qua đường, Lan chạy lại dắt cụ sang bên kia rồi mới tới trường.", q:"Việc làm của Lan cho thấy điều gì?", opts:["Lan biết giúp đỡ người khác","Lan rất vô tâm","Lan nhút nhát","Lan ích kỉ"], a:0},
+  {cat:"doc", type:"read", passage:"Mây đen kéo đến, gió thổi mạnh, vài hạt mưa lộp độp bắt đầu rơi.", q:"Sắp có hiện tượng gì xảy ra?", opts:["Một cơn mưa","Trời nắng to","Tuyết rơi","Cầu vồng"], a:0},
+  {cat:"doc", type:"read", passage:"Đàn chim bay về phương Nam tránh rét, lá vàng rơi đầy sân trường.", q:"Cảnh vật cho biết đang chuyển sang mùa nào?", opts:["Mùa đông","Mùa xuân","Mùa hè","Mùa mưa"], a:0},
+  {cat:"doc", type:"read", passage:"Lan chia nhỏ bài ra ôn mỗi ngày một ít thay vì học dồn. Nhờ vậy bạn nhớ lâu và không bị mệt.", q:"Cách học của Lan cho ta bài học gì?", opts:["Ôn đều mỗi ngày giúp nhớ lâu","Học dồn một lúc tốt hơn","Không cần ôn bài","Càng học nhiều một lúc càng giỏi"], a:0},
+  // Nghe
+  {cat:"nghe", type:"hear", say:"quả khế", q:"Nghe rồi chọn đúng từ nha!", opts:["quả khế","quả ổi","quả cà","quả me"], a:0},
+  {cat:"nghe", type:"hear", say:"con nghé", q:"Nghe rồi chọn đúng từ nha!", opts:["con nghé","con dê","con bê","con me"], a:0},
+  {cat:"nghe", type:"hear", say:"lấp lánh", q:"Nghe rồi chọn đúng từ nha!", opts:["lấp lánh","nấp nánh","lấp nánh","lắp lánh"], a:0},
+  {cat:"nghe", type:"hear", say:"rổ rá", q:"Nghe rồi chọn đúng từ nha!", opts:["rổ rá","dổ rá","rổ dá","gổ rá"], a:0},
+  {cat:"nghe", type:"hear", say:"trắng tinh", q:"Nghe rồi chọn đúng từ nha!", opts:["trắng tinh","chắng tinh","trắng tin","trắng tình"], a:0},
+  // Điền từ (tục ngữ)
+  {cat:"dientu", type:"fill", q:"Kiến tha lâu cũng đầy ....", opts:["tổ","nhà","hang","cây"], a:0},
+  {cat:"dientu", type:"fill", q:"Đi một ngày đàng, học một sàng ....", opts:["khôn","gạo","chữ","đường"], a:0},
+  {cat:"dientu", type:"fill", q:"Có công mài sắt, có ngày nên ....", opts:["kim","dao","búa","đinh"], a:0},
+  {cat:"dientu", type:"fill", q:"Ăn quả nhớ kẻ trồng ....", opts:["cây","rau","hoa","lúa"], a:0},
+  {cat:"dientu", type:"fill", q:"Uống nước nhớ ....", opts:["nguồn","sông","mưa","giếng"], a:0},
+  // Viết chính tả
+  {cat:"chinhta", type:"spell", letter:"Ư", answer:"gương"},
+  {cat:"chinhta", type:"spell", letter:"Ô", answer:"cổng"},
+  {cat:"chinhta", type:"spell", letter:"Ê", answer:"nghề"},
+  {cat:"chinhta", type:"spell", letter:"Â", answer:"nấm"},
+  {cat:"chinhta", type:"spell", letter:"Ơ", answer:"lười"},
+  // Đọc đoạn dài
+  {cat:"docdai", type:"read", passage:"Rừng là ngôi nhà chung của muôn loài. Cây rừng cho gỗ, giữ đất, chắn lũ và làm cho không khí trong lành. Nếu chặt phá rừng bừa bãi, đất sẽ bị xói mòn, lũ lụt dễ xảy ra và nhiều loài vật mất nơi ở. Vì vậy, bảo vệ rừng chính là bảo vệ cuộc sống của chúng ta.", q:"Vì sao cần bảo vệ rừng?", opts:["Vì rừng giữ đất, chắn lũ và cho không khí trong lành","Vì rừng có nhiều vàng bạc","Vì rừng biết phát sáng","Vì rừng ăn được"], a:0},
+  {cat:"docdai", type:"read", passage:"Mỗi giọt nước sạch đều rất quý. Nước dùng để uống, nấu ăn, tắm giặt và tưới cây. Thế nhưng nguồn nước sạch không phải vô tận. Nếu ai cũng lãng phí, một ngày nào đó nước sạch sẽ cạn kiệt. Hãy khóa vòi khi không dùng và tiết kiệm nước nhé!", q:"Bài đọc khuyên chúng ta điều gì?", opts:["Dùng nước tiết kiệm","Xả nước thoải mái","Không cần dùng nước","Đổ nước đi cho vui"], a:0},
+  {cat:"docdai", type:"read", passage:"Con ong chăm chỉ bay từ bông hoa này sang bông hoa khác để hút mật. Nhờ đó, ong vừa làm ra mật ngọt, vừa giúp hoa kết trái. Cuộc sống của loài ong tuy nhỏ bé nhưng thật có ích.", q:"Loài ong có ích như thế nào?", opts:["Làm ra mật và giúp hoa kết trái","Chỉ biết đốt người","Phá hoại mùa màng","Không làm gì cả"], a:0},
+  {cat:"docdai", type:"read", passage:"Ngày xưa có một cậu bé rất lười học. Một hôm, cậu thấy bà cụ mài một thanh sắt to. Bà bảo sẽ mài nó thành cây kim. Cậu bé cười, cho là viển vông. Nhưng rồi cậu hiểu ra: chỉ cần kiên trì thì việc khó đến đâu cũng làm được. Từ đó, cậu chăm chỉ học hành.", q:"Câu chuyện muốn nói lên điều gì?", opts:["Có công mài sắt, có ngày nên kim","Nên lười biếng","Việc khó thì bỏ cuộc","Không cần cố gắng"], a:0},
+  {cat:"docdai", type:"read", passage:"Bác Hồ là vị lãnh tụ kính yêu của dân tộc Việt Nam. Dù bận trăm công nghìn việc, Bác vẫn luôn dành tình thương cho thiếu nhi. Mỗi dịp Trung thu hay Tết, Bác thường gửi thư và quà, mong các cháu chăm ngoan, học giỏi.", q:"Bác Hồ mong các cháu thiếu nhi điều gì?", opts:["Chăm ngoan, học giỏi","Chơi thật nhiều","Ngủ thật nhiều","Không cần đi học"], a:0},
+];
+HARD_PLUS.forEach(q => BANK[3].push(q));
+
 /* =========================================================
    ĐỌC ĐOẠN DÀI — mỗi đề là 1 đoạn văn + nhiều câu hỏi nhỏ.
    Dùng riêng cho chủ đề "docdai" trong Bài tập (không vào Kiểm tra).
