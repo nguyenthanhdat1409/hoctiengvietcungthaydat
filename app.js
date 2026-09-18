@@ -4000,6 +4000,7 @@ function fsFeedback(){
 }
 function fsResume(){
   const s = fsSt; if(!s || s.done) return;
+  if(s.time <= 0){ s.done = true; clearInterval(s.timer); fsResult(); return; }  // hết giờ thì kết thúc, không mở câu mới
   s.paused = false;
   clearInterval(s.timer);
   s.timer = setInterval(fsTick, 1000);
@@ -4024,7 +4025,9 @@ function fsAnswer(said){
   } else {
     s.streak = 0; s.miss++; sfx.wrong();
     s.time = Math.max(0, s.time - 5); // bấm sai bị trừ 5 giây
+    fsUpdateRing();
     fsMissToast(s.miss);              // popup nhỏ: thống kê số lần sai trong ca này
+    if(s.time <= 0){ s.done = true; clearInterval(s.timer); fsResult(); return; }  // hết giờ do phạt → kết thúc ngay
     fsFeedback();                     // sai → hiện từ đúng + lý do, dừng lại cho bé đọc
   }
 }
