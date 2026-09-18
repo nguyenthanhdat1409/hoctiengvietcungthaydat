@@ -4018,8 +4018,10 @@ function fsAnswer(said){
   if(said === s.cur.isCorrect){
     s.score++; s.streak++;
     sfx.correct(); addXP(1);
+    s.time = Math.min(60, s.time + 1);   // trả lời đúng: thưởng +1 giây (tối đa 60)
+    fsUpdateRing();
     const wordEl = document.getElementById("fsWord");
-    if(wordEl){ try{ detSparkle(wordEl); detFloat(wordEl, "+1 XP", "good"); }catch(e){} }
+    if(wordEl){ try{ detSparkle(wordEl); detFloat(wordEl, "+1 XP · +1 giây", "good"); }catch(e){} }
     if(s.streak >= 5) burst(6);
     fsNext();
   } else {
