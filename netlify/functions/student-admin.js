@@ -54,6 +54,22 @@ exports.handler = async (event) => {
       return json(200, { ok: true, action, class_code: cls });
     }
 
+    // 3c) ĐẶT TỔNG XP (student_progress.data.xp) — giữ nguyên các trường khác
+    if (action === "set_xp") {
+      const xp = parseInt(body.xp, 10);
+      if (!(Number.isFinite(xp) && xp >= 0 && xp <= 100000)) return json(400, { error: "XP phải là số 0–100000" });
+      const cur = (await (await fetch(`${URL}/rest/v1/student_progress?student_id=eq.${sid}&select=data`, { headers: svc })).json())[0];
+      const data = (cur && cur.data && typeof cur.data === "object") ? cur.data : {};
+      data.xp = xp;
+      const r = await fetch(`${URL}/rest/v1/student_progress`, {
+        method: "POST",
+        headers: { ...svc, Prefer: "resolution=merge-duplicates,return=minimal" },
+        body: JSON.stringify({ student_id: sid, data, updated_at: new Date().toISOString() }),
+      });
+      if (!r.ok) { const e = await r.json().catch(() => ({})); return json(400, { error: e.message || "Không đặt được XP" }); }
+      return json(200, { ok: true, action, xp });
+    }
+
     return json(400, { error: "action không hợp lệ" });
   } catch (err) {
     return json(500, { error: "Lỗi máy chủ: " + (err && err.message ? err.message : String(err)) });
