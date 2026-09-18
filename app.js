@@ -97,7 +97,7 @@ const DAILY_QUESTS = [
   { id:"quiz", ic:"📝", goal:1,  get:d => d.quizzes||0, txt:"Làm 1 bài Kiểm tra hoặc Luyện tập" },
 ];
 const DAILY_BONUS = 5;
-function bumpDailyGame(){ if(!isStudentLogged()) return; const d = ensureDaily(); d.games++; saveProgress(progress); checkDailyQuest(); try{ renderDailyQuests(); }catch(e){} }
+function bumpDailyGame(){ if(!isStudentLogged()) return; const d = ensureDaily(); d.games++; saveProgress(progress); checkDailyQuest(); try{ renderDailyQuests(); }catch(e){} try{ flushCloudProgress(); }catch(e){} }
 function bumpDailyQuiz(){ if(!isStudentLogged()) return; const d = ensureDaily(); d.quizzes++; saveProgress(progress); checkDailyQuest(); try{ renderDailyQuests(); }catch(e){} }
 function checkDailyQuest(){
   if(!isStudentLogged()) return;
@@ -1915,6 +1915,7 @@ function go(id){
   document.getElementById("nav").classList.remove("open");
   if(("#" + id) !== location.hash){ navLock = true; location.hash = id; }
   if(id === "dashboard" && typeof renderDashboard === "function") renderDashboard();
+  if(id === "home" && typeof renderHome === "function") renderHome();   // làm mới XP + nhiệm vụ + xếp hạng
   window.scrollTo(0, 0);
 }
 window.addEventListener("hashchange", () => {
@@ -2007,8 +2008,13 @@ async function loadLeaderboard(){
   if(!isStudentLogged()){ el.innerHTML = ""; return; }
   const c = getSB(); if(!c){ el.innerHTML = ""; return; }
   try{
+    try{ flushCloudProgress(); }catch(e){}       // đẩy XP mới nhất lên cloud trước khi đọc
     const { data, error } = await c.rpc("class_leaderboard");
     if(error || !data || !data.length){ el.innerHTML = ""; return; }
+    // Dòng "của em" dùng XP local hiện tại (luôn mới), rồi xếp hạng lại cho đúng
+    const myXp = (progress && progress.xp) || 0;
+    data.forEach(r => { if(r.is_me) r.xp = Math.max(r.xp || 0, myXp); });
+    data.sort((a,b) => (b.xp||0) - (a.xp||0) || (a.display_name||"").localeCompare(b.display_name||""));
     const medal = i => i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `<span class="lbRank">${i+1}</span>`;
     const rows = data.map((r, i) => `<div class="lbRow${r.is_me ? " me" : ""}">
       <div class="lbPos">${medal(i)}</div>
@@ -4908,6 +4914,7 @@ function showResult(){
   const finalScore = Math.round(score);
   recordQuiz(finalScore, total);
   addXP(XP_TEST);                       // hoàn thành 1 bài kiểm tra: +4 XP
+  try{ flushCloudProgress(); }catch(e){}   // đẩy XP lên cloud ngay
   logQuiz("test", finalScore, total, p, star);
   if(p >= 60) sfx.win();
   el.innerHTML = `
@@ -4953,6 +4960,7 @@ function showPracticeResult(){
   const catName = practiceCat === "all" ? "Tất cả chủ đề" : (CATS[practiceCat].emoji + " " + CATS[practiceCat].name);
   recordQuiz(Math.round(correct), denom);
   addXP(Math.floor(correct / XP_PER5_PRACTICE));   // luyện tập: mỗi 5 câu đúng = +1 XP
+  try{ flushCloudProgress(); }catch(e){}           // đẩy XP lên cloud ngay khi xong
   logQuiz("practice", Math.round(correct), total, p, null);
   if(p >= 60) sfx.win();
 
@@ -8218,7 +8226,7 @@ function scheduleCloudProgress(){
   if(!u || u.role !== "student") return;
   _spDirty = true;
   clearTimeout(_spTimer);
-  _spTimer = setTimeout(pushCloudProgress, 1500);
+  _spTimer = setTimeout(pushCloudProgress, 700);   // đồng bộ nhanh hơn
 }
 function pushCloudProgress(){
   const c = getSB(); const u = getAuthUser();
