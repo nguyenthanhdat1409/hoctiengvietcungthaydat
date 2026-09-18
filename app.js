@@ -3961,7 +3961,7 @@ const FS_PHRASES = [
   {ok:"mặt trời",    bad:"mặc trời"},
   {ok:"con lươn",    bad:"con lương"},
   {ok:"quả bàng",    bad:"quả bàn"},
-  {ok:"cái kẻng",    bad:"cái kẻn"},
+  {ok:"cái kèn",     bad:"cái kèng"},
 ];
 // Tìm đúng từ khác nhau giữa cụm đúng và cụm sai (để gợi ý trúng chỗ)
 function fsDiffWord(ok, bad){
