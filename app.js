@@ -7071,7 +7071,17 @@ const DETECTIVE_CASES = [
         "o": "giỏi."
       }
     ]
-  }
+  },
+  { title:"Vụ án khu vườn của bà", words:["Khu","vườn","của","bà","có","nhiều","loại","hoa.","Buổi",{b:"xáng,",o:"sáng,"},"ong","bướm","bay",{b:"lượng",o:"lượn"},"quanh","những","bông","hoa","thơm",{b:"ngác.",o:"ngát."},"Bà","ra","vườn","tưới","cây","và",{b:"nhỗ",o:"nhổ"},"cỏ.","Em","thích",{b:"dúp",o:"giúp"},"bà",{b:"trăm",o:"chăm"},"sóc","khu","vườn",{b:"nhõ",o:"nhỏ"},"này."] },
+  { title:"Vụ án giờ học chăm chỉ", words:["Trong","giờ","học,","cô","giáo",{b:"xay",o:"say"},"sưa","giảng","bài.","Chúng","em","chăm","chú",{b:"nắng",o:"lắng"},"nghe","và",{b:"gi",o:"ghi"},"bài.","Bạn","nào","cũng",{b:"dơ",o:"giơ"},"tay","phát","biểu",{b:"xôi",o:"sôi"},"nổi.","Cô","khen","cả","lớp",{b:"ngoang",o:"ngoan"},"và",{b:"trăm",o:"chăm"},"chỉ."] },
+  { title:"Vụ án chuyến về quê", words:["Hè","này","em","được","về","quê","thăm","ông","bà.","Đêm","rằm,",{b:"chăng",o:"trăng"},"sáng","vằng","vặc.","Em","theo","ông","ra","đồng","xem","con",{b:"châu",o:"trâu"},"cày","ruộng",{b:"núa.",o:"lúa."},{b:"Ròng",o:"Dòng"},"sông","quê","chảy","qua",{b:"nàng.",o:"làng."},"Em",{b:"dất",o:"rất"},"yêu","quê","hương",{b:"sanh",o:"xanh"},"mát."] },
+  { title:"Vụ án chú chó nhỏ", words:["Nhà","em","nuôi","một","chú",{b:"tró",o:"chó"},"nhỏ.","Chú","có","bộ",{b:"nông",o:"lông"},"vàng","và","đôi","mắt",{b:"chòn.",o:"tròn."},"Mỗi","chiều,","chú",{b:"trạy",o:"chạy"},"ra","cổng","đón","em.","Em","tắm",{b:"dửa",o:"rửa"},"cho","chú","thật","sạch",{b:"sẻ.",o:"sẽ."},"Chú","chó","thật","đáng",{b:"iêu.",o:"yêu."}] },
+  { title:"Vụ án mùa xuân", words:["Mùa","xuân","đến,","tiết","trời","ấm","áp.","Muôn","hoa","đua","nhau",{b:"khoa",o:"khoe"},"sắc.","Trên","cành,","chim",{b:"tróc",o:"chóc"},"hót",{b:"níu",o:"líu"},"lo.","Đàn","én",{b:"trao",o:"chao"},"lượn","giữa","trời",{b:"sanh.",o:"xanh."},"Cảnh","vật","thật",{b:"đẹt",o:"đẹp"},"và","tươi",{b:"xáng.",o:"sáng."}] },
+  { title:"Vụ án giúp mẹ việc nhà", words:["Cuối","tuần,","em",{b:"dúp",o:"giúp"},"mẹ","làm","việc","nhà.","Em",{b:"quéc",o:"quét"},"nhà,","lau","bàn","và",{b:"dửa",o:"rửa"},"chén.","Mẹ",{b:"lấu",o:"nấu"},"cơm","còn","em",{b:"nhặc",o:"nhặt"},"rau.","Cả","nhà","cùng","nhau",{b:"rọn",o:"dọn"},"dẹp","thật","vui",{b:"vẹ.",o:"vẻ."}] },
+  { title:"Vụ án đàn gà nhà em", words:["Nhà","em","có","một","đàn",{b:"ghà",o:"gà"},"con.","Chúng",{b:"nông",o:"lông"},"vàng,",{b:"trạy",o:"chạy"},"lon","ton","theo","mẹ.","Gà","mẹ",{b:"xũ",o:"xù"},"lông","tìm",{b:"dun",o:"giun"},"cho","con","ăn.","Buổi",{b:"xáng,",o:"sáng,"},"gà","trống",{b:"gháy",o:"gáy"},"vang","gọi","mọi","người."] },
+  { title:"Vụ án trời mưa", words:["Chiều","nay,",{b:"chời",o:"trời"},"đổ","cơn","mưa",{b:"dào.",o:"rào."},"Những","hạt","mưa",{b:"rơy",o:"rơi"},{b:"nộp",o:"lộp"},"độp","trên","mái","nhà.","Cây","cối","được",{b:"dửa",o:"rửa"},"sạch","nên",{b:"sanh",o:"xanh"},"tươi.","Sau","cơn","mưa,","bầu","trời","lại",{b:"xáng.",o:"sáng."}] },
+  { title:"Vụ án bạn Lan chăm ngoan", words:["Bạn","Lan","rất",{b:"trăm",o:"chăm"},"học","và",{b:"ngoang",o:"ngoan"},"ngoãn.","Bạn","luôn",{b:"nàm",o:"làm"},"bài","đầy","đủ","trước","khi","đến",{b:"nớp.",o:"lớp."},"Trong",{b:"dờ",o:"giờ"},"học,","Lan","chú","ý",{b:"nge",o:"nghe"},"cô","giảng.","Ai","cũng",{b:"iêu",o:"yêu"},"quý","bạn","Lan."] },
+  { title:"Vụ án đêm Trung thu", words:["Đêm","Trung","thu,",{b:"chăng",o:"trăng"},"tròn","và",{b:"xáng.",o:"sáng."},"Chúng","em","rước","đèn","đi","khắp",{b:"sóm",o:"xóm"},"làng.","Tiếng",{b:"chống",o:"trống"},"ếch","vang",{b:"dộn",o:"rộn"},"cả","đường","quê.","Ai","cũng","vui",{b:"vẹ",o:"vẻ"},"và",{b:"hác",o:"hát"},"ca."] }
 ];
 
 const DET_ROUNDS = 5;   // mỗi lượt chơi gồm 5 màn (5 vụ án ngẫu nhiên)
