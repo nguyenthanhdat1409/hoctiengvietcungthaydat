@@ -11,3 +11,4 @@ Thumbs.db
 # Agent skills (công cụ hỗ trợ, không thuộc web)
 .agents/
 skills-lock.json
+.claude/

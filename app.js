@@ -54,7 +54,7 @@ const XP_TEST = 4;              // hoàn thành 1 bài kiểm tra
 const XP_PER5_PRACTICE = 5;    // cứ 5 câu đúng ở luyện tập = +1 XP
 const XP_GAME = 2;             // hoàn thành 1 trò chơi trong bài
 const XP_LESSON = 5;           // học xong 1 bài
-const LESSON_LEARN_SEC = 600;  // phải ở trong bài ≥ 10 phút mới tính là đã học
+const LESSON_LEARN_SEC = 180;  // ở trong bài ≥ 3 phút HOẶC làm trắc nghiệm cuối bài = đã học
 
 /* CHỈ tính XP/tiến trình khi HỌC SINH đã đăng nhập */
 function isStudentLogged(){ try{ const u = getAuthUser(); return !!(u && u.role === "student"); }catch(e){ return false; } }
@@ -111,7 +111,18 @@ function checkDailyQuest(){
     try{ renderDailyQuests(); }catch(e){}
   }
 }
-/* Bài học chỉ được tính là "đã học" khi ở trong bài đủ 10 phút */
+/* Đánh dấu 1 bài là "đã học" (dùng khi bé làm trắc nghiệm cuối bài) — không cần đủ giờ */
+function markLessonLearned(idx){
+  if(!isStudentLogged() || idx == null) return;
+  if(!progress.lessonsViewed.includes(idx)){
+    progress.lessonsViewed.push(idx);
+    addXP(XP_LESSON);
+    saveProgress(progress);
+    try{ flushCloudProgress(); }catch(e){}
+    try{ renderHome(); }catch(e){}
+  }
+}
+/* Bài học được tính "đã học" khi ở trong bài đủ thời gian tối thiểu */
 function checkLessonLearned(idx){
   if(!isStudentLogged()) return;           // chưa đăng nhập → không tính
   if(idx == null) return;
@@ -3662,6 +3673,7 @@ function quizPick(btn){
   const correct = wrap.querySelector("[data-correct]");
   if(btn === correct){ btn.classList.add("right"); try{ sfx.correct(); }catch(e){} }
   else { btn.classList.add("wrong"); if(correct) correct.classList.add("right"); try{ sfx.wrong(); }catch(e){} }
+  try{ markLessonLearned(_lsIdx); }catch(e){}   // làm trắc nghiệm cuối bài = đã học bài này
 }
 /* ---- Đếm thời gian ở trong bài học ---- */
 let _lsIdx = null, _lsStart = 0, _lsTimer = null;
