@@ -15,6 +15,7 @@ const CATS = {
   dientu:  {name:"Điền từ", chip:"#FFF1F2;color:#9F1239;border:2px solid #F43F5E", color:"#F43F5E", emoji:"📝"},
   chinhta: {name:"Viết chính tả", chip:"#E0F2FE;color:#075985;border:2px solid #0EA5E9", color:"#0EA5E9", emoji:"✏️"},
   docdai:  {name:"Đọc đoạn dài", chip:"#FCE7F3;color:#9D174D;border:2px solid #DB2777", color:"#DB2777", emoji:"📰"},
+  cadao:   {name:"Ca dao – Tục ngữ", chip:"#FEF3C7;color:#92400E;border:2px solid #D97706", color:"#D97706", emoji:"📜"},
 };
 
 /* =========================================================
@@ -995,6 +996,35 @@ const HARD_PLUS = [
   {cat:"docdai", type:"read", passage:"Bác Hồ là vị lãnh tụ kính yêu của dân tộc Việt Nam. Dù bận trăm công nghìn việc, Bác vẫn luôn dành tình thương cho thiếu nhi. Mỗi dịp Trung thu hay Tết, Bác thường gửi thư và quà, mong các cháu chăm ngoan, học giỏi.", q:"Bác Hồ mong các cháu thiếu nhi điều gì?", opts:["Chăm ngoan, học giỏi","Chơi thật nhiều","Ngủ thật nhiều","Không cần đi học"], a:0},
 ];
 HARD_PLUS.forEach(q => BANK[3].push(q));
+
+/* CA DAO – TỤC NGỮ Việt Nam học sinh nên biết (hoàn thành câu + ý nghĩa) */
+const CADAO = [
+  {cat:"cadao", type:"fill", q:"Uống nước nhớ ….", opts:["nguồn","sông","mưa","giếng"], a:0},
+  {cat:"cadao", type:"fill", q:"Ăn quả nhớ kẻ trồng ….", opts:["cây","rau","hoa","lúa"], a:0},
+  {cat:"cadao", type:"fill", q:"Có công mài sắt, có ngày nên ….", opts:["kim","dao","búa","đinh"], a:0},
+  {cat:"cadao", type:"fill", q:"Đi một ngày đàng, học một sàng ….", opts:["khôn","gạo","chữ","đường"], a:0},
+  {cat:"cadao", type:"fill", q:"Không thầy đố mày làm ….", opts:["nên","xong","ra","được"], a:0},
+  {cat:"cadao", type:"fill", q:"Lá lành đùm lá ….", opts:["rách","xanh","vàng","khô"], a:0},
+  {cat:"cadao", type:"fill", q:"Thương người như thể thương ….", opts:["thân","yêu","nhà","em"], a:0},
+  {cat:"cadao", type:"fill", q:"Gần mực thì đen, gần đèn thì ….", opts:["sáng","tối","mờ","đỏ"], a:0},
+  {cat:"cadao", type:"fill", q:"Chị ngã em ….", opts:["nâng","đỡ","đứng","khóc"], a:0},
+  {cat:"cadao", type:"fill", q:"Kiến tha lâu cũng đầy ….", opts:["tổ","nhà","hang","sân"], a:0},
+  {cat:"cadao", type:"fill", q:"Một cây làm chẳng nên ….", opts:["non","rừng","cây","đồi"], a:0},
+  {cat:"cadao", type:"fill", q:"Tốt gỗ hơn tốt nước ….", opts:["sơn","da","vôi","màu"], a:0},
+  {cat:"cadao", type:"fill", q:"Đói cho sạch, rách cho ….", opts:["thơm","lành","đẹp","mới"], a:0},
+  {cat:"cadao", type:"fill", q:"Bầu ơi thương lấy bí ….", opts:["cùng","chung","với","ơi"], a:0},
+  {cat:"cadao", type:"fill", q:"Học thầy không tày học ….", opts:["bạn","sách","chữ","hành"], a:0},
+  {cat:"cadao", type:"fill", q:"Một con ngựa đau, cả tàu bỏ ….", opts:["cỏ","ăn","chạy","đi"], a:0},
+  {cat:"cadao", type:"fill", q:"Ăn cây nào, rào cây ….", opts:["nấy","đó","kia","ấy"], a:0},
+  {cat:"cadao", type:"fill", q:"Có chí thì ….", opts:["nên","xong","được","giỏi"], a:0},
+  {cat:"cadao", type:"fill", q:"Cá không ăn muối cá ….", opts:["ươn","chết","hư","tanh"], a:0},
+  {cat:"cadao", type:"fill", q:"Công cha như núi Thái ….", opts:["Sơn","Bình","Hà","Nguyên"], a:0},
+  {cat:"cadao", type:"tf", q:"Câu “Có công mài sắt, có ngày nên kim” khuyên ta phải kiên trì, chăm chỉ.", opts:["Đúng","Sai"], a:0},
+  {cat:"cadao", type:"tf", q:"“Lá lành đùm lá rách” nói về tinh thần yêu thương, giúp đỡ nhau.", opts:["Đúng","Sai"], a:0},
+  {cat:"cadao", type:"tf", q:"“Uống nước nhớ nguồn” nghĩa là phải biết ơn người đã giúp mình.", opts:["Đúng","Sai"], a:0},
+  {cat:"cadao", type:"tf", q:"“Gần mực thì đen, gần đèn thì sáng” khuyên nên chọn bạn tốt mà chơi.", opts:["Đúng","Sai"], a:0},
+];
+CADAO.forEach((q, i) => BANK[(i % 3) + 1].push(q));   // rải đều vào 3 mức khó
 
 /* =========================================================
    ĐỌC ĐOẠN DÀI — mỗi đề là 1 đoạn văn + nhiều câu hỏi nhỏ.
@@ -4331,7 +4361,7 @@ function scResult(){
   if(win){ sfx.win(); burst(16); }
 }
 
-const PRACTICE_CATS = ["all","docdai","tuvung","dientu","chinhta","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
+const PRACTICE_CATS = ["all","cadao","docdai","tuvung","dientu","chinhta","nghe","hoithoai","matchu","anhviet","dauthanh","doc"];
 function renderTopicChips(){
   document.getElementById("topicChips").innerHTML = PRACTICE_CATS.map(k => {
     if(k === "all") return `<button class="topicChip" style="background:linear-gradient(135deg,#7C3AED,#EC4899)" onclick="startPractice('all')">🎲 Tất cả</button>`;
