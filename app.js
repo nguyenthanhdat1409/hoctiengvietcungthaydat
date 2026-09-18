@@ -8703,6 +8703,7 @@ async function openStudentDetail(id){
         <button class="btn small" onclick="changeStudentClass('${id}')">🏫 Đổi lớp</button>
         <button class="btn small" onclick="changeStudentPin('${id}')">🔑 Đổi PIN</button>
         <button class="btn small" onclick="changeStudentXp('${id}')">⚡ Đặt XP</button>
+        <button class="btn small" onclick="changeStudentLessons('${id}')">📚 Đặt số bài</button>
         <button class="btn small stResetBtn" onclick="resetStudent('${id}')">🗑️ Đặt lại về 0</button>
       </div>`;
   }catch(err){
@@ -8802,6 +8803,16 @@ async function changeStudentXp(id){
   if(!(Number.isFinite(n) && n >= 0)){ alert("XP phải là số ≥ 0."); return; }
   const out = await _studentAdmin({ action:"set_xp", student_id:id, xp:n });
   if(out){ alert("✅ Đã đặt XP của " + info.name + " = " + out.xp + ".\n(Hiển thị trên máy của bé ở lần đăng nhập kế tiếp.)"); closeStudentDetail(); loadDashboard(); }
+}
+async function changeStudentLessons(id){
+  const info = (window._dashAgg && window._dashAgg[id]) || { name:"học sinh", lessons:0 };
+  const total = (typeof LESSONS !== "undefined") ? LESSONS.length : 32;
+  const v = prompt("Đặt số BÀI HỌC đã học cho " + info.name + " (0–" + total + "):", info.lessons || 0);
+  if(v == null) return;
+  const n = parseInt(v, 10);
+  if(!(Number.isFinite(n) && n >= 0)){ alert("Số bài phải là số ≥ 0."); return; }
+  const out = await _studentAdmin({ action:"set_lessons", student_id:id, count:n });
+  if(out){ alert("✅ Đã đặt số bài học của " + info.name + " = " + out.count + "."); closeStudentDetail(); loadDashboard(); }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

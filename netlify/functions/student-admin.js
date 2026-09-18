@@ -70,6 +70,22 @@ exports.handler = async (event) => {
       return json(200, { ok: true, action, xp });
     }
 
+    // 3d) ĐẶT SỐ BÀI HỌC ĐÃ HỌC (student_progress.data.lessonsViewed)
+    if (action === "set_lessons") {
+      const n = parseInt(body.count, 10);
+      if (!(Number.isFinite(n) && n >= 0 && n <= 200)) return json(400, { error: "Số bài phải là 0–200" });
+      const cur = (await (await fetch(`${URL}/rest/v1/student_progress?student_id=eq.${sid}&select=data`, { headers: svc })).json())[0];
+      const data = (cur && cur.data && typeof cur.data === "object") ? cur.data : {};
+      data.lessonsViewed = Array.from({ length: n }, (_, i) => i);   // đánh dấu n bài đầu là đã học
+      const r = await fetch(`${URL}/rest/v1/student_progress`, {
+        method: "POST",
+        headers: { ...svc, Prefer: "resolution=merge-duplicates,return=minimal" },
+        body: JSON.stringify({ student_id: sid, data, updated_at: new Date().toISOString() }),
+      });
+      if (!r.ok) { const e = await r.json().catch(() => ({})); return json(400, { error: e.message || "Không đặt được số bài" }); }
+      return json(200, { ok: true, action, count: n });
+    }
+
     return json(400, { error: "action không hợp lệ" });
   } catch (err) {
     return json(500, { error: "Lỗi máy chủ: " + (err && err.message ? err.message : String(err)) });
