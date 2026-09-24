@@ -3638,9 +3638,9 @@ function xQuiz(items){
   return `<div class="secTitle" data-icon="❓">Trắc nghiệm nhanh</div>${qs}`;
 }
 const LESSON_QUIZ = {
-  3: xQuiz([{q:"Tiếng nào có âm <b>ô</b>?",opts:["con bò","cái ô","quả bơ"],a:1},{q:"“Quả bơ” trong tiếng Anh là gì?",opts:["apple","avocado","banana"],a:1}]),
-  4: xQuiz([{q:"Từ nào có âm <b>ư</b>?",opts:["tủ","từ","chú"],a:1},{q:"“Sư tử” là con gì?",opts:["hổ (tiger)","sư tử (lion)","gấu (bear)"],a:1}]),
-  5: xQuiz([{q:"Từ nào bắt đầu bằng chữ <b>y</b>?",opts:["in","yêu","im"],a:1},{q:"Chữ <b>y</b> thường đi ngay sau chữ nào?",opts:["a","u","o"],a:1}]),
+  3: xQuiz([{q:"Chữ nào đọc gần giống “oo” trong “book”?",opts:["o","ô","ơ"],a:1},{q:"“Quả bơ” trong tiếng Anh là gì?",opts:["apple","avocado","banana"],a:1}]),
+  4: xQuiz([{q:"Hai từ “tủ” và “từ” khác nhau ở âm nào?",opts:["u và ư","o và ô","a và ă"],a:0},{q:"“Lion” trong tiếng Việt là con gì?",opts:["con hổ","con sư tử","con gấu"],a:1}]),
+  5: xQuiz([{q:"Câu nào ĐÚNG về chữ <b>y</b>?",opts:["Y không bao giờ đứng đầu từ","Y có thể đứng đầu từ: yêu, y tá","Y chỉ là một dấu thanh"],a:1},{q:"Chữ <b>y</b> thường đi ngay sau chữ nào?",opts:["a","u","o"],a:1}]),
   6: xQuiz([{q:"Tiếng Việt có mấy dấu thanh?",opts:["4","5","6"],a:2},{q:"Từ “mẹ” mang dấu gì?",opts:["sắc","nặng","huyền"],a:1}]),
   7: xQuiz([{q:"“Con mèo” thuộc nhóm nào?",opts:["con vật","màu sắc","đồ ăn"],a:0},{q:"Quả chuối chín có màu gì?",opts:["đỏ","vàng","tím"],a:1}]),
   8: xQuiz([{q:"Khi được tặng quà, em nói gì?",opts:["Xin lỗi","Cảm ơn","Tạm biệt"],a:1},{q:"Gặp cô giáo, em chào thế nào cho lễ phép?",opts:["Ê cô!","Con chào cô ạ!","Chào!"],a:1}]),
